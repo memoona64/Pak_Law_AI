@@ -15,6 +15,17 @@ ENVIRONMENT - THIS IS CRITICAL, READ IT BEFORE EVERY COMMAND YOU SUGGEST:
 - Before any pip install, TMP, TEMP and PIP_CACHE_DIR must point to folders on
   D:, or the install fails with "No space left on device".
 - Installed so far: pdfplumber 0.11.10, pypdf 6.15.0.
+- Claude Code runs in PowerShell. start.bat does NOT carry over, because a
+  .bat runs in a separate cmd.exe process that exits. Never try to activate
+  the venv from PowerShell.
+- Always call the venv Python by full path instead:
+    .\.venv\Scripts\python.exe scripts\triage.py
+    .\.venv\Scripts\python.exe -m pip install <package>
+- Never use bare "python" or "pip" in PowerShell.
+- PowerShell 5.1 does not support && - use ; to chain commands.
+- C: drive space is tight. If a command fails with ENOSPC or "No space left
+  on device", stop and tell me. Do not describe it as transient or work
+  around it silently.
 
 HOW I WANT YOU TO WORK WITH ME:
 - I am a beginner. Explain in plain language, no jargon.
