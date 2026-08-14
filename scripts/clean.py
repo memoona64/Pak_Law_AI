@@ -1,8 +1,12 @@
 """
 Cleaning script.
 Reads one raw .txt file (produced by extract.py) and, in two steps, turns it
-into clean text for the chunker: no page numbers, running headers, or
-footnotes, and every line rejoined the way it reads on the page.
+into clean text for the chunker: removes page numbers, running headers, and
+blank lines, and normalises whitespace and hyphenation (words rejoined across
+line breaks).
+
+TOC and footnote removal are NOT implemented yet - left out on purpose,
+pending a decision on how to handle them. See notes/decisions.md.
 
 Step 1 (default): look for repeating header/footer lines and print them as
 candidates. Before comparing, each line is normalised (a leading or trailing
@@ -353,6 +357,13 @@ def main():
         print("adding them to JUNK_LINES at the top of this script, then re-run")
         print("with --apply.")
         return
+
+    if not input_path.name.endswith(".raw.txt"):
+        print(f"Refusing to run --apply on {input_path}")
+        print('Input filename must end in ".raw.txt" - output_path_for() drops')
+        print('that suffix to name the output file, so a different filename')
+        print("would make the output path equal the input path and overwrite it.")
+        sys.exit(1)
 
     full_text, stats, junk_removals = clean_document(pages)
     output_path = output_path_for(input_path)
