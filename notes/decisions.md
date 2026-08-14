@@ -49,7 +49,9 @@
 ## mfl.pdf
 - URL: https://pakistancode.gov.pk
 - Downloaded: 2026-08-12
-- Amendment date printed in document: "Updated till 10-3-2022" (top-right header of every page)
+- Amendment statement in document: "Updated till 10-3-2022" printed at the top
+  of page 1 only (not a repeating per-page header - an earlier note in this
+  file claimed otherwise and was incorrect)
 - amended_up_to: 2022-03-10
 - Jurisdiction: federal | Province: null
 - Pages: 7 | Size: 0.3 MB
@@ -139,6 +141,12 @@ Page counts match the triage run exactly. One known section was spot-checked by 
 6. **Constitution has 12 pages with no extractable text:** 1, 3, 5, 21, 25, 103, 111, 163, 171, 173, 207, 251. Verified by opening the original PDF — these are blank separator and title pages, not lost content.
 
 7. **Sindh Rented has 1 empty page (14, the back cover image).** Expected.
+
+8. **Header removal:** "CONSTITUTION OF PAKISTAN" approved as junk, removed from 237 of 252 pages. One instance remains on page 22 as "CONSTITUTION OF PAKISTAN1 1" where a footnote digit is fused to the word with no space. Left in place — a normaliser aggressive enough to catch it would also damage real content.
+
+9. **Page-number rule scoped:** bare-number lines are only removed if they appear in the first 2 or last 2 lines of a page. Before this fix the rule deleted 29 footnote markers from PPC and 62 footnote/table digits from CrPC. No legal text was lost, but the rule was removing things its name did not describe.
+
+10. **4 bare digits remain in CrPC** (pages 129, 215, 261, 281) where a footnote or table digit coincidentally landed at a page edge. Accepted rather than fixed: 4 lines out of 12,928, and any rule precise enough to catch them would risk removing real page numbers or footnote markers elsewhere.
 
 ---
 
