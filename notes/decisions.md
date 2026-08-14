@@ -97,6 +97,20 @@ sindh_rented.pdf              14       0.8      2419      38  OK - has text laye
 
 Image counts differ slightly from the earlier manual figures because pdfplumber counts per-page image placements, not unique image objects.
 
+## Extraction run — 2026-08-13
+
+```
+File                    Pages  Chars     Empty pages
+---------------------------------------------------------------
+ppc.raw.txt             179    497,729   0
+crpc.raw.txt            307    767,301   0
+constitution.raw.txt    252    462,493   12
+mfl.raw.txt             7      15,791    0
+sindh_rented.raw.txt    14     29,598    1
+```
+
+Page counts match the triage run exactly. One known section was spot-checked by eye in each file against the original PDF.
+
 ---
 
 # Documents rejected and why
@@ -121,6 +135,10 @@ Image counts differ slightly from the earlier manual figures because pdfplumber 
 4. **Footnote bodies at page bottoms.** Every Pakistan Code document has amendment footnotes ("Subs. by A.O., 1964, Art. 2 and Sch...") below a horizontal rule. Useful for amendment history, but not legal text — must not end up inside a section chunk.
 
 5. **Decorative watermark images.** PPC 184, CrPC 312, Constitution 22. Image objects, invisible to text extraction. No action needed — noted so nobody mistakes the file size for a scan.
+
+6. **Constitution has 12 pages with no extractable text:** 1, 3, 5, 21, 25, 103, 111, 163, 171, 173, 207, 251. Verified by opening the original PDF — these are blank separator and title pages, not lost content.
+
+7. **Sindh Rented has 1 empty page (14, the back cover image).** Expected.
 
 ---
 
