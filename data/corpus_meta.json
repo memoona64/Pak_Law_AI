@@ -12,7 +12,7 @@
     "corpus_version": "v1",
     "pages": 252,
     "extraction_method": "text_layer",
-    "quality_notes": "Uses Article not Section. 12 blank separator pages. One residual header on page 22 where a footnote digit is fused to the word. Document states amendment number, not an exact date.",
+    "quality_notes": "Uses Article not Section. 12 blank separator pages. One residual header on page 22 where a footnote digit is fused to the word. Document states amendment number, not an exact date. source_url is a landing page. The site generates PDFs dynamically, so freshness cannot be auto-checked for this document - requires manual re-download.",
     "known_gaps": "none"
   },
   {
@@ -28,7 +28,7 @@
     "corpus_version": "v1",
     "pages": 307,
     "extraction_method": "text_layer",
-    "quality_notes": "Most recently updated document in the corpus. Uses 22A with no hyphen for the Justice of the Peace section.",
+    "quality_notes": "Most recently updated document in the corpus. Uses 22A with no hyphen for the Justice of the Peace section. source_url is a landing page. The site generates PDFs dynamically, so freshness cannot be auto-checked for this document - requires manual re-download.",
     "known_gaps": "FILL_ME - pending Second Schedule decision"
   },
   {
@@ -44,7 +44,7 @@
     "corpus_version": "v1",
     "pages": 7,
     "extraction_method": "text_layer",
-    "quality_notes": "Smallest document, 13 sections, 12 and 13 omitted. Reflects 2021 amendments adding Fiqah-e-Jafria provisions.",
+    "quality_notes": "Smallest document, 13 sections, 12 and 13 omitted. Reflects 2021 amendments adding Fiqah-e-Jafria provisions. source_url is a landing page. The site generates PDFs dynamically, so freshness cannot be auto-checked for this document - requires manual re-download.",
     "known_gaps": "none"
   },
   {
@@ -60,7 +60,7 @@
     "corpus_version": "v1",
     "pages": 179,
     "extraction_method": "text_layer",
-    "quality_notes": "Cleanest of the five, avg 2909 chars/page. Fonts not embedded but extraction verified clean. Table of contents runs to approx page 29 and is still present in the cleaned file.",
+    "quality_notes": "Cleanest of the five, avg 2909 chars/page. Fonts not embedded but extraction verified clean. Table of contents runs to approx page 29 and is still present in the cleaned file. source_url is a landing page. The site generates PDFs dynamically, so freshness cannot be auto-checked for this document - requires manual re-download.",
     "known_gaps": "none"
   },
   {
@@ -71,7 +71,7 @@
     "amended_up_to": "2001-04-17",
     "source_url": "https://sja.gos.pk/assets/Updated_Laws/Sindh Rented Premises Ordinance,1979.pdf",
     "downloaded_on": "2026-08-12",
-    "source_checked_on": "2026-08-12",
+    "source_checked_on": "2026-08-14",
     "source_sha256": "0626c72d30a0fe817e135cd2d8899b566ad5f92d54be3bf0501a46015a420d0f",
     "corpus_version": "v1",
     "pages": 14,
