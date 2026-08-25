@@ -28,7 +28,7 @@ for c in data["chunks"][:3]:
     print(f"   Section {sec}: {txt}...")
 
 # Test 3: Province filter
-r = client.post("/rag/query", json={"query": "eviction notice", "province": "Sindh"})
+r = client.post("/rag/query", json={"query": "eviction notice", "province": "Sindh", "use_reranker": False})
 print("\n3. Query: eviction notice (province=Sindh)")
 if r.status_code == 503:
     print("   Semantic retrieval unavailable:", r.json().get("detail"))
@@ -52,7 +52,7 @@ for c in data["chunks"][:3]:
     print(f"   {act} Article {art}")
 
 # Test 5: Talaq query
-r = client.post("/rag/query", json={"query": "talaq ka procedure kya hai"})
+r = client.post("/rag/query", json={"query": "talaq ka procedure kya hai", "use_reranker": False})
 print("\n5. Query: talaq ka procedure kya hai")
 data = r.json()
 print("   Chunks found:", len(data["chunks"]))
