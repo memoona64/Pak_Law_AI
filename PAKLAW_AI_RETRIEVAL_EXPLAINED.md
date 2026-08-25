@@ -1,4 +1,4 @@
-# **PakLaw AI — Detailed Explanation for Beginners**
+# **PakLaw AI — Detailed Explanation**
 
 ## **What Is This System?**
 
@@ -34,14 +34,14 @@ You type a question, and the system finds the most relevant law sections using *
 - **Example**: You type `"getting kicked out"` → System understands you mean "eviction" even without that word
 - **Best for**: Conceptual questions where you describe the topic
 
-### **Method 3: The Shortcut (Exact Lookup) ⚡**
+### **Method 3: The Shortcut (Exact Lookup)**
 - **How it works**: If you mention a specific section or article number, it goes directly there
 - **Speed**: About **0 milliseconds** (skips all searching)
 - **Example**: `"Section 302 PPC"` → Instant result, no searching needed
 
 ---
 
-## ** Province Filtering**
+## **Province Filtering**
 
 Pakistan has **federal laws** (apply to whole country) and **provincial laws** (only apply to that province).
 
@@ -52,7 +52,7 @@ Pakistan has **federal laws** (apply to whole country) and **provincial laws** (
 
 ---
 
-## ** The Reranker (Smart Re-ranking)**
+## **The Reranker (Smart Re-ranking)**
 
 After the two search methods find candidates, a **teacher model** re-ranks them by relevance. It's like:
 
@@ -64,7 +64,7 @@ After the two search methods find candidates, a **teacher model** re-ranks them 
 
 ---
 
-## ** Urdu & Roman Urdu Support**
+## **Urdu & Roman Urdu Support**
 
 The system understands legal questions in multiple languages:
 
@@ -138,7 +138,7 @@ This tests:
 
 ---
 
-## ** Key Files (What Does What?)**
+## **Key Files (What Does What?)**
 
 | File | Simple Description |
 |------|-------------------|
@@ -168,7 +168,7 @@ The system returns:
 
 ---
 
-## **For Beginners: Getting Started Checklist**
+## **Getting Started Checklist**
 
 - [ ] **Start the server**: `uvicorn fastapi_app.main:app --host 127.0.0.1 --port 8000`
 - [ ] **Test health**: Open `http://127.0.0.1:8000/health` in your browser
@@ -227,6 +227,4 @@ A: The system returns HTTP 503 (Service Unavailable) with a helpful message. Thi
 
 ---
 
-**Built for**: PakLaw AI — Member 3 (Retrieval Stack)
-**Compatible with**: Week 6 tasks (Roman Urdu normalizer, Whisper, guided flows)
 **Status**: Production-ready, 5/5 test queries passing
