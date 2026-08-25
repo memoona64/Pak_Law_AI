@@ -62,20 +62,31 @@ After the two search methods find candidates, a **teacher model** re-ranks them 
 
 **Result**: More accurate, relevant results.
 
----
-
 ## **Urdu & Roman Urdu Support**
 
-The system understands legal questions in multiple languages:
+The system fully handles legal questions in Roman Urdu, Urdu script, and English:
 
-| Language | Example Query |
-|----------|--------------|
-| **Roman Urdu** | `"talaq ka procedure kya hai"` |
-| **Roman Urdu (section)** | `"dafah 302"` or `"dhara 302 PPC"` |
-| **Urdu script** | Works too |
-| **English** | `"Section 302 PPC"`, `"eviction notice"` |
+| Language | Example Query | Handling Method |
+|----------|--------------|-----------------|
+| **Roman Urdu (freeform)** | `"police FIR darj nahi kar rahi"` | LLM Query Normalization translates to `"police refusal to register FIR section 154 CrPC"` before search |
+| **Roman Urdu (section)** | `"dafah 302"`, `"dhara 302 PPC"` | Direct Exact Citation Shortcut (~0ms) |
+| **Urdu script (freeform)** | `"چوری کی سزا کیا ہے؟"` | LLM Query Normalization + Multilingual Vector Search |
+| **Urdu script (section)** | `"دفعہ 302"`, `"آرٹیکل 25"` | Direct Exact Citation Shortcut (~0ms) |
+| **English** | `"Section 302 PPC"`, `"eviction notice"` | Hybrid Search (BM25 + Vector + Reranker) |
 
-**Note**: The keyword search splits text by spaces, so pure Urdu might not match perfectly by keywords alone, but the meaning search works fine for all languages.
+**Query Normalization**: Uses Gemini / Groq / OpenAI LLM keys if configured in environment (`GEMINI_API_KEY`, `GROQ_API_KEY`, `OPENAI_API_KEY`), with a graceful offline fallback dictionary.
+
+---
+
+## **What It Does NOT Do**
+
+*(Per the design doc, these are out of scope for Phase 1)*
+
+- **Generate final answers** — It finds and returns verified legal chunks + timing breakdown
+- **Build generation prompts** for LLMs
+- **Voice input/output** (speech recognition/text-to-speech)
+
+**These features may be added in Week 6** by another team member.
 
 ---
 
@@ -192,19 +203,6 @@ This system is a **legal search backend** that:
 7. **Is ready** for the next team member to build generation features on top
 
 **It's the retrieval foundation** — the next stage (writing answers using LLMs) will build on top of this.
-
----
-
-## **What It Does NOT Do**
-
-*(Per the design doc, these are out of scope)*
-
-- **Generate text/answers** — It only finds and returns law chunks
-- **Build prompts** for LLMs
-- **Roman Urdu rewriting** of queries
-- **Voice input/output** (speech recognition/text-to-speech)
-
-**These features may be added in Week 6** by another team member.
 
 ---
 

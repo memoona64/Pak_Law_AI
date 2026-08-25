@@ -60,7 +60,7 @@ class RetrievalTests(unittest.TestCase):
         )
         bm25 = search_service._bm25_search("tenancy", eligible)
         self.assertEqual({search_service._chunks[index]["id"] for index in bm25}, {"federal", "sindh"})
-        results, _ = search_service.search("tenancy", province="SINDH", use_reranker=False)
+        results, _, _ = search_service.search("tenancy", province="SINDH", use_reranker=False)
         self.assertEqual({chunk["id"] for chunk in results}, {"federal", "sindh"})
         self.assertEqual(self.vector_provinces, ["SINDH"])
 
@@ -106,6 +106,17 @@ class RetrievalTests(unittest.TestCase):
         finally:
             main.search_service.search = original_search
         self.assertEqual(caught.exception.status_code, 503)
+
+    def test_extract_section_ref_supports_urdu_and_roman_urdu(self):
+        self.assertEqual(search_service._extract_section_ref("دفعہ 302 PPC"), ("section", "302"))
+        self.assertEqual(search_service._extract_section_ref("آرٹیکل 25"), ("article", "25"))
+        self.assertEqual(search_service._extract_section_ref("dhara 302"), ("section", "302"))
+        self.assertEqual(search_service._extract_section_ref("dafah 154 CrPC"), ("section", "154"))
+
+    def test_query_normalization_rewrites_roman_urdu(self):
+        normalized, used_llm = search_service.normalize_query("police FIR darj nahi kar rahi")
+        self.assertIn("154", normalized)
+        self.assertIn("FIR", normalized)
 
 
 if __name__ == "__main__":

@@ -65,13 +65,18 @@ class QueryRequest(BaseModel):
         default=True,
         description="If true, re-rank fused search results with cross-encoder",
     )
+    normalize: bool = Field(
+        default=True,
+        description="If true, normalize Roman Urdu / Urdu queries into English legal search terms",
+    )
 
     model_config = {
         "json_schema_extra": {
             "example": {
-                "query": "Section 302 PPC",
+                "query": "police FIR darj nahi kar rahi",
                 "province": "Sindh",
                 "use_reranker": True,
+                "normalize": True,
             }
         }
     }
@@ -88,6 +93,7 @@ class QueryResponse(BaseModel):
     chunks: list[ChunkResponse]
     timings: dict
     province_filter: Optional[str]
+    normalized_query: Optional[str] = None
 
 
 @app.on_event("startup")
@@ -108,6 +114,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
                 "query": "Section 302 PPC",
                 "province": "Sindh",
                 "use_reranker": True,
+                "normalize": True,
             },
             "help": _build_validation_help(raw_errors),
             "errors": raw_errors,
@@ -121,11 +128,12 @@ def rag_query(request: QueryRequest):
         raise HTTPException(status_code=400, detail="Query cannot be empty")
 
     try:
-        chunks, timings = search_service.search(
+        chunks, timings, normalized_query = search_service.search(
             query=request.query,
             k=5,
             province=request.province,
             use_reranker=request.use_reranker,
+            normalize=request.normalize,
         )
     except ModelUnavailableError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
@@ -134,6 +142,7 @@ def rag_query(request: QueryRequest):
         chunks=chunks,
         timings=timings,
         province_filter=request.province,
+        normalized_query=normalized_query,
     )
 
 

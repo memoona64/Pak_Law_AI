@@ -11,6 +11,7 @@ import numpy as np
 from rank_bm25 import BM25Okapi
 
 from .embeddings import MODEL_NAME, embed, embed_query
+from .query_normalizer import normalize_query
 from .reranker import rerank
 
 CHUNKS_DIR = Path("data/chunks")
@@ -197,11 +198,15 @@ def _rrf(bm25_indices: list[int], vector_indices: list[int]) -> list[int]:
 def _extract_section_ref(query: str) -> Optional[tuple[str, str]]:
     import re
 
-    article = re.search(r"(?:article|art\.?)\s*(\d+[A-Z]?(?:-[A-Z])?)", query, re.I)
+    article = re.search(
+        r"(?:article|art\.?|آرٹیکل)\s*(\d+[A-Z]?(?:-[A-Z])?)", query, re.I | re.UNICODE
+    )
     if article:
         return "article", article.group(1).upper()
     section = re.search(
-        r"(?:section|sec\.?|dafa|dafah)\s*(\d+[A-Z]?(?:-[A-Z])?)", query, re.I
+        r"(?:section|sec\.?|dafa|dafah|dhara|dharaa|دفعہ)\s*(\d+[A-Z]?(?:-[A-Z])?)",
+        query,
+        re.I | re.UNICODE,
     )
     if section:
         return "section", section.group(1).upper()
@@ -229,8 +234,9 @@ def search(
     province: Optional[str] = None,
     use_exact: bool = True,
     use_reranker: bool = True,
-) -> tuple[list[dict], dict]:
-    """Run direct lookup or metadata-filtered hybrid retrieval."""
+    normalize: bool = True,
+) -> tuple[list[dict], dict, str]:
+    """Run direct lookup or metadata-filtered hybrid retrieval with query normalization."""
     ensure_initialized()
     timings: dict[str, float] = {}
     started = time.perf_counter()
@@ -241,22 +247,32 @@ def search(
             timings["exact_ms"] = round((time.perf_counter() - started) * 1000, 1)
             if exact:
                 timings["total_ms"] = timings["exact_ms"]
-                return exact[:k], timings
+                return exact[:k], timings, query
     timings["exact_ms"] = round((time.perf_counter() - started) * 1000, 1)
+
+    search_query = query
+    if normalize:
+        started = time.perf_counter()
+        search_query, _ = normalize_query(query)
+        timings["normalise_ms"] = round((time.perf_counter() - started) * 1000, 1)
 
     eligible_indices = _eligible_indices(province)
     started = time.perf_counter()
-    bm25_indices = _bm25_search(query, eligible_indices, k=20)
+    bm25_indices = _bm25_search(search_query, eligible_indices, k=20)
     timings["bm25_ms"] = round((time.perf_counter() - started) * 1000, 1)
     started = time.perf_counter()
-    vector_indices = _vector_search(query, province, k=20)
+    vector_indices = _vector_search(search_query, province, k=20)
     timings["vector_ms"] = round((time.perf_counter() - started) * 1000, 1)
     started = time.perf_counter()
     fused = _rrf(bm25_indices, vector_indices)
     timings["rrf_ms"] = round((time.perf_counter() - started) * 1000, 1)
     candidates = [_chunks[index] for index in fused[:20]]
     started = time.perf_counter()
-    top_chunks = rerank(query, candidates, top_k=k) if use_reranker and candidates else candidates[:k]
+    top_chunks = (
+        rerank(search_query, candidates, top_k=k)
+        if use_reranker and candidates
+        else candidates[:k]
+    )
     timings["rerank_ms"] = round((time.perf_counter() - started) * 1000, 1)
     timings["total_ms"] = round(sum(timings.values()), 1)
-    return top_chunks, timings
+    return top_chunks, timings, search_query
