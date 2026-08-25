@@ -168,7 +168,7 @@ The system returns:
 
 ---
 
-## **For Beginners: Getting Started Checklist**
+## **Getting Started Checklist**
 
 - [ ] **Start the server**: `uvicorn fastapi_app.main:app --host 127.0.0.1 --port 8000`
 - [ ] **Test health**: Open `http://127.0.0.1:8000/health` in your browser
