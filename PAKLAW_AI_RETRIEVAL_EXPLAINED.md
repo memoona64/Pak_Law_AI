@@ -34,7 +34,7 @@ You type a question, and the system finds the most relevant law sections using *
 - **Example**: You type `"getting kicked out"` → System understands you mean "eviction" even without that word
 - **Best for**: Conceptual questions where you describe the topic
 
-### **Method 3: The Shortcut (Exact Lookup) ⚡**
+### **Method 3: The Shortcut (Exact Lookup)**
 - **How it works**: If you mention a specific section or article number, it goes directly there
 - **Speed**: About **0 milliseconds** (skips all searching)
 - **Example**: `"Section 302 PPC"` → Instant result, no searching needed
