@@ -41,7 +41,7 @@ You type a question, and the system finds the most relevant law sections using *
 
 ---
 
-## ** Province Filtering**
+## **Province Filtering**
 
 Pakistan has **federal laws** (apply to whole country) and **provincial laws** (only apply to that province).
 
@@ -52,7 +52,7 @@ Pakistan has **federal laws** (apply to whole country) and **provincial laws** (
 
 ---
 
-## ** The Reranker (Smart Re-ranking)**
+## **The Reranker (Smart Re-ranking)**
 
 After the two search methods find candidates, a **teacher model** re-ranks them by relevance. It's like:
 
@@ -64,7 +64,7 @@ After the two search methods find candidates, a **teacher model** re-ranks them 
 
 ---
 
-## ** Urdu & Roman Urdu Support**
+## **Urdu & Roman Urdu Support**
 
 The system understands legal questions in multiple languages:
 
@@ -138,7 +138,7 @@ This tests:
 
 ---
 
-## ** Key Files (What Does What?)**
+## **Key Files (What Does What?)**
 
 | File | Simple Description |
 |------|-------------------|
@@ -227,6 +227,4 @@ A: The system returns HTTP 503 (Service Unavailable) with a helpful message. Thi
 
 ---
 
-**Built for**: PakLaw AI — Member 3 (Retrieval Stack)
-**Compatible with**: Week 6 tasks (Roman Urdu normalizer, Whisper, guided flows)
 **Status**: Production-ready, 5/5 test queries passing
