@@ -3,8 +3,14 @@ PakLaw AI — FastAPI Application
 POST /rag/query  — hybrid search pipeline
 """
 
+import io
+import sys
 import time
 from typing import Optional
+
+if sys.platform == "win32":
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
