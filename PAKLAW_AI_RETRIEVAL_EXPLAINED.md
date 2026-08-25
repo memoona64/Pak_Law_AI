@@ -1,4 +1,4 @@
-# **PakLaw AI — Detailed Explanation for Beginners**
+# **PakLaw AI — Detailed Explanation**
 
 ## **What Is This System?**
 
