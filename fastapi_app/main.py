@@ -4,6 +4,8 @@ POST /rag/query  — hybrid search pipeline
 """
 
 import io
+import logging
+import os
 import sys
 import time
 from typing import Optional
@@ -21,16 +23,54 @@ from pydantic import BaseModel, Field
 from . import search_service
 from .errors import ModelUnavailableError
 
+
+logger = logging.getLogger("uvicorn.error")
+
+
+def _parse_allowed_origins() -> list[str]:
+    """Return allowed origins from env, with local dev-safe defaults."""
+    raw = os.getenv("ALLOWED_ORIGINS")
+    if raw:
+        return [origin.strip() for origin in raw.split(",") if origin.strip()]
+
+    return [
+        "http://127.0.0.1:8000",
+        "http://localhost:8000",
+        "http://127.0.0.1:5173",
+        "http://localhost:5173",
+        "http://127.0.0.1:3000",
+        "http://localhost:3000",
+        "null",
+    ]
+
+
+def _parse_allow_origin_regex() -> Optional[str]:
+    """Return optional CORS origin regex from env or sensible localhost default."""
+    raw = os.getenv("ALLOWED_ORIGIN_REGEX")
+    if raw:
+        return raw.strip() or None
+    return r"https?://(localhost|127\.0\.0\.1)(:\d+)?$"
+
+
+allowed_origins = _parse_allowed_origins()
+allow_credentials = "*" not in allowed_origins
+allow_origin_regex = None if "*" in allowed_origins else _parse_allow_origin_regex()
+
 app = FastAPI(
     title="PakLaw AI",
     description="Legal Q&A for Pakistani citizens",
     version="0.1.0",
+    servers=[{"url": "/", "description": "Same origin"}],
+    # Keep OpenAPI server URL relative to request origin.
+    # This prevents Swagger from calling a stale host/scheme and throwing
+    # "Failed to fetch" when running behind tunnels/proxies/different ports.
 )
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
+    allow_origins=allowed_origins,
+    allow_origin_regex=allow_origin_regex,
+    allow_credentials=allow_credentials,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -105,6 +145,12 @@ class QueryResponse(BaseModel):
 @app.on_event("startup")
 def startup():
     search_service.initialize()
+    logger.info(
+        "CORS active config | allow_origins=%s | allow_origin_regex=%s | allow_credentials=%s",
+        allowed_origins,
+        allow_origin_regex,
+        allow_credentials,
+    )
 
 
 @app.exception_handler(RequestValidationError)

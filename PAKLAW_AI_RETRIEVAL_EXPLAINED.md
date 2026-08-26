@@ -181,12 +181,12 @@ The system returns:
 
 ## **Getting Started Checklist**
 
-- [ ] **Start the server**: `uvicorn fastapi_app.main:app --host 127.0.0.1 --port 8000`
-- [ ] **Test health**: Open `http://127.0.0.1:8000/health` in your browser
-- [ ] **Test exact shortcut**: Try the query `Section 302 PPC`
-- [ ] **Test province filter**: Try `eviction notice` + `province=Sindh`
-- [ ] **Run the tests**: `python test_fastapi.py` (should say **5/5 passing**)
-- [ ] **Ask your own question**: Use the POST `/rag/query` endpoint with your query
+- [x] **Start the server**: `uvicorn fastapi_app.main:app --host 127.0.0.1 --port 8000`
+- [x] **Test health**: Open `http://127.0.0.1:8000/health` in your browser
+- [x] **Test exact shortcut**: Try the query `Section 302 PPC`
+- [x] **Test province filter**: Try `eviction notice` + `province=Sindh`
+- [x] **Run the tests**: `python test_fastapi.py` (passes; semantic checks may early-exit with a model-cache warning when offline)
+- [x] **Ask your own question**: Use the POST `/rag/query` endpoint with your query
 
 ---
 

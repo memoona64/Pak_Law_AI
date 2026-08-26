@@ -87,13 +87,17 @@ def _chroma_metadata(chunk: dict) -> dict[str, str]:
 
 
 def _collection_is_current(collection: chromadb.Collection) -> bool:
-    metadata = collection.metadata or {}
-    return (
-        collection.count() == len(_chunks)
-        and metadata.get("corpus_fingerprint") == _corpus_fingerprint
-        and metadata.get("embedding_model") == MODEL_NAME
-        and metadata.get("index_version") == INDEX_VERSION
-    )
+    try:
+        metadata = collection.metadata or {}
+        return (
+            collection.count() == len(_chunks)
+            and metadata.get("corpus_fingerprint") == _corpus_fingerprint
+            and metadata.get("embedding_model") == MODEL_NAME
+            and metadata.get("index_version") == INDEX_VERSION
+        )
+    except Exception:
+        # If Chroma cannot read the existing index, force a safe rebuild path.
+        return False
 
 
 def initialize(chunks_dir: Path = CHUNKS_DIR):
