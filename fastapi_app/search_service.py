@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+import logging
 import time
 from pathlib import Path
 from typing import Optional
@@ -24,6 +25,8 @@ REPLACED_CHUNK_FILES = {
     "pakistan_penal_code.json": "pakistan_penal_code_cleaned.json",
     "sind_rented_premises_ordinance_1979.json": "sind_rented_premises_ordinance_1979_no_newlines.json",
 }
+
+logger = logging.getLogger("uvicorn.error")
 
 _chunks: list[dict] = []
 _bm25: Optional[BM25Okapi] = None
@@ -277,8 +280,9 @@ def search(
         try:
             top_chunks = rerank(search_query, candidates, top_k=k)
             timings["rerank_status"] = "ok"
-        except ModelUnavailableError:
+        except ModelUnavailableError as exc:
             # Degrade gracefully when only the reranker is unavailable.
+            logger.warning("Reranker unavailable, falling back to fused order: %s", exc)
             top_chunks = candidates[:k]
             timings["rerank_status"] = "fallback_no_model"
     else:

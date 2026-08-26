@@ -3,11 +3,13 @@ Reranker service using cross-encoder.
 Takes query + candidate chunks, rescores them, returns top K.
 """
 
+import os
+
 from sentence_transformers import CrossEncoder
 
 from .errors import ModelUnavailableError
 
-RERANKER_MODEL = "BAAI/bge-reranker-v2-m3"
+RERANKER_MODEL = os.getenv("RERANKER_MODEL", "BAAI/bge-reranker-v2-m3")
 
 _reranker = None
 
@@ -20,8 +22,7 @@ def get_reranker() -> CrossEncoder:
             _reranker = CrossEncoder(RERANKER_MODEL)
         except Exception as exc:
             raise ModelUnavailableError(
-                f"Could not load reranker model '{RERANKER_MODEL}'. "
-                "Connect to the internet once to cache it locally, then retry."
+                f"Could not load reranker model '{RERANKER_MODEL}': {exc}"
             ) from exc
     return _reranker
 
