@@ -11,6 +11,7 @@ import numpy as np
 from rank_bm25 import BM25Okapi
 
 from .embeddings import MODEL_NAME, embed, embed_query
+from .errors import ModelUnavailableError
 from .query_normalizer import normalize_query
 from .reranker import rerank
 
@@ -238,7 +239,7 @@ def search(
 ) -> tuple[list[dict], dict, str]:
     """Run direct lookup or metadata-filtered hybrid retrieval with query normalization."""
     ensure_initialized()
-    timings: dict[str, float] = {}
+    timings: dict[str, float | str] = {}
     started = time.perf_counter()
     if use_exact:
         reference = _extract_section_ref(query)
@@ -268,11 +269,20 @@ def search(
     timings["rrf_ms"] = round((time.perf_counter() - started) * 1000, 1)
     candidates = [_chunks[index] for index in fused[:20]]
     started = time.perf_counter()
-    top_chunks = (
-        rerank(search_query, candidates, top_k=k)
-        if use_reranker and candidates
-        else candidates[:k]
-    )
+    if use_reranker and candidates:
+        try:
+            top_chunks = rerank(search_query, candidates, top_k=k)
+            timings["rerank_status"] = "ok"
+        except ModelUnavailableError:
+            # Degrade gracefully when only the reranker is unavailable.
+            top_chunks = candidates[:k]
+            timings["rerank_status"] = "fallback_no_model"
+    else:
+        top_chunks = candidates[:k]
+        timings["rerank_status"] = "skipped"
     timings["rerank_ms"] = round((time.perf_counter() - started) * 1000, 1)
-    timings["total_ms"] = round(sum(timings.values()), 1)
+    timings["total_ms"] = round(
+        sum(value for value in timings.values() if isinstance(value, (int, float))),
+        1,
+    )
     return top_chunks, timings, search_query

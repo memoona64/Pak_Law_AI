@@ -118,6 +118,15 @@ class RetrievalTests(unittest.TestCase):
         self.assertIn("154", normalized)
         self.assertIn("FIR", normalized)
 
+    def test_search_falls_back_when_reranker_model_is_unavailable(self):
+        def failing_rerank(query, chunks, top_k):
+            raise ModelUnavailableError("reranker cache missing")
+
+        search_service.rerank = failing_rerank
+        results, timings, _ = search_service.search("tenancy", province="Sindh", use_reranker=True)
+        self.assertEqual(len(results), 2)
+        self.assertEqual(timings.get("rerank_status"), "fallback_no_model")
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
