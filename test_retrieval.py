@@ -108,10 +108,25 @@ class RetrievalTests(unittest.TestCase):
         self.assertEqual(caught.exception.status_code, 503)
 
     def test_extract_section_ref_supports_urdu_and_roman_urdu(self):
-        self.assertEqual(search_service._extract_section_ref("دفعہ 302 PPC"), ("section", "302"))
-        self.assertEqual(search_service._extract_section_ref("آرٹیکل 25"), ("article", "25"))
-        self.assertEqual(search_service._extract_section_ref("dhara 302"), ("section", "302"))
-        self.assertEqual(search_service._extract_section_ref("dafah 154 CrPC"), ("section", "154"))
+        self.assertEqual(search_service._extract_section_ref("دفعہ 302 PPC"), ("section", "302", None))
+        self.assertEqual(search_service._extract_section_ref("آرٹیکل 25"), ("article", "25", None))
+        self.assertEqual(search_service._extract_section_ref("dhara 302"), ("section", "302", None))
+        self.assertEqual(search_service._extract_section_ref("dafah 154 CrPC"), ("section", "154", None))
+
+    def test_extract_section_ref_ignores_word_fragments_and_finds_act_code(self):
+        self.assertIsNone(search_service._extract_section_ref("what does part 2 of my tenancy mean"))
+        self.assertIsNone(search_service._extract_section_ref("my cart 5 was stolen"))
+        self.assertEqual(
+            search_service._extract_section_ref("section 11 TEST"), ("section", "11", "TEST")
+        )
+
+    def test_exact_lookup_disambiguates_by_act_code(self):
+        search_service._chunks.append(
+            _chunk("other-act", "other act with same section", None, "10")
+        )
+        search_service._chunks[-1]["metadata"]["short_code"] = "OTHER"
+        results = search_service._exact_lookup("section", "10", "OTHER", None)
+        self.assertEqual([chunk["id"] for chunk in results], ["other-act"])
 
     def test_query_normalization_rewrites_roman_urdu(self):
         normalized, used_llm = search_service.normalize_query("police FIR darj nahi kar rahi")
@@ -126,6 +141,15 @@ class RetrievalTests(unittest.TestCase):
         results, timings, _ = search_service.search("tenancy", province="Sindh", use_reranker=True)
         self.assertEqual(len(results), 2)
         self.assertEqual(timings.get("rerank_status"), "fallback_no_model")
+
+    def test_search_falls_back_to_bm25_when_embedding_model_is_unavailable(self):
+        def failing_vector_search(query, province, k=20):
+            raise ModelUnavailableError("embedding model cache missing")
+
+        search_service._vector_search = failing_vector_search
+        results, timings, _ = search_service.search("tenancy", province="Sindh", use_reranker=False)
+        self.assertTrue(len(results) > 0)
+        self.assertEqual(timings.get("vector_status"), "fallback_bm25_only")
 
 
 if __name__ == "__main__":

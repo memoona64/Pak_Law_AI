@@ -3,6 +3,8 @@
 import hashlib
 import json
 import logging
+import re
+import threading
 import time
 from pathlib import Path
 from typing import Optional
@@ -33,6 +35,7 @@ _bm25: Optional[BM25Okapi] = None
 _client: Optional[chromadb.PersistentClient] = None
 _collection: Optional[chromadb.Collection] = None
 _corpus_fingerprint: Optional[str] = None
+_index_lock = threading.Lock()
 
 
 def load_chunks(chunks_dir: Path = CHUNKS_DIR) -> list[dict]:
@@ -124,31 +127,38 @@ def _build_vector_index() -> chromadb.Collection:
     if _collection is not None:
         return _collection
 
-    # Encode first: an offline rebuild must not destroy the old on-disk index.
-    ids = [chunk["id"] for chunk in _chunks]
-    texts = [chunk["text"] for chunk in _chunks]
-    vectors = embed(texts)
-    metadatas = [_chroma_metadata(chunk) for chunk in _chunks]
-    try:
-        _client.delete_collection(COLLECTION_NAME)
-    except Exception:
-        pass
-    _collection = _client.create_collection(
-        name=COLLECTION_NAME,
-        metadata={
-            "hnsw:space": "cosine",
-            "corpus_fingerprint": _corpus_fingerprint,
-            "embedding_model": MODEL_NAME,
-            "index_version": INDEX_VERSION,
-        },
-    )
-    for start in range(0, len(ids), 5000):
-        _collection.add(
-            ids=ids[start : start + 5000],
-            documents=texts[start : start + 5000],
-            embeddings=vectors[start : start + 5000].tolist(),
-            metadatas=metadatas[start : start + 5000],
+    # Serialize rebuilds: concurrent first requests must not race to
+    # delete/create the same Chroma collection.
+    with _index_lock:
+        if _collection is not None:
+            return _collection
+
+        # Encode first: an offline rebuild must not destroy the old on-disk index.
+        ids = [chunk["id"] for chunk in _chunks]
+        texts = [chunk["text"] for chunk in _chunks]
+        vectors = embed(texts)
+        metadatas = [_chroma_metadata(chunk) for chunk in _chunks]
+        try:
+            _client.delete_collection(COLLECTION_NAME)
+        except Exception:
+            pass
+        collection = _client.create_collection(
+            name=COLLECTION_NAME,
+            metadata={
+                "hnsw:space": "cosine",
+                "corpus_fingerprint": _corpus_fingerprint,
+                "embedding_model": MODEL_NAME,
+                "index_version": INDEX_VERSION,
+            },
         )
+        for start in range(0, len(ids), 5000):
+            collection.add(
+                ids=ids[start : start + 5000],
+                documents=texts[start : start + 5000],
+                embeddings=vectors[start : start + 5000].tolist(),
+                metadatas=metadatas[start : start + 5000],
+            )
+        _collection = collection
     return _collection
 
 
@@ -203,31 +213,49 @@ def _rrf(bm25_indices: list[int], vector_indices: list[int]) -> list[int]:
     return sorted(scores, key=scores.get, reverse=True)
 
 
-def _extract_section_ref(query: str) -> Optional[tuple[str, str]]:
-    import re
+def _known_short_codes() -> set[str]:
+    return {
+        str(chunk["metadata"].get("short_code") or "").upper() for chunk in _chunks
+    } - {""}
 
+
+def _extract_act_code(query: str) -> Optional[str]:
+    """Return the act short_code (e.g. 'MFLO', 'PPC') named in the query, if any."""
+    known = _known_short_codes()
+    for word in re.findall(r"[A-Za-z]+", query):
+        if word.upper() in known:
+            return word.upper()
+    return None
+
+
+def _extract_section_ref(query: str) -> Optional[tuple[str, str, Optional[str]]]:
+    act_code = _extract_act_code(query)
     article = re.search(
-        r"(?:article|art\.?|آرٹیکل)\s*(\d+[A-Z]?(?:-[A-Z])?)", query, re.I | re.UNICODE
+        r"\b(?:article|art\.?|آرٹیکل)\s*(\d+[A-Z]?(?:-[A-Z])?)", query, re.I | re.UNICODE
     )
     if article:
-        return "article", article.group(1).upper()
+        return "article", article.group(1).upper(), act_code
     section = re.search(
-        r"(?:section|sec\.?|dafa|dafah|dhara|dharaa|دفعہ)\s*(\d+[A-Z]?(?:-[A-Z])?)",
+        r"\b(?:section|sec\.?|dafa|dafah|dhara|dharaa|دفعہ)\s*(\d+[A-Z]?(?:-[A-Z])?)",
         query,
         re.I | re.UNICODE,
     )
     if section:
-        return "section", section.group(1).upper()
+        return "section", section.group(1).upper(), act_code
     return None
 
 
-def _exact_lookup(ref_type: str, ref_number: str, province: Optional[str]) -> list[dict]:
+def _exact_lookup(
+    ref_type: str, ref_number: str, act_code: Optional[str], province: Optional[str]
+) -> list[dict]:
     eligible = set(_eligible_indices(province))
     results = []
     for index, chunk in enumerate(_chunks):
         if index not in eligible:
             continue
         metadata = chunk["metadata"]
+        if act_code and str(metadata.get("short_code") or "").upper() != act_code:
+            continue
         key = "section" if ref_type == "section" else "Article"
         fallback = "section_number" if ref_type == "section" else "Article_number"
         value = metadata.get(key) or metadata.get(fallback) or ""
@@ -251,7 +279,8 @@ def search(
     if use_exact:
         reference = _extract_section_ref(query)
         if reference:
-            exact = _exact_lookup(*reference, province)
+            ref_type, ref_number, act_code = reference
+            exact = _exact_lookup(ref_type, ref_number, act_code, province)
             timings["exact_ms"] = round((time.perf_counter() - started) * 1000, 1)
             if exact:
                 timings["total_ms"] = timings["exact_ms"]
@@ -269,7 +298,14 @@ def search(
     bm25_indices = _bm25_search(search_query, eligible_indices, k=20)
     timings["bm25_ms"] = round((time.perf_counter() - started) * 1000, 1)
     started = time.perf_counter()
-    vector_indices = _vector_search(search_query, province, k=20)
+    try:
+        vector_indices = _vector_search(search_query, province, k=20)
+        timings["vector_status"] = "ok"
+    except ModelUnavailableError as exc:
+        # Degrade gracefully when only the embedding model is unavailable.
+        logger.warning("Embedding model unavailable, falling back to BM25-only: %s", exc)
+        vector_indices = []
+        timings["vector_status"] = "fallback_bm25_only"
     timings["vector_ms"] = round((time.perf_counter() - started) * 1000, 1)
     started = time.perf_counter()
     fused = _rrf(bm25_indices, vector_indices)
