@@ -148,6 +148,11 @@ Page counts match the triage run exactly. One known section was spot-checked by 
 
 10. **4 bare digits remain in CrPC** (pages 129, 215, 261, 281) where a footnote or table digit coincidentally landed at a page edge. Accepted rather than fixed: 4 lines out of 12,928, and any rule precise enough to catch them would risk removing real page numbers or footnote markers elsewhere.
 
+11. **CrPC Second Schedule (pages 196-281, 28% of the document) is EXCLUDED from the corpus.** Decision made 2026-08-30 by Kaneeza after no response on the question raised earlier.
+    Reason: the schedule is a table of cognizable/bailable status per offence. It extracts as fragments — columns scattered, rows destroyed, "Ditto .." with nothing to refer to. Chunked, it would produce retrieval hits carrying real section numbers and meaningless text, and the citation verifier would pass them because the section numbers are genuine. A documented gap is safer than silent garbage.
+    Cost: we lose cognizable vs non-cognizable, which matters for the FIR flow.
+    Revisit in week 7 if there is time to extract it as structured table data.
+
 ---
 
 # Pattern decisions
