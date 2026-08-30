@@ -106,7 +106,8 @@ function UploadView() {
 }
 
 // ---- ANALYSIS VIEW ----
-function AnalysisView() {
+// Exported so DocumentDetail.jsx can reuse this exact view for a single document.
+export function AnalysisView() {
   const clauses = [
     { n: 1,  title: 'Parties & recitals',        risk: 'ok',   note: 'Both parties identified. CNIC digits masked.' },
     { n: 4,  title: 'Rent & escalation',         risk: 'flag', note: 'Escalation of 15% p.a. exceeds Sindh Rented Premises Ordinance ceiling of 10%.' },
