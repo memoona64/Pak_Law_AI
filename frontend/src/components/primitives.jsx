@@ -10,7 +10,8 @@ import {
   Briefcase, ChevronsLeft, Feather, MessagesSquare, Workflow, FileSearch, Library, Pin,
   Settings, PanelLeft, BookOpenText, Share2, MoreHorizontal, ChevronUp, Calendar,
   FileCheck2, Copy, ThumbsUp, ThumbsDown, RotateCw, Volume2, Languages, FilePlus2,
-  LibraryBig, FileText, Quote,
+  LibraryBig, FileText, Quote, FileUp, FolderOpen, Link2, Clipboard, Minus, Printer,
+  AlertOctagon,
 } from 'lucide-react';
 
 // Design's kebab-case icon names -> lucide-react's PascalCase components.
@@ -86,6 +87,13 @@ const ICONS = {
   'library-big': LibraryBig,
   'file-text': FileText,
   quote: Quote,
+  'file-up': FileUp,
+  'folder-open': FolderOpen,
+  'link-2': Link2,
+  clipboard: Clipboard,
+  minus: Minus,
+  printer: Printer,
+  'alert-octagon': AlertOctagon,
 };
 
 // --- Icon helper: renders a lucide icon by name at given size / stroke / color.
