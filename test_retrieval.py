@@ -120,6 +120,15 @@ class RetrievalTests(unittest.TestCase):
             search_service._extract_section_ref("section 11 TEST"), ("section", "11", "TEST")
         )
 
+    def test_extract_section_ref_supports_plural_phrasing(self):
+        self.assertEqual(
+            search_service._extract_section_ref("what do sections 302 and 34 PPC say"),
+            ("section", "302", None),
+        )
+        self.assertEqual(
+            search_service._extract_section_ref("articles 8 and 9"), ("article", "8", None)
+        )
+
     def test_exact_lookup_disambiguates_by_act_code(self):
         search_service._chunks.append(
             _chunk("other-act", "other act with same section", None, "10")

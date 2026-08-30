@@ -111,14 +111,19 @@ def initialize(chunks_dir: Path = CHUNKS_DIR):
     global _chunks, _bm25, _client, _collection, _corpus_fingerprint
     if _chunks:
         return
-    _chunks = load_chunks(chunks_dir)
-    _bm25 = build_bm25(_chunks)
-    _corpus_fingerprint = _fingerprint(_chunks)
-    _client = chromadb.PersistentClient(path=str(CHROMA_DIR))
-    collection = _client.get_or_create_collection(
-        name=COLLECTION_NAME, metadata={"hnsw:space": "cosine"}
-    )
-    _collection = collection if _collection_is_current(collection) else None
+    # Serialize with _build_vector_index: concurrent requests must not race
+    # to load the corpus and construct the Chroma client twice.
+    with _index_lock:
+        if _chunks:
+            return
+        _chunks = load_chunks(chunks_dir)
+        _bm25 = build_bm25(_chunks)
+        _corpus_fingerprint = _fingerprint(_chunks)
+        _client = chromadb.PersistentClient(path=str(CHROMA_DIR))
+        collection = _client.get_or_create_collection(
+            name=COLLECTION_NAME, metadata={"hnsw:space": "cosine"}
+        )
+        _collection = collection if _collection_is_current(collection) else None
 
 
 def _build_vector_index() -> chromadb.Collection:
@@ -140,9 +145,11 @@ def _build_vector_index() -> chromadb.Collection:
         metadatas = [_chroma_metadata(chunk) for chunk in _chunks]
         try:
             _client.delete_collection(COLLECTION_NAME)
-        except Exception:
-            pass
-        collection = _client.create_collection(
+        except Exception as exc:
+            logger.warning("Could not delete stale collection before rebuild: %s", exc)
+        # get_or_create (not create): if delete above failed (e.g. a locked
+        # on-disk file), this must not crash on "collection already exists".
+        collection = _client.get_or_create_collection(
             name=COLLECTION_NAME,
             metadata={
                 "hnsw:space": "cosine",
@@ -231,12 +238,12 @@ def _extract_act_code(query: str) -> Optional[str]:
 def _extract_section_ref(query: str) -> Optional[tuple[str, str, Optional[str]]]:
     act_code = _extract_act_code(query)
     article = re.search(
-        r"\b(?:article|art\.?|آرٹیکل)\s*(\d+[A-Z]?(?:-[A-Z])?)", query, re.I | re.UNICODE
+        r"\b(?:articles?|art\.?s?|آرٹیکل)\s*(\d+[A-Z]?(?:-[A-Z])?)", query, re.I | re.UNICODE
     )
     if article:
         return "article", article.group(1).upper(), act_code
     section = re.search(
-        r"\b(?:section|sec\.?|dafa|dafah|dhara|dharaa|دفعہ)\s*(\d+[A-Z]?(?:-[A-Z])?)",
+        r"\b(?:sections?|sec\.?s?|dafa|dafah|dhara|dharaa|دفعہ)\s*(\d+[A-Z]?(?:-[A-Z])?)",
         query,
         re.I | re.UNICODE,
     )

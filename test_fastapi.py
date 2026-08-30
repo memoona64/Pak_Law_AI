@@ -11,6 +11,16 @@ from fastapi_app.main import app
 
 client = TestClient(app)
 
+
+def _json_or_bail(r):
+    """Return the response body, or print a friendly message and exit on a 503 (model not cached)."""
+    if r.status_code == 503:
+        print("   Model unavailable:", r.json().get("detail"))
+        print("   Cache the missing model, then rerun this smoke test.")
+        raise SystemExit(0)
+    return r.json()
+
+
 # Test 1: Health check
 r = client.get("/health")
 print("\n1. Health:", r.json())
@@ -19,7 +29,7 @@ print("\n1. Health:", r.json())
 r = client.post("/rag/query", json={"query": "Section 302 PPC"})
 print("\n2. Query: Section 302 PPC")
 print("   Status:", r.status_code)
-data = r.json()
+data = _json_or_bail(r)
 print("   Chunks found:", len(data["chunks"]))
 print("   Timings:", data["timings"])
 for c in data["chunks"][:3]:
@@ -30,11 +40,7 @@ for c in data["chunks"][:3]:
 # Test 3: Province filter
 r = client.post("/rag/query", json={"query": "eviction notice", "province": "Sindh", "use_reranker": False})
 print("\n3. Query: eviction notice (province=Sindh)")
-if r.status_code == 503:
-    print("   Semantic retrieval unavailable:", r.json().get("detail"))
-    print("   Cache the embedding model, then rerun this smoke test.")
-    raise SystemExit(0)
-data = r.json()
+data = _json_or_bail(r)
 print("   Chunks found:", len(data["chunks"]))
 for c in data["chunks"][:3]:
     prov = c["metadata"].get("province", "federal")
@@ -44,7 +50,7 @@ for c in data["chunks"][:3]:
 # Test 4: Article lookup
 r = client.post("/rag/query", json={"query": "Article 25 constitution"})
 print("\n4. Query: Article 25 constitution")
-data = r.json()
+data = _json_or_bail(r)
 print("   Chunks found:", len(data["chunks"]))
 for c in data["chunks"][:3]:
     act = c["metadata"].get("act", "")[:30]
@@ -54,7 +60,7 @@ for c in data["chunks"][:3]:
 # Test 5: Talaq query
 r = client.post("/rag/query", json={"query": "talaq ka procedure kya hai", "use_reranker": False})
 print("\n5. Query: talaq ka procedure kya hai")
-data = r.json()
+data = _json_or_bail(r)
 print("   Chunks found:", len(data["chunks"]))
 for c in data["chunks"][:3]:
     act = c["metadata"].get("act", "")[:30]
