@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Icon, Chip, Btn, Eyebrow, Card } from '../components/primitives';
+import AppSidebar from '../components/AppSidebar';
 
 // Sample data — every question here is invented for layout purposes only.
 const SAMPLE_HISTORY = [
@@ -20,42 +21,45 @@ export default function History() {
   const items = showEmpty ? [] : SAMPLE_HISTORY;
 
   return (
-    <div className="h-screen w-full bg-[#F8F5F0] text-[#2C221E] font-sans overflow-hidden flex flex-col">
-      {/* Page header */}
-      <div className="px-10 pt-10 pb-6 flex items-end justify-between border-b rule-hair">
-        <div>
-          <Eyebrow>History</Eyebrow>
-          <h1 className="mt-2 font-serif text-[42px] leading-[1.02] tracking-[-0.01em]">
-            Every question, <span className="italic text-[#8C6D53]">saved.</span>
-          </h1>
-          <p className="mt-3 text-[16px] text-[#6E5540] max-w-[560px]">
-            Every conversation you've had, and which Acts each answer cited. Pick one up where you left off.
-          </p>
+    <div className="flex h-screen w-full bg-[#F8F5F0] overflow-hidden">
+      <AppSidebar />
+      <div className="flex-1 flex flex-col min-w-0 text-[#2C221E] font-sans">
+        {/* Page header */}
+        <div className="px-10 pt-10 pb-6 flex items-end justify-between border-b rule-hair">
+          <div>
+            <Eyebrow>History</Eyebrow>
+            <h1 className="mt-2 font-serif text-[42px] leading-[1.02] tracking-[-0.01em]">
+              Every question, <span className="italic text-[#8C6D53]">saved.</span>
+            </h1>
+            <p className="mt-3 text-[16px] text-[#6E5540] max-w-[560px]">
+              Every conversation you've had, and which Acts each answer cited. Pick one up where you left off.
+            </p>
+          </div>
+          <div className="flex items-center gap-3">
+            <Chip tone="flag" icon="alert-triangle">Sample data</Chip>
+            <button onClick={() => setShowEmpty(v => !v)} className="text-[14px] text-[#8C6D53] font-medium hover:underline">
+              {showEmpty ? 'Show sample history' : 'Preview empty state'}
+            </button>
+          </div>
         </div>
-        <div className="flex items-center gap-3">
-          <Chip tone="flag" icon="alert-triangle">Sample data</Chip>
-          <button onClick={() => setShowEmpty(v => !v)} className="text-[14px] text-[#8C6D53] font-medium hover:underline">
-            {showEmpty ? 'Show sample history' : 'Preview empty state'}
-          </button>
-        </div>
-      </div>
 
-      <div className="flex-1 overflow-auto pl-scroll px-10 py-8">
-        <div className="max-w-[760px] mx-auto">
-          {items.length === 0 ? (
-            <EmptyState />
-          ) : (
-            <Card padding="p-0">
-              <div className="px-5 pt-5 pb-3">
-                <Eyebrow>{items.length} conversation{items.length === 1 ? '' : 's'}</Eyebrow>
-              </div>
-              <div>
-                {items.map(h => (
-                  <HistoryRow key={h.id} h={h} onClick={() => navigate('/chat')} />
-                ))}
-              </div>
-            </Card>
-          )}
+        <div className="flex-1 overflow-auto pl-scroll px-10 py-8">
+          <div className="max-w-[760px] mx-auto">
+            {items.length === 0 ? (
+              <EmptyState />
+            ) : (
+              <Card padding="p-0">
+                <div className="px-5 pt-5 pb-3">
+                  <Eyebrow>{items.length} conversation{items.length === 1 ? '' : 's'}</Eyebrow>
+                </div>
+                <div>
+                  {items.map(h => (
+                    <HistoryRow key={h.id} h={h} onClick={() => navigate('/chat')} />
+                  ))}
+                </div>
+              </Card>
+            )}
+          </div>
         </div>
       </div>
     </div>

@@ -1,5 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Icon, Chip, Btn, Eyebrow, Card } from '../components/primitives';
+import AppSidebar from '../components/AppSidebar';
 
 // Document analysis — upload a document, or review one already analysed.
 // One screen: summary, flagged clauses, obligations, and the masking notice
@@ -9,25 +11,28 @@ export default function Documents() {
   const [view, setView] = React.useState('analysis'); // 'upload' | 'analysis'
 
   return (
-    <div className="h-screen w-full bg-[#F8F5F0] text-[#2C221E] font-sans overflow-hidden flex flex-col">
-      {/* Page header */}
-      <div className="px-10 pt-10 pb-6 flex items-end justify-between border-b rule-hair">
-        <div>
-          <Eyebrow>Document Analysis</Eyebrow>
-          <h1 className="mt-2 font-serif text-[42px] leading-[1.02] tracking-[-0.01em]">
-            Read every clause. Miss <span className="italic text-[#8C6D53]">nothing.</span>
-          </h1>
-          <p className="mt-3 text-[16px] text-[#6E5540] max-w-[560px]">
-            Upload contracts, notices, or court orders. We run basic masking (CNIC, phone, email) before analysis, flag risky clauses, and check them against the statutes in our corpus.
-          </p>
+    <div className="flex h-screen w-full bg-[#F8F5F0] overflow-hidden">
+      <AppSidebar />
+      <div className="flex-1 flex flex-col min-w-0 text-[#2C221E] font-sans">
+        {/* Page header */}
+        <div className="px-10 pt-10 pb-6 flex items-end justify-between border-b rule-hair">
+          <div>
+            <Eyebrow>Document Analysis</Eyebrow>
+            <h1 className="mt-2 font-serif text-[42px] leading-[1.02] tracking-[-0.01em]">
+              Read every clause. Miss <span className="italic text-[#8C6D53]">nothing.</span>
+            </h1>
+            <p className="mt-3 text-[16px] text-[#6E5540] max-w-[560px]">
+              Upload contracts, notices, or court orders. We run basic masking (CNIC, phone, email) before analysis, flag risky clauses, and check them against the statutes in our corpus.
+            </p>
+          </div>
+          <div className="inline-flex items-center bg-white border border-[#D3C5BD] rounded-md p-1">
+            <button onClick={() => setView('upload')} className={`h-8 px-3 rounded-[5px] text-[14px] font-medium ${view === 'upload' ? 'bg-[#2C221E] text-[#F8F5F0]' : 'text-[#4A3C34]'}`}>Upload</button>
+            <button onClick={() => setView('analysis')} className={`h-8 px-3 rounded-[5px] text-[14px] font-medium ${view === 'analysis' ? 'bg-[#2C221E] text-[#F8F5F0]' : 'text-[#4A3C34]'}`}>Analysis</button>
+          </div>
         </div>
-        <div className="inline-flex items-center bg-white border border-[#D3C5BD] rounded-md p-1">
-          <button onClick={() => setView('upload')} className={`h-8 px-3 rounded-[5px] text-[14px] font-medium ${view === 'upload' ? 'bg-[#2C221E] text-[#F8F5F0]' : 'text-[#4A3C34]'}`}>Upload</button>
-          <button onClick={() => setView('analysis')} className={`h-8 px-3 rounded-[5px] text-[14px] font-medium ${view === 'analysis' ? 'bg-[#2C221E] text-[#F8F5F0]' : 'text-[#4A3C34]'}`}>Analysis</button>
-        </div>
-      </div>
 
-      {view === 'upload' ? <UploadView /> : <AnalysisView />}
+        {view === 'upload' ? <UploadView /> : <AnalysisView />}
+      </div>
     </div>
   );
 }
@@ -75,18 +80,18 @@ function UploadView() {
           <Eyebrow>Recent uploads</Eyebrow>
           <div className="mt-3 space-y-2">
             {[
-              { name: 'Sale-Deed_Bahadurabad.pdf', when: '2 h ago', size: '1.2 MB' },
-              { name: 'Eviction_Notice_Draft.docx', when: 'Yesterday', size: '48 KB' },
-              { name: 'Family-Court_Order_July.pdf', when: 'Aug 22', size: '3.4 MB' },
-            ].map((f, i) => (
-              <div key={i} className="flex items-center gap-3 p-2.5 rounded-md hover:bg-[#EFEAE1]">
+              { id: 'doc-1', name: 'Sale-Deed_Bahadurabad.pdf', when: '2 h ago', size: '1.2 MB' },
+              { id: 'doc-2', name: 'Eviction_Notice_Draft.docx', when: 'Yesterday', size: '48 KB' },
+              { id: 'doc-3', name: 'Family-Court_Order_July.pdf', when: 'Aug 22', size: '3.4 MB' },
+            ].map((f) => (
+              <Link key={f.id} to={`/documents/${f.id}`} className="flex items-center gap-3 p-2.5 rounded-md hover:bg-[#EFEAE1]">
                 <div className="w-8 h-10 rounded-sm bg-[#F1E4D6] border border-[#D6BFA8] flex items-center justify-center"><Icon name="file-text" size={13} color="#6E5540" /></div>
                 <div className="flex-1 min-w-0">
                   <div className="text-[14px] truncate">{f.name}</div>
                   <div className="text-[14px] text-[#7D7268]">{f.when} · {f.size}</div>
                 </div>
-                <button className="text-[#7D7268] hover:text-[#2C221E]"><Icon name="chevron-right" size={13}/></button>
-              </div>
+                <Icon name="chevron-right" size={13} color="#7D7268" />
+              </Link>
             ))}
           </div>
         </Card>
