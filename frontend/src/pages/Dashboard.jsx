@@ -1,10 +1,13 @@
 import React from 'react';
 import { Icon, Chip, Btn, Eyebrow, Card, BarChart, Gauge } from '../components/primitives';
+import AppSidebar from '../components/AppSidebar';
 
 // Evaluation dashboard — our real metrics, with obvious placeholder values until a real eval run exists.
 export default function Dashboard() {
   return (
-    <div className="h-screen w-full bg-[#F8F5F0] text-[#2C221E] font-sans overflow-hidden flex flex-col">
+    <div className="flex h-screen w-full bg-[#F8F5F0] overflow-hidden">
+      <AppSidebar />
+      <div className="flex-1 flex flex-col min-w-0 text-[#2C221E] font-sans">
       {/* Header */}
       <div className="px-10 pt-10 pb-6 flex items-end justify-between border-b rule-hair">
         <div>
@@ -98,6 +101,7 @@ export default function Dashboard() {
             note="Placeholder values — will be replaced once the real evaluation run finishes."
           />
         </div>
+      </div>
       </div>
     </div>
   );

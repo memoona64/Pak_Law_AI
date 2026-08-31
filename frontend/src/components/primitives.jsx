@@ -7,7 +7,11 @@ import {
   ChevronDown, Download, ExternalLink, TrendingUp, CheckCircle2, AlertTriangle, XCircle,
   Sparkles, Sparkle, Flame, ListChecks, Clock, Scale, Siren, Home, HeartCrack, Banknote,
   ScrollText, ShieldAlert, Menu, MoreVertical, Paperclip, Mic, Signal, Wifi, BatteryFull,
-  Briefcase,
+  Briefcase, ChevronsLeft, Feather, MessagesSquare, Workflow, FileSearch, Library, Pin,
+  Settings, PanelLeft, BookOpenText, Share2, MoreHorizontal, ChevronUp, Calendar,
+  FileCheck2, Copy, ThumbsUp, ThumbsDown, RotateCw, Volume2, Languages, FilePlus2,
+  LibraryBig, FileText, Quote, FileUp, FolderOpen, Link2, Clipboard, Minus, Printer,
+  AlertOctagon,
 } from 'lucide-react';
 
 // Design's kebab-case icon names -> lucide-react's PascalCase components.
@@ -58,6 +62,38 @@ const ICONS = {
   wifi: Wifi,
   'battery-full': BatteryFull,
   briefcase: Briefcase,
+  'chevrons-left': ChevronsLeft,
+  feather: Feather,
+  'messages-square': MessagesSquare,
+  workflow: Workflow,
+  'file-search': FileSearch,
+  library: Library,
+  pin: Pin,
+  settings: Settings,
+  'panel-left': PanelLeft,
+  'book-open-text': BookOpenText,
+  'share-2': Share2,
+  'more-horizontal': MoreHorizontal,
+  'chevron-up': ChevronUp,
+  calendar: Calendar,
+  'file-check-2': FileCheck2,
+  copy: Copy,
+  'thumbs-up': ThumbsUp,
+  'thumbs-down': ThumbsDown,
+  'rotate-cw': RotateCw,
+  'volume-2': Volume2,
+  languages: Languages,
+  'file-plus-2': FilePlus2,
+  'library-big': LibraryBig,
+  'file-text': FileText,
+  quote: Quote,
+  'file-up': FileUp,
+  'folder-open': FolderOpen,
+  'link-2': Link2,
+  clipboard: Clipboard,
+  minus: Minus,
+  printer: Printer,
+  'alert-octagon': AlertOctagon,
 };
 
 // --- Icon helper: renders a lucide icon by name at given size / stroke / color.
@@ -65,6 +101,17 @@ function Icon({ name, size = 16, stroke = 1.75, className = '', color = 'current
   const LucideIcon = ICONS[name];
   if (!LucideIcon) {
     console.warn(`Icon: unknown icon name "${name}"`);
+    // In dev, a blank space here is invisible and ships unnoticed (see: 24 missing
+    // Chat.jsx icons). A red-outlined box makes a missing mapping impossible to miss.
+    if (import.meta.env.DEV) {
+      return (
+        <span
+          title={`Icon: unknown icon name "${name}"`}
+          style={{ width: size, height: size, outline: '1px solid red', display: 'inline-block' }}
+          className={className}
+        />
+      );
+    }
     return null;
   }
   return <LucideIcon size={size} strokeWidth={stroke} color={color} className={className} />;
