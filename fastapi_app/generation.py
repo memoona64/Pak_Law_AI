@@ -38,6 +38,13 @@ def format_context(chunks) -> str:
 
 def generate_answer(query: str, chunks) -> str:
     """Take the user's question + retrieved chunks, ask Gemini for a grounded answer."""
+    if not chunks:
+        return (
+            "I couldn't find relevant Pakistani legal sources for this question in the database. "
+            "You may want to rephrase your question or consult a qualified legal professional. "
+            "This is general legal information, not a substitute for professional legal advice."
+        )
+
     context = format_context(chunks)
     prompt = f"USER QUESTION:\n{query}\n\nRETRIEVED LEGAL CONTEXT:\n{context}"
     response = model.generate_content(prompt)
