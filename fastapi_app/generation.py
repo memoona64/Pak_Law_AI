@@ -18,14 +18,14 @@ def format_context(chunks) -> str:
     parts = []
     used = 0
     for i, chunk in enumerate(chunks, start=1):
-        meta = chunk.metadata or {}
+        meta = (chunk.get("metadata") if isinstance(chunk, dict) else chunk.metadata) or {}
+        text = chunk.get("text") if isinstance(chunk, dict) else chunk.text
         header = (
             f"[Source {i}]\n"
             f"Act: {meta.get('act', 'Unknown')}\n"
             f"Section: {meta.get('section', 'Unknown')}\n"
             f"Province: {meta.get('province', 'Federal')}\n"
         )
-        text = chunk.text
         remaining = MAX_CONTEXT_CHARS - used
         if remaining <= 0:
             break  # budget used up, stop adding more chunks
@@ -35,7 +35,6 @@ def format_context(chunks) -> str:
         parts.append(block)
         used += len(block)
     return "\n".join(parts)
-
 
 def generate_answer(query: str, chunks) -> str:
     """Take the user's question + retrieved chunks, ask Gemini for a grounded answer."""
