@@ -63,7 +63,31 @@ interpreted as the final system-wide citation accuracy.
 
 ---
 
-## 5. Issues Identified
+## 5. End-to-End API Verification
+
+The latest LLM integration was tested through the actual `/rag/query` endpoint.
+
+Verified flow:
+
+User Query -> Retrieval -> Relevant Legal Chunks -> Gemini Generation -> Final Answer
+
+Tested examples included:
+
+- English natural-language query: theft
+- Exact-section query: PPC Section 302
+- Roman Urdu query: chori ki saza kya hai?
+
+All tested requests returned:
+
+- HTTP status 200
+- Relevant legal sources
+- Human-readable Gemini-generated answers
+
+This confirms that Gemini generation is now integrated into `/rag/query`.
+
+---
+
+## 6. Issues Identified
 
 ### Roman Urdu Query Normalization
 
@@ -89,21 +113,14 @@ fairly included in the retrieval Recall@5 calculation.
 ### Retrieval Ranking
 
 For some natural-language queries, the correct section was retrieved within
-the top 5 but was not ranked first.
+the top 5 but was not always ranked first.
 
-For example, PPC Section 379 and PPC Section 417 appeared at rank 2 in later
-manual answer-generation tests.
-
-### API Integration
-
-The generation component was tested successfully using the existing
-`generate_answer()` function. However, in the tested branch, the `/rag/query`
-endpoint returns retrieval information and is not currently wired to return
-the generated answer.
+For example, PPC Section 379 appeared at rank 3 in one end-to-end theft query,
+while the generated answer still correctly used Section 379.
 
 ---
 
-## 6. Conclusion
+## 7. Conclusion
 
 The preliminary evaluation shows that PakLaw AI can retrieve relevant PPC
 sections and generate grounded legal answers for the tested examples.
@@ -111,7 +128,10 @@ sections and generate grounded legal answers for the tested examples.
 The system also demonstrated strong refusal behavior on the tested
 out-of-scope questions.
 
-The main issues identified during evaluation were Roman Urdu query
+The latest `/rag/query` integration was verified successfully and now returns
+human-readable Gemini-generated answers together with retrieved legal sources.
+
+The main remaining issues identified during evaluation are Roman Urdu query
 normalization, missing indexed CrPC chunks, and retrieval ranking quality.
 
 These are preliminary results based on a small evaluation sample. A larger
