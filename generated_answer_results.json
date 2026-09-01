@@ -1,0 +1,111 @@
+[
+  {
+    "query": "What is the punishment for theft?",
+    "expected_act": "PPC",
+    "expected_section": "379",
+    "normalized_query": "What is the punishment for theft?",
+    "retrieved_sources": [
+      {
+        "act": "PPC",
+        "section": "254",
+        "title": "Delivery of coin as genuine which, when first possessed, the deliverer did not know to be altered"
+      },
+      {
+        "act": "PPC",
+        "section": "379",
+        "title": "Punishment for theft"
+      },
+      {
+        "act": "PPC",
+        "section": "112",
+        "title": "Abettor when liable to cumulative punishment for act abetted and for act done"
+      },
+      {
+        "act": "PPC",
+        "section": "356",
+        "title": "Assault or criminal force in attempt to commit theft of property carried by a person"
+      },
+      {
+        "act": "PPC",
+        "section": "171B",
+        "title": "Bribery.__ (1) Whoever__ (i) gives a gratification to any person with the object"
+      }
+    ],
+    "generated_answer": "According to **Section 379 of the Pakistan Penal Code**, the general punishment for committing theft is imprisonment of either description for a term that may extend to three years, or a fine, or both.\n\nHere are the specific provisions based on the relevant sections of the Pakistan Penal Code:\n\n* **Punishment for Theft (Section 379, Pakistan Penal Code):** \n  Anyone who commits theft shall be punished with imprisonment of either description (rigorous or simple) for a term which may extend up to **three years**, or with a **fine**, or with **both**.\n\n* **Attempting Theft using Assault or Criminal Force (Section 356, Pakistan Penal Code):** \n  If a person uses assault or criminal force while attempting to commit theft of property that someone is wearing or carrying, the punishment is imprisonment of either description for a term that may extend up to **two years**, or with a **fine**, or with **both**.\n\nThis is general legal information, not a substitute for professional legal advice.",
+    "manual_evaluation": {
+      "relevant": true,
+      "grounded": true,
+      "expected_section_cited": true,
+      "result": "PASS"
+    }
+  },
+  {
+    "query": "What is the punishment under Section 302 PPC?",
+    "expected_act": "PPC",
+    "expected_section": "302",
+    "normalized_query": "What is the punishment under Section 302 PPC?",
+    "retrieved_sources": [
+      {
+        "act": "PPC",
+        "section": "302",
+        "title": "Punishment of qatl-i-amd"
+      }
+    ],
+    "generated_answer": "Under Section 302 of the Pakistan Penal Code (PPC), the punishment for *qatl-i-amd* (intentional murder) depends on the available evidence and applicable legal standards:\n\n1. **Death as Qisas:** The offender is punished with death as *qisas* [Section 302(a)].\n2. **Death or Life Imprisonment as Ta'zir:** The offender is punished with death or imprisonment for life as *ta'zir*, having regard to the facts and circumstances of the case, if the proof in either of the forms specified in Section 304 is not available [Section 302(b)].\n3. **Imprisonment up to 25 Years:** The offender is punished with imprisonment of either description for a term extending up to twenty-five years, where according to the Injunctions of Islam the punishment of *qisas* is not applicable [Section 302(c)].\n\n**Exception/Condition:** \nWhere the principle of *fasad-fil-arz* (mischief on earth) is attracted, clause (c) does not apply. In those cases, only clause (a) or clause (b) (death or life imprisonment) applies.\n\nThis is general legal information, not a substitute for professional legal advice.",
+    "manual_evaluation": {
+      "relevant": true,
+      "grounded": true,
+      "expected_section_cited": true,
+      "result": "PASS"
+    }
+  },
+  {
+    "query": "What is the punishment for cheating?",
+    "expected_act": "PPC",
+    "expected_section": "417",
+    "normalized_query": "What is the punishment for cheating?",
+    "retrieved_sources": [
+      {
+        "act": "PPC",
+        "section": "254",
+        "title": "Delivery of coin as genuine which, when first possessed, the deliverer did not know to be altered"
+      },
+      {
+        "act": "PPC",
+        "section": "417",
+        "title": "Punishment for cheating"
+      },
+      {
+        "act": "PPC",
+        "section": "112",
+        "title": "Abettor when liable to cumulative punishment for act abetted and for act done"
+      },
+      {
+        "act": "PPC",
+        "section": "419",
+        "title": "Punishment for cheating by personation"
+      },
+      {
+        "act": "PPC",
+        "section": "171B",
+        "title": "Bribery.__ (1) Whoever__ (i) gives a gratification to any person with the object"
+      }
+    ],
+    "generated_answer": "Under the Pakistan Penal Code, the punishment for cheating depends on the specific form of the offence mentioned in the context:\n\n* **General Cheating (Section 417, Pakistan Penal Code):** \n  Whoever commits cheating shall be punished with imprisonment of either description for a term which may extend to **one year**, or with a **fine**, or with **both**.\n\n* **Cheating by Personation (Section 419, Pakistan Penal Code):** \n  Whoever cheats by pretending to be someone else (personation) shall be punished with imprisonment of either description for a term which may extend to **seven years**, or with a **fine**, or with **both**.\n\nThis is general legal information, not a substitute for professional legal advice.",
+    "manual_evaluation": {
+      "relevant": true,
+      "grounded": true,
+      "expected_section_cited": true,
+      "result": "PASS"
+    }
+  },
+  {
+    "query": "Mujhe biryani ki recipe batao",
+    "normalized_query": "Biryani",
+    "generated_answer": "Aap ke sawal (biryani ki recipe) ka jawab faraham karda qanooni dastavezat (legal context) mein mojood nahi hai. Main ek qanooni assistant hoon aur sirf faraham karda Pakistani qanoon ke matan ki bunyad par jankari de sakta hoon.\n\nThis is general legal information, not a substitute for professional legal advice.",
+    "manual_evaluation": {
+      "correct_refusal": true,
+      "result": "PASS"
+    }
+  }
+]
