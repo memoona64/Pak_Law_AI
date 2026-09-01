@@ -1,0 +1,29 @@
+[
+  {
+    "query": "What is the punishment for theft?",
+    "expected": "PPC Section 379",
+    "correct_section_retrieved": true,
+    "correct_section_cited": true,
+    "grounded": true,
+    "relevant": true,
+    "result": "PASS"
+  },
+  {
+    "query": "What is the punishment under Section 302 PPC?",
+    "expected": "PPC Section 302",
+    "correct_section_retrieved": true,
+    "correct_section_cited": true,
+    "grounded": true,
+    "relevant": true,
+    "result": "PASS"
+  },
+  {
+    "query": "What is the punishment for cheating?",
+    "expected": "PPC Section 417",
+    "correct_section_retrieved": true,
+    "correct_section_cited": true,
+    "grounded": true,
+    "relevant": true,
+    "result": "PASS"
+  }
+]
