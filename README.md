@@ -54,7 +54,7 @@ on your local/dev setup — ask a teammate for actual values):
 
 ```
 PORT=
-MONGODB_URI=
+MONGO_URI=
 JWT_SECRET=
 ```
 
