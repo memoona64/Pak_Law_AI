@@ -1,0 +1,201 @@
+[
+  {
+    "slug": "fir",
+    "category": "Criminal Law",
+    "icon": "shield-alert",
+    "title": "Filing a First Information Report (FIR)",
+    "subtitle": "Step-by-step guide to reporting a cognizable offense to Pakistani police",
+    "stepCount": 3,
+    "estimatedMinutes": 45,
+    "steps": [
+      {
+        "number": 1,
+        "title": "Reporting to the Police Station",
+        "whatTheLawSays": "Under Section 154 CrPC, the Station House Officer (SHO) is legally bound to record an FIR immediately when information regarding a cognizable offense is presented, whether orally or in writing.",
+        "citations": [
+          {
+            "act": "Code of Criminal Procedure 1898",
+            "section": "Section 154"
+          }
+        ],
+        "whereToGo": "The local Police Station (Thana) having territorial jurisdiction over the place of incident.",
+        "whatToFile": "Written complaint detailing the date, time, place of incident, names/descriptions of accused, and witness details.",
+        "cost": "Free of cost. Demanding money for registering an FIR is illegal.",
+        "howLong": "15 to 30 minutes for initial recording.",
+        "ifRefused": "If the SHO refuses to record the FIR, submit a written application to the Superintendent of Police (SP) or Justice of Peace (Ex-officio Sessions Judge under Section 22-A/22-B CrPC)."
+      },
+      {
+        "number": 2,
+        "title": "Verification and Signature",
+        "whatTheLawSays": "The recorded statement must be read over to the informant and signed or thumb-imprinted by them to verify accuracy before entry into the police register (Form 5.24).",
+        "citations": [
+          {
+            "act": "Police Rules 1934",
+            "section": "Chapter 24 Rule 5"
+          }
+        ],
+        "whereToGo": "Duty Officer / Station House Officer (SHO) office within the police station.",
+        "whatToFile": "Your signed or thumb-imprinted statement as recorded by the officer.",
+        "cost": "Free of cost.",
+        "howLong": "10 to 15 minutes.",
+        "ifRefused": "Do not sign if the statement recorded differs from your actual account. Request correct re-transcription."
+      },
+      {
+        "number": 3,
+        "title": "Obtaining a Certified Copy",
+        "whatTheLawSays": "The informant has an absolute legal right to receive a copy of the recorded FIR free of cost immediately after registration.",
+        "citations": [
+          {
+            "act": "Code of Criminal Procedure 1898",
+            "section": "Section 154"
+          }
+        ],
+        "whereToGo": "Police Station Front Desk or Police Service Center (Khidmat Markaz).",
+        "whatToFile": "Request for official stamped copy of the registered FIR.",
+        "cost": "Free of cost.",
+        "howLong": "Issued immediately upon registration.",
+        "ifRefused": "File a complaint with the District Police Officer (DPO) or Ombudsman (Mohtasib)."
+      }
+    ]
+  },
+  {
+    "slug": "eviction",
+    "category": "Property Law",
+    "icon": "home-x",
+    "title": "Handling Illegal Tenant Eviction",
+    "subtitle": "Legal protections for tenants against unlawful landlord eviction",
+    "stepCount": 1,
+    "estimatedMinutes": 30,
+    "steps": [
+     
+      {
+        "number": 1,
+        "title": "Notice Review and Response",
+        "whatTheLawSays": "Landlords must provide statutory notice and apply via the Rent Tribunal under relevant provincial rented premises acts.",
+        "citations": [
+          {
+            "act": "Punjab Rented Premises Act 2009 / Sindh Rented Premises Ordinance 1979",
+            "section": "Section 15"
+          }
+        ],
+        "whereToGo": "Rent Tribunal / Rent Controller Office.",
+        "whatToFile": "Written reply to eviction notice with rent payment receipts.",
+        "cost": "Varies based on court fee stamps.",
+        "howLong": "1 to 2 weeks.",
+        "ifRefused": "Seek stay order from the Rent Controller."
+      }
+    ]
+  },
+  {
+    "slug": "khula",
+    "category": "Family Law",
+    "icon": "heart-off",
+    "title": "Filing for Khula (Dissolution of Marriage)",
+    "subtitle": "Process for a woman seeking judicial dissolution of marriage",
+    "stepCount": 1,
+    "estimatedMinutes": 60,
+    "steps": [
+      
+      {
+        "number": 1,
+        "title": "Filing Family Suit",
+        "whatTheLawSays": "A Muslim wife is entitled to seek Khula through the Family Court subject to relinquishment of deferred Haq Mehr.",
+        "citations": [
+          {
+            "act": "West Pakistan Family Courts Act 1964",
+            "section": "Section 10"
+          }
+        ],
+        "whereToGo": "Family Court in the district where the wife resides.",
+        "whatToFile": "Plaint for dissolution of marriage supported by affidavit and Nikahnama copy.",
+        "cost": "Standard nominal court fees apply.",
+        "howLong": "3 to 6 months.",
+        "ifRefused": "Appeal against decree as per Family Court procedures."
+      }
+    ]
+  },
+  {
+    "slug": "unpaid-salary",
+    "category": "Labor Law",
+    "icon": "banknote-off",
+    "title": "Recovering Unpaid Wages & Salary",
+    "subtitle": "Recourse for employees facing non-payment or delayed wages",
+    "stepCount": 1,
+    "estimatedMinutes": 30,
+    "steps": [
+      
+      {
+        "number": 1,
+        "title": "Filing Claim with Payment of Wages Authority",
+        "whatTheLawSays": "Employees can file claims against illegal wage deductions or non-payment within statutory timelines.",
+        "citations": [
+          {
+            "act": "Payment of Wages Act 1936",
+            "section": "Section 15"
+          }
+        ],
+        "whereToGo": "Authority appointed under Payment of Wages Act / Labor Court.",
+        "whatToFile": "Claim application along with employment contract, appointment letter, and bank statements.",
+        "cost": "Exempted or minimal court fees for labor claims.",
+        "howLong": "30 to 90 days.",
+        "ifRefused": "File appeal before the Labor Appellate Tribunal."
+      }
+    ]
+  },
+  {
+    "slug": "online-harassment",
+    "category": "Cybercrime Law",
+    "icon": "message-square-warning",
+    "title": "Reporting Cyber Harassment & Blackmail",
+    "subtitle": "Steps to register complaints with FIA Cybercrime Wing",
+    "stepCount": 1,
+    "estimatedMinutes": 40,
+    "steps": [
+      
+      {
+        "number": 1,
+        "title": "Submitting Cybercrime Complaint",
+        "whatTheLawSays": "Harassment, stalking, or blackmailing via electronic communications is a punishable offense under PECA.",
+        "citations": [
+          {
+            "act": "Prevention of Electronic Crimes Act (PECA) 2016",
+            "section": "Section 20 & 24"
+          }
+        ],
+        "whereToGo": "FIA Cyber Crime Reporting Center or online via NR3C Portal.",
+        "whatToFile": "Screenshots, URLs, phone numbers, and digital evidence.",
+        "cost": "Free of cost.",
+        "howLong": "Initial processing within 7 days.",
+        "ifRefused": "Lodge grievance with the Ministry of Interior or High Court writ petition."
+      }
+    ]
+  },
+  {
+    "slug": "arrest-24h",
+    "category": "Constitutional Rights",
+    "icon": "lock",
+    "title": "Rights Upon Police Arrest (24-Hour Rule)",
+    "subtitle": "Constitutional safeguards against unlawful detention",
+    "stepCount": 1,
+    "estimatedMinutes": 20,
+    "steps": [
+      
+      {
+        "number": 1,
+        "title": "Production Before Magistrate",
+        "whatTheLawSays": "Every arrested person must be produced before the nearest Magistrate within 24 hours of arrest excluding journey time.",
+        "citations": [
+          {
+            "act": "Constitution of Pakistan 1973",
+            "section": "Article 10(2)"
+          }
+        ],
+        "whereToGo": "Judicial Magistrate Court.",
+        "whatToFile": "Habeas corpus application or representation through legal counsel.",
+        "cost": "Legal representation fees apply.",
+        "howLong": "Mandatory within 24 hours.",
+        "ifRefused": "File Habeas Corpus petition under Article 199 in High Court or Section 491 CrPC in Sessions Court."
+      }
+    ]
+  }
+]

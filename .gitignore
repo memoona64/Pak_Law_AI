@@ -219,6 +219,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+node_modules/
 
 # pip install --target artifacts (venv-style wrappers, man pages, runtime DB)
 /Scripts/
