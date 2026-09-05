@@ -22,6 +22,7 @@ from pydantic import BaseModel, Field
 
 from . import search_service
 from .errors import ModelUnavailableError
+from .generation import generate_answer
 
 
 logger = logging.getLogger("uvicorn.error")
@@ -136,6 +137,7 @@ class ChunkResponse(BaseModel):
 
 class QueryResponse(BaseModel):
     chunks: list[ChunkResponse]
+    answer: str
     timings: dict
     province_filter: Optional[str]
     normalized_query: Optional[str] = None
@@ -189,8 +191,11 @@ def rag_query(request: QueryRequest):
     except ModelUnavailableError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
 
+    answer = generate_answer(request.query, chunks)
+
     return QueryResponse(
         chunks=chunks,
+        answer=answer,
         timings=timings,
         province_filter=request.province,
         normalized_query=normalized_query,
