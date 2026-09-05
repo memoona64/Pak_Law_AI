@@ -1,0 +1,11 @@
+query,language,category,gold_act,gold_section,status,gold_rank,recall_at_5,latency_ms,normalized_query
+What is the punishment for theft?,English,natural_language,PPC,379,PASS,3,True,821.6,Punishment for
+What is the punishment under Section 302 PPC?,English,exact_citation,PPC,302,PASS,1,True,0.9,What is the punishment under Section 302 PPC?
+chori ki saza kya hai?,Roman Urdu,roman_urdu,PPC,379,PASS,3,True,827.6,Punishment
+qatl ki saza kya hai?,Roman Urdu,roman_urdu,PPC,302,FAIL,,False,911.7,Punishment
+What is the punishment for cheating?,English,natural_language,PPC,417,PASS,1,True,798.5,Punishment for
+police FIR darj nahi kar rahi,Roman Urdu,roman_urdu,CrPC,154,NOT_EVALUATED,,,,
+Who won the cricket match yesterday?,English,out_of_scope,,,NOT_EVALUATED,,,,
+Mujhe biryani ki recipe batao,Roman Urdu,out_of_scope,,,NOT_EVALUATED,,,,
+What is the weather today?,English,out_of_scope,,,NOT_EVALUATED,,,,
+Write me a poem,English,out_of_scope,,,NOT_EVALUATED,,,,
