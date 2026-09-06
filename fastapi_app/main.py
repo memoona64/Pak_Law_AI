@@ -144,6 +144,10 @@ class QueryResponse(BaseModel):
     timings: dict
     province_filter: Optional[str]
     normalized_query: Optional[str] = None
+    citations_verified: bool = True
+    unverified_citations: list[dict] = []
+    unsupported_claims: list[str] = []
+    verifier_blocked: bool = False
 
 
 class ObligationItem(BaseModel):
@@ -225,12 +229,35 @@ def rag_query(request: QueryRequest):
             "retrieved for this question are listed below."
         )
 
+    # Citation verifier: a blocking gate between generation and display. An
+    # answer citing law that was never retrieved is withheld, not shown.
+    started = time.perf_counter()
+    verification = citation_verifier.verify_citations(answer, chunks)
+    unsupported = citation_verifier.find_unsupported_claims(answer, chunks)
+    blocked = bool(verification["unverified"])
+    if blocked:
+        logger.warning(
+            "Answer blocked: unverified citations %s for query %r",
+            verification["unverified"],
+            request.query,
+        )
+        answer = (
+            "This answer was withheld because it cited legal provisions that could not be "
+            "verified against the retrieved sources. The sources found for your question are "
+            "listed below. Please consult a qualified Pakistani legal professional."
+        )
+    timings["verify_ms"] = round((time.perf_counter() - started) * 1000, 1)
+
     return QueryResponse(
         chunks=chunks,
         answer=answer,
         timings=timings,
         province_filter=request.province,
         normalized_query=normalized_query,
+        citations_verified=verification["all_verified"],
+        unverified_citations=verification["unverified"],
+        unsupported_claims=unsupported,
+        verifier_blocked=blocked,
     )
 
 

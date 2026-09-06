@@ -1,6 +1,6 @@
 # Document Analysis — Handoff
 
-**Plan reference:** §9b (Document analysis), §11 (endpoints, collections), §13 Phase 2 task 1
+**Plan reference:** §9b (Document analysis), §6 (citation verifier), §11 (endpoints, collections), §13 Phase 1 task 5 + Phase 2 task 1
 **Status:** FastAPI side complete. Express and frontend still to do.
 **Branch:** `document-analysis`
 
@@ -145,9 +145,9 @@ Retrieval is local and costs no quota. If you see every clause come back as *"An
 - **Masking badge wording (§9b, important).** Label it **"basic masking"**, never "PII protection". State plainly that CNIC, phone and email are masked by pattern matching, and that **names and addresses are not**. Overclaiming here is a viva risk and a genuine liability.
 - State the other §9b limits in the UI: PDF only, size cap, scanned documents will not work, and *"this is not a legal review — it flags things worth asking a lawyer about."*
 
-### Citation verifier — Phase 1 task 5
+### Citation verifier — Phase 1 task 5 — **done**
 
-`fastapi_app/citation_verifier.py` was written to unblock this feature because no verifier existed on any branch. Whoever owns task 5 should decide whether it is replaced by theirs. Separately, **§6 requires the verifier as a blocking gate on `/rag/query`**, and that is still not wired — §15's "Citation validity 100%" depends on it.
+Now owned here and wired as §6 requires. See section 6 below.
 
 ### Chunker — Phase 1 task 2
 
@@ -157,7 +157,7 @@ The section-aware corpus chunker is **not committed anywhere** — only its outp
 
 ## 4. Known limitations — state these honestly
 
-1. **Citation verification is existence-only.** §9b says a cited section is "verified to exist **and to say what the answer claims**". Only the first half is implemented: we confirm the cited Section/Article matches a chunk that was actually retrieved for that clause. We do **not** semantically verify that the explanation accurately describes what the section says — that needs an entailment check or another LLM call. Do not claim the second half.
+1. **Citation verification is existence-only (§6 step 3 not implemented).** §9b says a cited section is "verified to exist **and to say what the answer claims**". Only the first half is implemented: we confirm the cited Section/Article is grounded in the law actually retrieved. We do **not** verify that a quoted excerpt appears verbatim in the cited section, and the system prompt does not currently require answers to include verbatim excerpts — both would need to change together. The `find_unsupported_claims()` lexical-overlap check is a partial substitute (§8 calls this only partly automatable). Do not claim the second half.
 
 2. **Reranker latency is far over budget.** §8 Panel 4 budgets 200–600 ms for reranking. Measured on CPU with the model already warm: **~15.7 seconds** per query (~49 s on the first call including model load). §15 targets p95 under 6 s end to end. This is why `use_reranker` defaults to `false` on this endpoint — it runs once per clause, so a 20-clause document would add roughly five minutes.
 
@@ -169,7 +169,47 @@ The section-aware corpus chunker is **not committed anywhere** — only its outp
 
 ---
 
-## 5. Attribution
+## 5. Citation verifier (plan §6, Phase 1 task 5)
+
+`fastapi_app/citation_verifier.py` — the hallucination guard. It runs in two places: on every chat answer, and on every clause explanation in document analysis.
+
+### What it does
+
+| §6 step | Status |
+|---|---|
+| 1. Parse every section/article reference out of the answer | Done — English, Urdu (`دفعہ`, `آرٹیکل`) and Roman Urdu (`dafa`, `dhara`) forms |
+| 2. Check each exists in the retrieved law | Done |
+| 3. Check the quoted excerpt appears in the section's text | **Not done** — see limitation 1 |
+| 4. On failure: refuse the answer and log it | Done |
+| Runs as a blocking gate on `/rag/query` | Done |
+| §8 unsupported-claim detector | Done — `find_unsupported_claims()` |
+
+### How the gate behaves
+
+If an answer cites anything that is not grounded in the law retrieved for it, the answer is **withheld** — replaced with a refusal telling the user the sources are listed below — and the event is logged with the offending references. This matches §1 ("every answer citing a real Act and Section verified against the corpus before display, **or it refuses**").
+
+`/rag/query` gained four response fields, all additive so existing callers keep working:
+
+| Field | Meaning |
+|---|---|
+| `citations_verified` | `false` if any citation was ungrounded |
+| `unverified_citations` | The specific references that failed, e.g. `[{"type":"section","number":"9999"}]` |
+| `unsupported_claims` | Answer sentences with little lexical overlap with the retrieved law (§8: a review signal, not proof) |
+| `verifier_blocked` | `true` when the answer was withheld — **this is the count for dashboard Panel 2** |
+
+`timings` also gains `verify_ms` for the §8 Panel 4 latency breakdown.
+
+### Why it checks retrieved chunks, not the whole corpus
+
+An answer citing a real section that was never retrieved is still ungrounded in the sources it claims to be based on. Checking against retrieval is the stricter and more honest test.
+
+### Avoiding false blocks
+
+Legal provisions cross-reference each other constantly ("Section 302 read with Section 34"). If the verifier only checked chunk *metadata*, repeating a cross-reference from inside a retrieved chunk's own text would wrongly block a correct answer. So a reference is treated as grounded if it appears in chunk metadata **or** anywhere in the retrieved chunk text. Verified by test: a cross-reference to Section 34 quoted from a retrieved Section 302 chunk passes, while an invented Section 9999 is blocked.
+
+---
+
+## 6. Attribution
 
 - `masking.py`, `doc_chunker.py`, `citation_verifier.py`, `document_extraction.py`, the `/rag/analyze-document` endpoint, `analyze_clause()`, `summarize_document()`, and the two new prompts — this branch.
 - `generation.py` and `prompts.py` were created by Wania Imran on `llm-generation`; this branch merged that work and added to it.
