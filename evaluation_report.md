@@ -1,9 +1,9 @@
 # PakLaw AI — Testing & Evaluation Report
 
 > **Branch:** `testing-evaluation`  
-> **Evaluation set:** 150 labelled questions  
+> **Evaluation coverage:** 150 labelled questions  
 > **Role:** Testing & Evaluation  
-> **Purpose:** Measure retrieval quality, multilingual performance, refusal behaviour, latency, and representative generated-answer quality using reproducible evidence.
+> **Purpose:** Evaluate retrieval quality, multilingual performance, refusal behaviour, latency, and representative generated-answer quality using measured evidence.
 
 ---
 
@@ -22,59 +22,78 @@
 | Successful true-OOS generated responses | **6/6 correct refusals** |
 | Additional OOS generation cases | **10 not scored — Gemini HTTP 429 quota limit** |
 
-> **Important:** Recall@5 and Recall@10 are retrieval metrics, not overall model accuracy.
+> **Important:** Recall@5 and Recall@10 are retrieval metrics. They are not overall model accuracy.
 
 ---
 
 ## 2. Evaluation Scope
 
-The final evaluation dataset contains **150 unique questions** covering:
+The final evaluation covered **150 unique labelled questions** across the major query types required for PakLaw AI.
 
-- exact legal citations
-- natural-language English
-- Roman Urdu
-- Urdu script
-- province-sensitive questions
-- multi-section questions
+### Coverage included
+
+- exact legal citation queries
+- natural-language English queries
+- Roman Urdu queries
+- Urdu-script queries
+- province-sensitive queries
+- multi-section queries
 - constitutional questions
 - family-law questions
-- deliberately out-of-scope queries
+- deliberately out-of-scope questions
 
 ### Dataset composition
 
 | Dimension | Count |
 |---|---:|
-| Total questions | 150 |
-| Legal | 133 |
-| OOS-labelled | 17 |
-| Province-sensitive | 22 |
-| Multi-section | 14 |
-| English | 85 |
-| Roman Urdu | 37 |
-| Urdu | 28 |
+| Total questions | **150** |
+| Legal | **133** |
+| OOS-labelled | **17** |
+| Province-sensitive | **22** |
+| Multi-section | **14** |
+| English | **85** |
+| Roman Urdu | **37** |
+| Urdu | **28** |
 
-One OOS-labelled item (`OLD06`) was identified during review as a **legal-intent query**, so it was excluded from the true non-legal refusal denominator.
+One OOS-labelled record was identified during review as having legal intent. It was excluded from the true non-legal refusal denominator rather than being incorrectly treated as a non-legal OOS question.
 
 ---
 
-## 3. Methodology
+## 3. Evaluation Methodology
 
-### Stage A — Retrieval Evaluation
+Evaluation was completed in two main stages.
 
-All **133 legal questions** were evaluated directly against the retrieval service with:
+### Stage A — Legal Retrieval Benchmark
+
+All **133 legal questions** were evaluated against the retrieval service.
+
+The final bulk benchmark used:
 
 - hybrid retrieval
 - exact-citation shortcut enabled
 - query normalization enabled
 - `k = 10`
-- reranker disabled for the bulk benchmark
+- reranker disabled for the bulk run
 
-The bulk benchmark used the no-reranker path to make the 133-question evaluation practical in the Colab environment. This result therefore must **not** be presented as a benchmark of the full reranked production configuration.
+The reranker was disabled for the large Colab benchmark because full reranked requests were too expensive and slow for a controlled 133-question run.
 
-For every legal question, the evaluator checked whether the labelled expected legal source appeared:
+Therefore, the final Recall and latency figures in this report describe the **tested no-reranker bulk configuration**, not the complete reranked production configuration.
 
-- within the **Top 5** retrieved results
-- within the **Top 10** retrieved results
+For each legal query, evaluation checked whether the labelled expected source appeared:
+
+- within the **Top 5**
+- within the **Top 10**
+
+### Stage B — Generated-Answer and Refusal Review
+
+Generation-based evaluation was used for:
+
+- representative legal answers
+- grounding and citation review
+- unsupported-claim review
+- out-of-scope refusal behaviour
+
+Generation results were kept separate from retrieval metrics so the report does not confuse source retrieval performance with final-answer quality.
 
 ---
 
@@ -82,8 +101,9 @@ For every legal question, the evaluator checked whether the labelled expected le
 
 | Metric | Result |
 |---|---:|
+| Legal retrieval calls attempted | **133** |
 | Successful retrieval calls | **133 / 133** |
-| Errors | **0** |
+| Retrieval execution errors | **0** |
 | Recall@5 | **83 / 133 = 62.41%** |
 | Recall@10 | **90 / 133 = 67.67%** |
 | P50 retrieval latency | **146.0 ms** |
@@ -91,9 +111,11 @@ For every legal question, the evaluator checked whether the labelled expected le
 
 ### Interpretation
 
-The correct labelled source appeared in the first five results for approximately **62.4%** of the evaluated legal questions and within the first ten for approximately **67.7%**.
+The labelled expected legal source appeared in the first five retrieved results for approximately **62.4%** of the evaluated legal questions.
 
-Increasing the retrieval depth from 5 to 10 therefore recovered additional expected sources, but substantial retrieval gaps remain for some language and query categories.
+Within the first ten results, this increased to approximately **67.7%**.
+
+This shows that increasing retrieval depth recovered some additional expected legal sources, but important retrieval weaknesses remain in specific languages and query types.
 
 ---
 
@@ -105,13 +127,21 @@ Increasing the retrieval depth from 5 to 10 therefore recovered additional expec
 | Roman Urdu | 34 | **52.94%** | **52.94%** |
 | Urdu | 28 | **35.71%** | **50.00%** |
 
-### Finding
+### Interpretation
 
 English retrieval performed strongest.
 
-Roman Urdu performance was substantially lower, while Urdu-script retrieval was the weakest at Top 5. Urdu improved when the result window increased to Top 10.
+Roman Urdu performance was substantially lower than English.
 
-This identifies multilingual query understanding and normalization as a major future improvement area.
+Urdu-script queries showed the weakest Top-5 performance, although performance improved when retrieval depth increased to Top 10.
+
+### Main multilingual finding
+
+The system requires further improvement in:
+
+- Urdu query understanding
+- Roman Urdu normalization
+- multilingual retrieval consistency
 
 ---
 
@@ -129,82 +159,93 @@ This identifies multilingual query understanding and normalization as a major fu
 | Family law | 5 | **40.00%** | **60.00%** |
 | Natural-language legacy | 2 | **100.00%** | **100.00%** |
 
-### Important interpretation
+### Multi-section scoring note
 
-The multi-section category uses a **strict criterion**: every expected labelled section must be present in the result window.
+The multi-section category used a **strict all-expected-sources criterion**.
 
-Therefore a query retrieving one correct section but missing another expected section is counted as a miss for this category.
+If a query expected two legal sections and the system retrieved only one of them, the query was counted as a miss.
 
-### Main strengths
+The resulting 0% therefore means the complete expected source set was not recovered for those strict cases. It does not mean no relevant source was ever retrieved.
 
-- Exact section/citation lookup
-- Constitutional retrieval in the evaluated sample
-- Province-sensitive retrieval
-- English retrieval compared with multilingual queries
+### Strongest evaluated areas
 
-### Main weaknesses
+- exact citation retrieval
+- constitutional retrieval in the evaluated sample
+- province-sensitive retrieval
+- English retrieval relative to multilingual queries
 
-- Urdu-script retrieval
-- Roman Urdu retrieval
-- strict multi-section retrieval
-- family-law coverage/retrieval consistency
+### Main improvement areas
+
+- Urdu script
+- Roman Urdu
+- multi-section retrieval
+- selected family-law queries
 
 ---
 
 ## 7. Latency Evaluation
 
-For the final no-reranker retrieval benchmark:
+For the final no-reranker bulk retrieval benchmark:
 
-- **P50:** 146.0 ms
-- **P95:** 379.5 ms
+- **P50 retrieval latency:** 146.0 ms
+- **P95 retrieval latency:** 379.5 ms
 
 A first-call startup/model-download outlier of approximately **247 seconds** was also observed.
 
-This startup event is documented separately rather than hidden inside the normal warmed retrieval measurements.
+This startup event is reported separately rather than hidden inside the warmed retrieval measurements.
 
-Earlier integrated API testing also exposed much higher latency when reranking and generation were executed together. For this reason, retrieval-only benchmark latency and full end-to-end latency must not be treated as the same metric.
+Earlier integrated testing also showed that reranking and generation can make full end-to-end requests significantly slower.
+
+Therefore:
+
+**retrieval latency must not be presented as full end-to-end response latency.**
 
 ---
 
 ## 8. Out-of-Scope / Refusal Evaluation
 
-The final dataset contained **17 OOS-labelled questions**.
+The final dataset contained **17 OOS-labelled records**.
 
-During dataset review, one item was identified as a legal-intent question and excluded from the true non-legal OOS refusal denominator.
+After dataset review, one labelled record was excluded from the true non-legal OOS denominator because it represented legal intent.
 
 ### Final generation attempt
 
 | Item | Result |
 |---|---:|
-| True non-legal OOS cases selected | 16 |
-| Successful Gemini generation calls | 6 |
+| True non-legal OOS cases selected | **16** |
+| Successful Gemini generation calls | **6** |
 | Correct refusals | **6 / 6** |
-| Observed refusal rate on successful calls | **100.00%** |
-| Quota-limited / unscored cases | 10 |
+| Observed refusal rate among successful calls | **100.00%** |
+| Quota-limited / unscored cases | **10** |
 
-The ten remaining cases returned **HTTP 429 quota errors** before an answer was generated.
+All six OOS cases for which a valid generated response was obtained were correctly refused.
 
-They are therefore **not counted as refusal failures**.
+The ten remaining cases returned **Gemini HTTP 429 quota errors before an answer was generated**.
 
-### Interpretation
+They were therefore not counted as refusal failures.
 
-All six OOS questions for which a valid generated response was obtained were correctly refused instead of being answered using unrelated retrieved legal context.
+### Correct interpretation
 
-This is an **observed successful-call refusal rate**, not a claim that all sixteen cases completed.
+The defensible statement is:
+
+> **6/6 successfully generated true-OOS responses were correctly refused. Ten additional cases could not be scored because generation was blocked by API quota limits.**
+
+It is not correct to claim that all sixteen OOS requests completed successfully.
 
 ---
 
-## 9. Representative Generated-Answer Review
+## 9. Representative Legal Answer Review
 
-A small representative legal-answer sample was manually reviewed using existing successful end-to-end generation evidence.
+Four representative generated legal answers were manually reviewed.
 
-Checks included:
+Review criteria included:
 
 - relevance
-- grounding in retrieved legal sources
+- correct expected source
+- grounding in retrieved legal context
 - citation correctness
 - unsupported legal claims
-- answer behaviour
+- overall answer behaviour
 
 | Case | Expected source | Result |
 |---|---|---|
@@ -217,117 +258,144 @@ Checks included:
 
 **4 / 4 representative legal answers passed.**
 
-This result applies only to the reviewed sample and **must not be presented as overall system accuracy**.
+This is a representative manual sample.
+
+It must **not** be presented as overall system accuracy or as a system-wide citation percentage.
 
 ---
 
-## 10. Citation and Hallucination Interpretation
+## 10. Citation and Unsupported-Claim Interpretation
 
-The evaluation intentionally does **not** claim an automated system-wide hallucination rate.
+This evaluation intentionally does **not** report an automated system-wide hallucination rate.
 
-Hallucination / unsupported legal content requires human interpretation of generated answers.
+Reliable hallucination or unsupported-content assessment requires human interpretation of generated answers.
 
-For the representative manually reviewed legal sample:
+For the four representative manually reviewed legal cases:
 
-- expected citations were used correctly
+- expected legal citations were used correctly
 - answers were grounded in retrieved legal context
-- no unsupported legal claim was observed in the reviewed cases
+- no unsupported legal claim was observed in the reviewed sample
 
-This evidence is reported as a **manual sample finding**, not as a claim of zero hallucination across the full system.
+This is reported as a **manual sample finding**, not a system-wide zero-hallucination claim.
+
+### Citation validity vs groundedness
+
+These concepts must remain separate.
+
+**Citation validity** asks whether a cited legal Act/Section genuinely exists.
+
+**Groundedness** asks whether the actual statement made in the answer is supported by the retrieved legal context.
+
+A citation can exist while an unsupported claim is still made, so one metric cannot replace the other.
 
 ---
 
 ## 11. Key Findings
 
-### What worked well
+### What performed well
 
-1. **Exact-citation retrieval was highly reliable** in the final benchmark.
-2. **Province-sensitive retrieval performed strongly** compared with general multilingual retrieval.
-3. The full 133-question legal benchmark completed with **zero retrieval execution errors**.
-4. Representative generated legal answers were correctly grounded in the expected legal sources.
-5. Successfully generated non-legal OOS responses were correctly refused.
+1. Exact-citation retrieval achieved **100% Recall@5 and Recall@10** in the evaluated category.
+2. Province-sensitive retrieval performed strongly at **86.36% Recall@5** and **90.91% Recall@10**.
+3. All **133 legal retrieval calls completed successfully** with zero execution errors.
+4. The representative generated-answer sample passed the manual grounding and citation review.
+5. Every successfully generated true non-legal OOS response was correctly refused.
 
 ### What needs improvement
 
-1. **Urdu retrieval requires substantial improvement.**
-2. **Roman Urdu normalization and retrieval remain inconsistent.**
-3. **Multi-section questions are difficult under the strict all-required-sources criterion.**
-4. Family-law retrieval requires further tuning.
-5. End-to-end generation and reranking can introduce substantial latency.
-6. Some retrieved metadata/title fields require data-quality cleanup.
-7. Gemini free-tier quota limits affected completion of the final generation-based refusal test.
+1. Urdu retrieval requires significant improvement.
+2. Roman Urdu retrieval and normalization remain inconsistent.
+3. Multi-section retrieval requires stronger query decomposition and source coverage.
+4. Selected family-law queries require further retrieval tuning.
+5. End-to-end generation and reranking can introduce significant latency.
+6. Some legal-source metadata requires cleanup.
+7. API quota limits affected the completion of the generation-based refusal evaluation.
 
 ---
 
 ## 12. Integration Finding
 
-During final evaluation on the `testing-evaluation` branch, the checked-out `/rag/query` response exposed retrieval fields but did not return an `answer` field.
+During final evaluation on the `testing-evaluation` branch, the checked-out `/rag/query` response exposed retrieval information but did not return an `answer` field in that branch state.
 
-Generation source from the team's LLM-generation work was therefore loaded temporarily for generation evaluation.
+Generation code from the team's LLM-generation work was therefore loaded temporarily in the Colab evaluation environment so generation-based tests could be completed.
 
-This is treated as a **branch/integration state finding**, not as a retrieval failure.
+This was treated as a **branch/integration-state finding**, not as a retrieval failure.
 
-The temporary generation files are not part of this evaluator's implementation contribution and should not be committed as Testing & Evaluation work.
+Those temporary generation source files are not part of the Testing & Evaluation implementation contribution and were not committed with this evaluation update.
 
 ---
 
 ## 13. Limitations
 
-- The final 133-question retrieval benchmark was run with the **reranker disabled** for practical execution time.
-- Results therefore describe the tested bulk retrieval configuration and not a full before/after three-mode retrieval comparison.
-- Only a small representative generated-answer sample was manually judged.
-- Ten final OOS generation cases could not be evaluated because of Gemini HTTP 429 quota limits.
-- The first retrieval call incurred a large model-download/startup cost.
-- Multi-section scoring uses a strict all-expected-sources criterion.
-- Historical earlier runs are retained as development evidence but are not mixed into the final 133-question reproducible denominator.
-- Retrieval Recall must not be described as overall answer accuracy.
+The final results should be interpreted with the following limitations:
+
+- the 133-question bulk retrieval benchmark was run with the reranker disabled
+- the result therefore does not represent a complete before/after reranker comparison
+- only a small representative generated-answer sample was manually reviewed
+- ten final OOS generation cases could not be scored because of Gemini HTTP 429 quota limits
+- the first retrieval request incurred a large model-download/startup delay
+- multi-section scoring used a strict all-expected-sources rule
+- retrieval Recall is not the same as overall answer accuracy
+- retrieval latency is not the same as full end-to-end latency
+- detailed final per-query artifacts created during the Colab session were lost after a runtime reset before they were committed
 
 ---
 
 ## 14. Recommended Next Improvements
 
 1. Improve Urdu and Roman Urdu normalization.
-2. Add stronger multi-section query decomposition/retrieval.
-3. Improve family-law retrieval coverage.
-4. Complete branch integration so the deployed `/rag/query` consistently returns generated answers.
-5. Add OOS detection before expensive retrieval/reranking/generation where appropriate.
-6. Reduce reranker and generation latency.
-7. Clean inconsistent legal-source metadata.
-8. Run a controlled future comparison of:
+2. Improve multilingual query understanding.
+3. Add stronger multi-section query decomposition and retrieval.
+4. Improve family-law retrieval coverage.
+5. Complete branch integration so the deployed `/rag/query` consistently returns generated answers.
+6. Add early OOS classification before expensive retrieval/reranking/generation where appropriate.
+7. Reduce reranker and generation latency.
+8. Clean inconsistent legal-source metadata.
+9. Run a future controlled retrieval comparison across:
    - vector-only retrieval
    - hybrid BM25 + vector + RRF
    - hybrid + cross-encoder reranking
 
-Only measured comparison results should be published.
+Only experimentally measured comparison results should be published.
 
 ---
 
-## 15. Evidence Files
+## 15. Preserved Evaluation Evidence
 
-The following committed files provide the preserved final evaluation evidence:
+The following committed files preserve the final evaluation summary evidence:
 
-- [`final_evaluation_metrics_150.json`](final_evaluation_metrics_150.json) — aggregate metrics from the completed 133-question legal retrieval benchmark
-- [`manual_answer_evaluation_150.json`](manual_answer_evaluation_150.json) — representative legal manual review and final OOS generation summary
-- [`evaluation_dataset.json`](evaluation_dataset.json) — earlier saved evaluation dataset used during development
-- [`evaluation_results.csv`](evaluation_results.csv) — earlier evaluation results retained as historical evidence
-- [`generated_answer_results.json`](generated_answer_results.json) — earlier generated-answer retrieval evidence
+- [`final_evaluation_metrics_150.json`](final_evaluation_metrics_150.json) — aggregate results from the completed 133-question legal retrieval benchmark
+- [`manual_answer_evaluation_150.json`](manual_answer_evaluation_150.json) — representative manual legal review and OOS generation summary
+- [`evaluation_dataset.json`](evaluation_dataset.json) — earlier development evaluation dataset
+- [`evaluation_results.csv`](evaluation_results.csv) — earlier development retrieval results
+- [`generated_answer_results.json`](generated_answer_results.json) — earlier generated-answer evaluation evidence
+- [`manual_answer_evaluation.json`](manual_answer_evaluation.json) — earlier manually reviewed legal-answer evidence
 
-> **Evidence preservation note:** Detailed final per-query JSON/CSV files created during the Colab evaluation session were lost after a runtime reset before they were committed. They are therefore not recreated or presented as raw reproducible artifacts. Final aggregate figures above are preserved from the recorded completed-run outputs.
+> **Evidence preservation note:** Detailed final per-query JSON/CSV artifacts produced during the final Colab evaluation session were lost after a runtime reset before they were committed. They have not been fabricated or reconstructed as raw evidence. Final aggregate results are preserved from the recorded completed-run outputs.
 
 ---
 
 ## 16. Final Evaluation Statement
 
-The final evaluation provides a reproducible benchmark across **150 labelled questions**, including a completed **133-question legal retrieval run**.
+PakLaw AI's final Testing & Evaluation work covered **150 labelled questions**, including a completed **133-question legal retrieval benchmark**.
 
-The evaluation demonstrates strong exact-citation and province-sensitive retrieval while exposing measurable weaknesses in Urdu, Roman Urdu, multi-section, and selected family-law queries.
+The benchmark produced:
 
-The work also demonstrates why evaluation must distinguish:
+- **Recall@5: 62.41%**
+- **Recall@10: 67.67%**
+- **P50 retrieval latency: 146.0 ms**
+- **P95 retrieval latency: 379.5 ms**
+- **0 retrieval execution errors across 133 legal calls**
 
-- retrieval performance from answer accuracy
-- API failures from retrieval misses
-- valid citations from full answer groundedness
-- automated metrics from human hallucination assessment
-- retrieval latency from full end-to-end generation latency
+The results demonstrate strong exact-citation and province-sensitive retrieval while exposing measurable weaknesses in Urdu, Roman Urdu, multi-section, and selected family-law queries.
 
-These findings provide concrete evidence for both the strengths of PakLaw AI and the areas requiring further engineering improvement.
+Representative generated-answer testing also showed grounded legal responses in the reviewed sample, while successfully generated non-legal OOS queries were correctly refused.
+
+The evaluation deliberately distinguishes:
+
+- retrieval performance from final-answer accuracy
+- API errors from retrieval misses
+- citation validity from groundedness
+- automated metrics from human unsupported-claim assessment
+- retrieval latency from full end-to-end latency
+
+The purpose of this evaluation is not to present perfect results. It is to provide measurable evidence of what PakLaw AI currently does well, where it fails, and which areas should be improved next.
