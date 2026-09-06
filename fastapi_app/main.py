@@ -25,6 +25,7 @@ from .errors import DocumentExtractionError, ModelUnavailableError
 from .generation import analyze_clause, generate_answer, summarize_document
 
 MAX_CLAUSES = 200
+MAX_UPLOAD_BYTES = 10 * 1024 * 1024
 
 
 logger = logging.getLogger("uvicorn.error")
@@ -213,7 +214,16 @@ def rag_query(request: QueryRequest):
     except ModelUnavailableError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
 
-    answer = generate_answer(request.query, chunks)
+    try:
+        answer = generate_answer(request.query, chunks)
+    except Exception as exc:
+        # Retrieval succeeded, so return the sources with an honest note rather
+        # than a 500: the user still gets the law even when generation fails.
+        logger.warning("Answer generation failed: %s", exc)
+        answer = (
+            "The answer could not be generated right now. The relevant legal sources "
+            "retrieved for this question are listed below."
+        )
 
     return QueryResponse(
         chunks=chunks,
@@ -258,6 +268,12 @@ async def analyze_document(
     data = await file.read()
     if not data:
         raise HTTPException(status_code=400, detail="Uploaded file is empty")
+
+    if len(data) > MAX_UPLOAD_BYTES:
+        raise HTTPException(
+            status_code=413,
+            detail=f"File is too large. Maximum size is {MAX_UPLOAD_BYTES // (1024 * 1024)} MB.",
+        )
 
     try:
         raw_text = document_extraction.extract_text(file.filename or "", data)
