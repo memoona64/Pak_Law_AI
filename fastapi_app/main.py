@@ -22,7 +22,7 @@ from pydantic import BaseModel, Field
 
 from . import citation_verifier, doc_chunker, document_extraction, masking, search_service
 from .errors import DocumentExtractionError, ModelUnavailableError
-from .generation import analyze_clause, generate_answer
+from .generation import analyze_clause, generate_answer, summarize_document
 
 MAX_CLAUSES = 200
 
@@ -304,9 +304,18 @@ async def analyze_document(
         if obligation:
             obligations.append(ObligationItem(**obligation))
 
-    flagged_count = sum(1 for clause in analyzed if clause.risk == "flag")
-    warn_count = sum(1 for clause in analyzed if clause.risk == "warn")
-    summary = f"{len(analyzed)} clauses analyzed. {flagged_count} flagged for review, {warn_count} warnings."
+    flagged_notes = [clause.note for clause in analyzed if clause.risk == "flag"]
+    try:
+        summary = summarize_document(mask_result.text, flagged_notes)
+    except Exception as exc:
+        # A failed summary must not discard the clause analysis that succeeded.
+        logger.warning("Document summary failed: %s", exc)
+        flagged_count = len(flagged_notes)
+        warn_count = sum(1 for clause in analyzed if clause.risk == "warn")
+        summary = (
+            f"Summary unavailable. {len(analyzed)} clauses analyzed, "
+            f"{flagged_count} flagged for review, {warn_count} warnings."
+        )
     if truncated:
         summary += f" Only the first {MAX_CLAUSES} clauses were analyzed due to document length."
 
