@@ -1,4 +1,4 @@
-# Document Analysis — Handoff
+# Document Analysis Explanation
 
 **Plan reference:** §9b (Document analysis), §6 (citation verifier), §11 (endpoints, collections), §13 Phase 1 task 5 + Phase 2 task 1
 **Status:** FastAPI side complete. Express and frontend still to do.
