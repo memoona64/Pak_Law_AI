@@ -44,7 +44,7 @@ Two plan tasks, both on the Python/FastAPI side:
 **Two things worth understanding about why the code looks the way it does:**
 
 - **Failures are contained.** Every AI call can fail — the network drops, the free quota runs out, the model returns something malformed. If that happens, the affected clauses come back marked `warn` with an honest "analysis failed, please review manually" note, and **every other clause still gets analysed**. A document is never thrown away because one part of it failed.
-- **Each clause costs one AI request, plus one for the summary.** A 5-clause document costs 6 requests. This adds up fast on the free Gemini tier, so avoid re-running the same document repeatedly while testing. A batching optimisation (8 clauses per request) was written and then deliberately set aside before submission because it had not been verified against the live API — see limitation 5.
+- **We batch the AI calls, because the free tier allows only 20 requests per day.** We ask about 8 clauses in one request instead of one request per clause. A 20-clause contract needs 4 requests batched versus 21 unbatched, which would exceed the entire daily allowance. Each answer is matched back to its clause *by clause number*, not by position, so nothing is attached to the wrong clause if the AI reorders its reply.
 
 **The same guard also protects normal chat.** Step 6 above is not only for uploaded documents. The same verifier now runs on every answer from `/rag/query`: if the AI cites a section that was not among the law we retrieved, the answer is **withheld** rather than shown, and we log it. §1 of the plan requires exactly this — every answer cites verified law "or it refuses".
 
@@ -71,7 +71,7 @@ Two plan tasks, both on the Python/FastAPI side:
 
 ### Verified behaviour, not just written
 
-- **Three live runs saved in `docs/evidence/`** (real Gemini API, not mocked): `sample-analysis-output.json`, `sample-analysis-output-run2.json`, and `sample-analysis-output-run3-google-genai.json` — the last one produced *after* the `google-genai` SDK migration, so it reflects exactly the code in this branch. On the sample tenancy agreement both runs masked 2 CNICs, 1 phone and 1 email; flagged the 15% rent escalation against the 10% ceiling in Section 9(2) of the Sindh Rented Premises Ordinance; flagged self-help re-entry against Section 15's requirement to apply to the Controller; extracted both dated obligations; and verified every citation. Cost: 2 API requests per run.
+- **Three live runs saved in `docs/evidence/`** (real Gemini API, not mocked): `sample-analysis-output.json`, `sample-analysis-output-run2.json`, and `sample-analysis-output-run3-google-genai.json` — the last one produced *after* the `google-genai` SDK migration, so it reflects exactly the code in this branch. On the sample tenancy agreement every run masked 2 CNICs, 1 phone and 1 email; flagged the 15% rent escalation against the 10% ceiling in Section 9(2) of the Sindh Rented Premises Ordinance; flagged self-help re-entry against Section 15's requirement to apply to the Controller; extracted both dated obligations; and verified every citation. Cost: 2 API requests per run.
 - **Reproducible where it matters:** across all three runs — including one on a different SDK — the same two clauses were flagged (the 15% escalation and the self-help re-entry), every citation verified, both obligations extracted, and masking counts identical (2 CNIC, 1 phone, 1 email).
 - **What does vary:** wording is rephrased each run, and a borderline clause can move between `ok` and `warn` — clause 1 (an administrative "parties and premises" clause) came back `ok` in two runs and `warn` in the third. The serious findings were stable; low-stakes judgement calls are not deterministic. Do not claim run-to-run identical output.
 - **Hallucinated citation test:** when the model was forced to return `"risk": "ok"` while citing a fabricated "Section 9999", the endpoint overrode it to `flag` with `citations_verified: false`. An unverified citation can never pass through as safe.
@@ -284,9 +284,3 @@ Every Gemini call now goes through one `_generate()` helper, which is what §3 a
 **One correction for dev:** dev's default is `GEMINI_MODEL=gemini-2.5-flash`, which returns `404 no longer available to new users` on newer API keys. Also, dev's commit message states `gemini-3.6-flash` "does not exist as a model name" — in testing that model returned **429 quota errors**, which means the name is valid and it was quota, not an invalid model. This branch defaults to `gemini-3.1-flash-lite`, verified working.
 
 ---
-
-## 6. Attribution
-
-- `masking.py`, `doc_chunker.py`, `citation_verifier.py`, `document_extraction.py`, the `/rag/analyze-document` endpoint, `analyze_clauses()`, `summarize_document()`, and the two new prompts — this branch.
-- `generation.py` and `prompts.py` were created by Wania Imran on `llm-generation`; this branch merged that work and added to it. The `google-genai` client setup in `generation.py` follows the migration done on `origin/dev`.
-- `search_service.py` is Kaneeza's and was reused unchanged.
