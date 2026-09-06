@@ -1,6 +1,6 @@
 # Document Analysis Explanation
 
-**Plan reference:** §9b (Document analysis), §6 (citation verifier), §11 (endpoints, collections), §13 Phase 1 task 5 + Phase 2 task 1
+**Plan reference:** Section 9b (Document analysis), Section 6 (citation verifier), Section 11 (endpoints, collections), Section 13 Phase 1 task 5 + Phase 2 task 1
 **Status:** FastAPI side complete. Express and frontend still to do.
 **Branch:** `document-analysis`
 
@@ -12,8 +12,8 @@ Two plan tasks, both on the Python/FastAPI side:
 
 | Plan task | Delivered |
 |---|---|
-| **Phase 2 task 1** — FastAPI `/rag/query` with per-stage timing, **plus `/rag/analyze-document`** | Both endpoints working. Document analysis implements every §9b step |
-| **Phase 1 task 5** — Citation verifier + unsupported-claim detector ("the hallucination guard") | Verifier wired as the §6 blocking gate on `/rag/query`, plus the §8 unsupported-claim detector |
+| **Phase 2 task 1** — FastAPI `/rag/query` with per-stage timing, **plus `/rag/analyze-document`** | Both endpoints working. Document analysis implements every plan Section 9b step |
+| **Phase 1 task 5** — Citation verifier + unsupported-claim detector ("the hallucination guard") | Verifier wired as the plan Section 6 blocking gate on `/rag/query`, plus the plan Section 8 unsupported-claim detector |
 
 **Not in this branch, and not this task:** the Express routes and `Documents` schema (Phase 2 task 3), the upload UI and masking badge (Phase 3 task 3), and the corpus chunker script (Phase 1 task 2). See section 3.
 
@@ -23,7 +23,7 @@ Two plan tasks, both on the Python/FastAPI side:
 
 **The problem we are solving.** Someone signs a rent agreement without understanding it. We want to tell them, in plain words, what the document makes them do — and warn them about clauses that conflict with actual Pakistani law.
 
-**The trick is that we did not build anything new to do this.** The Q&A feature already knows how to take a question, find the relevant law, and answer it with a real citation. Document analysis just feeds it a different input: instead of a typed question, each *clause* of the uploaded document becomes the "question". That is why §9b calls it cheap.
+**The trick is that we did not build anything new to do this.** The Q&A feature already knows how to take a question, find the relevant law, and answer it with a real citation. Document analysis just feeds it a different input: instead of a typed question, each *clause* of the uploaded document becomes the "question". That is why plan Section 9b calls it cheap.
 
 **What happens when someone uploads a PDF, step by step:**
 
@@ -46,28 +46,28 @@ Two plan tasks, both on the Python/FastAPI side:
 - **Failures are contained.** Every AI call can fail — the network drops, the free quota runs out, the model returns something malformed. If that happens, the affected clauses come back marked `warn` with an honest "analysis failed, please review manually" note, and **every other clause still gets analysed**. A document is never thrown away because one part of it failed.
 - **We batch the AI calls, because the free tier allows only 20 requests per day.** We ask about 8 clauses in one request instead of one request per clause. A 20-clause contract needs 4 requests batched versus 21 unbatched, which would exceed the entire daily allowance. Each answer is matched back to its clause *by clause number*, not by position, so nothing is attached to the wrong clause if the AI reorders its reply.
 
-**The same guard also protects normal chat.** Step 6 above is not only for uploaded documents. The same verifier now runs on every answer from `/rag/query`: if the AI cites a section that was not among the law we retrieved, the answer is **withheld** rather than shown, and we log it. §1 of the plan requires exactly this — every answer cites verified law "or it refuses".
+**The same guard also protects normal chat.** Step 6 above is not only for uploaded documents. The same verifier now runs on every answer from `/rag/query`: if the AI cites a section that was not among the law we retrieved, the answer is **withheld** rather than shown, and we log it. plan Section 1 of the plan requires exactly this — every answer cites verified law "or it refuses".
 
-**Where this fits in the system.** The browser never talks to Python directly (§3). The React page will call Express, and Express calls this Python endpoint and saves the result in MongoDB. That Express layer is not built yet — see section 3 below.
+**Where this fits in the system.** The browser never talks to Python directly (plan Section 3). The React page will call Express, and Express calls this Python endpoint and saves the result in MongoDB. That Express layer is not built yet — see section 3 below.
 
 ---
 
 ## 1. What is done
 
-`POST /rag/analyze-document` implements the full §9b pipeline and is working end to end.
+`POST /rag/analyze-document` implements the full plan Section 9b pipeline and is working end to end.
 
-| §9b step | Where it lives | Notes |
+| Plan Section 9b step | Where it lives | Notes |
 |---|---|---|
 | Upload PDF | `fastapi_app/main.py` | PDF only, 10 MB cap |
 | Extract text | `fastapi_app/document_extraction.py` | Same pdfplumber approach as `scripts/extract.py`, reading upload bytes instead of a file path |
 | Mask PII | `fastapi_app/masking.py` | Regex only — CNIC, phone, email. Returns a count per category |
 | Chunk it | `fastapi_app/doc_chunker.py` | Splits by numbered clause; sentence-window fallback for unstructured documents |
-| Retrieve relevant law | `fastapi_app/search_service.py` | **Reused unchanged.** No second retrieval pipeline (§14 risk) |
+| Retrieve relevant law | `fastapi_app/search_service.py` | **Reused unchanged.** No second retrieval pipeline (plan Section 14 risk) |
 | LLM explains the clause | `fastapi_app/generation.py` → `analyze_clauses()` | 8 clauses per Gemini call. Returns risk + note + obligation each |
 | Citation verifier | `fastapi_app/citation_verifier.py` | See limitation 1 below |
 | Summary + flagged clauses | `fastapi_app/main.py` | `summarize_document()` writes the 3–5 sentence summary |
 
-**Masking ordering is correct per §9b** ("never in parallel"): masking runs before chunking, and before any text reaches the embedding model or the LLM.
+**Masking ordering is correct per plan Section 9b** ("never in parallel"): masking runs before chunking, and before any text reaches the embedding model or the LLM.
 
 ### Verified behaviour, not just written
 
@@ -109,7 +109,7 @@ If the page loads but requests fail with "Failed to fetch", the server is not ru
 |---|---|---|---|
 | `file` | file | yes | **PDF only**, max **10 MB** |
 | `province` | string | no | e.g. `sindh` — filters retrieval to that province plus federal law |
-| `use_reranker` | boolean | no | Defaults to `false`. See the latency warning in §4 before enabling |
+| `use_reranker` | boolean | no | Defaults to `false`. See the latency warning under Known limitations below before enabling |
 
 ### Response `200`
 
@@ -153,7 +153,7 @@ A single clause failing (API error, quota exhausted, unparseable model output) d
 
 ### API quota cost per upload
 
-**The Gemini free tier allows only 20 requests per day, per project _and per model_.** Because the cap is per model, switching models is the fastest way to recover an exhausted quota — set `GEMINI_MODEL` in `.env` (currently `gemini-3.1-flash-lite`). No code change needed, which is what §3 asks for. Clauses are therefore analysed **8 per call**, plus one call for the summary.
+**The Gemini free tier allows only 20 requests per day, per project _and per model_.** Because the cap is per model, switching models is the fastest way to recover an exhausted quota — set `GEMINI_MODEL` in `.env` (currently `gemini-3.1-flash-lite`). No code change needed, which is what plan Section 3 asks for. Clauses are therefore analysed **8 per call**, plus one call for the summary.
 
 | Document size | Gemini calls | Runs available per day |
 |---|---|---|
@@ -181,11 +181,11 @@ Retrieval is local and costs no quota. If you see every clause come back as *"An
 |---|---|
 | `citations_verified` (bool) | Chat UI — whether to show a verified badge |
 | `unverified_citations` (list) | Logging / debugging |
-| `unsupported_claims` (list) | Dashboard Panel 3 (§8) |
+| `unsupported_claims` (list) | Dashboard Panel 3 (plan Section 8) |
 | `verifier_blocked` (bool) | **Dashboard Panel 2 — "count of answers blocked by the verifier"** |
 | `timings.verify_ms` | Dashboard Panel 4 latency breakdown (measured: ~0.2 ms) |
 
-### Dashboard — Phase 2 task 6 / Phase 3 task 6 (§8)
+### Dashboard — Phase 2 task 6 / Phase 3 task 6 (plan Section 8)
 
 Panel 2 and Panel 3 numbers now come straight off the `/rag/query` response, no extra work on the Python side:
 
@@ -194,26 +194,26 @@ Panel 2 and Panel 3 numbers now come straight off the `/rag/query` response, no 
 - **Unsupported claim rate** = responses where `unsupported_claims` is non-empty
 - **Verification latency** = `timings.verify_ms`
 
-§8 is explicit that "true hallucination rate" is **not** automatable — report invalid-citation rate and refusal rate instead, and say what was measured.
+plan Section 8 is explicit that "true hallucination rate" is **not** automatable — report invalid-citation rate and refusal rate instead, and say what was measured.
 
-### Express — Phase 2 task 3 (§11)
+### Express — Phase 2 task 3 (plan Section 11)
 
 - `POST /api/documents/upload` — multer, **PDF only, 10 MB cap** (match `MAX_UPLOAD_BYTES` in `fastapi_app/main.py`), forward to `/rag/analyze-document`, save the result.
 - `GET /api/documents/:id` — return a saved analysis, scoped to the owning user.
 - Both routes currently return `501` in `backend/routes/documents.js`.
-- `Documents` collection per §11: `userId, filename, summary, flaggedClauses[], obligations[], maskingApplied, citations[], createdAt`.
+- `Documents` collection per plan Section 11: `userId, filename, summary, flaggedClauses[], obligations[], maskingApplied, citations[], createdAt`.
 - The pattern to copy is `chatController.js` → `ragService.js`, which already forwards to FastAPI over axios.
 
-### Frontend — Phase 3 task 3 (§12)
+### Frontend — Phase 3 task 3 (plan Section 12)
 
 - Wire `Documents.jsx` / `DocumentDetail.jsx` to real data. Every clause, count, and date in them is currently hardcoded sample data.
 - **Update the upload copy.** It currently says *"PDF, DOCX, JPG, or scanned pages. Up to 40 MB."* All of that is now wrong — it is **PDF only, 10 MB**, and scanned pages are explicitly unsupported.
-- **Masking badge wording (§9b, important).** Label it **"basic masking"**, never "PII protection". State plainly that CNIC, phone and email are masked by pattern matching, and that **names and addresses are not**. Overclaiming here is a viva risk and a genuine liability.
-- State the other §9b limits in the UI: PDF only, size cap, scanned documents will not work, and *"this is not a legal review — it flags things worth asking a lawyer about."*
+- **Masking badge wording (plan Section 9b, important).** Label it **"basic masking"**, never "PII protection". State plainly that CNIC, phone and email are masked by pattern matching, and that **names and addresses are not**. Overclaiming here is a viva risk and a genuine liability.
+- State the other plan Section 9b limits in the UI: PDF only, size cap, scanned documents will not work, and *"this is not a legal review — it flags things worth asking a lawyer about."*
 
 ### Citation verifier — Phase 1 task 5 — **done**
 
-Now owned here and wired as §6 requires. See section 6 below.
+Now owned here and wired as plan Section 6 requires. See section 6 below.
 
 ### Chunker — Phase 1 task 2
 
@@ -223,36 +223,36 @@ The section-aware corpus chunker is **not committed anywhere** — only its outp
 
 ## 4. Known limitations — state these honestly
 
-1. **Citation verification is existence-only (§6 step 3 not implemented).** §9b says a cited section is "verified to exist **and to say what the answer claims**". Only the first half is implemented: we confirm the cited Section/Article is grounded in the law actually retrieved. We do **not** verify that a quoted excerpt appears verbatim in the cited section, and the system prompt does not currently require answers to include verbatim excerpts — both would need to change together. The `find_unsupported_claims()` lexical-overlap check is a partial substitute (§8 calls this only partly automatable). Do not claim the second half.
+1. **Citation verification is existence-only (plan Section 6 step 3 not implemented).** plan Section 9b says a cited section is "verified to exist **and to say what the answer claims**". Only the first half is implemented: we confirm the cited Section/Article is grounded in the law actually retrieved. We do **not** verify that a quoted excerpt appears verbatim in the cited section, and the system prompt does not currently require answers to include verbatim excerpts — both would need to change together. The `find_unsupported_claims()` lexical-overlap check is a partial substitute (plan Section 8 calls this only partly automatable). Do not claim the second half.
 
-2. **Reranker latency is far over budget.** §8 Panel 4 budgets 200–600 ms for reranking. Measured on CPU with the model already warm: **~15.7 seconds** per query (~49 s on the first call including model load). §15 targets p95 under 6 s end to end. This is why `use_reranker` defaults to `false` on this endpoint — it runs once per clause, so a 20-clause document would add roughly five minutes.
+2. **Reranker latency is far over budget.** plan Section 8 Panel 4 budgets 200–600 ms for reranking. Measured on CPU with the model already warm: **~15.7 seconds** per query (~49 s on the first call including model load). plan Section 15 targets p95 under 6 s end to end. This is why `use_reranker` defaults to `false` on this endpoint — it runs once per clause, so a 20-clause document would add roughly five minutes.
 
 3. **The reranker can hard-crash the process.** `bge-reranker-v2-m3` needs ~2.3 GB and segfaults when free RAM drops below roughly 3 GB. A segfault kills the whole process — the existing `ModelUnavailableError` fallback cannot catch it, since that only handles Python exceptions. If the API dies silently, this is the first thing to check.
 
-4. **Basic masking only.** CNIC, phone and email by regex. Names and addresses are not attempted, per §9b.
+4. **Basic masking only.** CNIC, phone and email by regex. Names and addresses are not attempted, per plan Section 9b.
 
 5. **Clause batching — confirmed working against live Gemini** (see the saved evidence run). Clauses are sent 8 per call because the free tier permits only 20 requests per day; one call per clause cannot analyse a realistic contract within that. If a run returns "analysis failed" for every clause while `masking_applied` is still correct, check the server log: a 429 means quota (switch `GEMINI_MODEL`), anything else may be malformed model output — `CLAUSE_BATCH_SIZE` in `main.py` can be lowered.
 
 ---
 
-## 5. Citation verifier (plan §6, Phase 1 task 5)
+## 5. Citation verifier (plan Section 6, Phase 1 task 5)
 
 `fastapi_app/citation_verifier.py` — the hallucination guard. It runs in two places: on every chat answer, and on every clause explanation in document analysis.
 
 ### What it does
 
-| §6 step | Status |
+| plan Section 6 step | Status |
 |---|---|
 | 1. Parse every section/article reference out of the answer | Done — English, Urdu (`دفعہ`, `آرٹیکل`) and Roman Urdu (`dafa`, `dhara`) forms |
 | 2. Check each exists in the retrieved law | Done |
 | 3. Check the quoted excerpt appears in the section's text | **Not done** — see limitation 1 |
 | 4. On failure: refuse the answer and log it | Done |
 | Runs as a blocking gate on `/rag/query` | Done |
-| §8 unsupported-claim detector | Done — `find_unsupported_claims()` |
+| plan Section 8 unsupported-claim detector | Done — `find_unsupported_claims()` |
 
 ### How the gate behaves
 
-If an answer cites anything that is not grounded in the law retrieved for it, the answer is **withheld** — replaced with a refusal telling the user the sources are listed below — and the event is logged with the offending references. This matches §1 ("every answer citing a real Act and Section verified against the corpus before display, **or it refuses**").
+If an answer cites anything that is not grounded in the law retrieved for it, the answer is **withheld** — replaced with a refusal telling the user the sources are listed below — and the event is logged with the offending references. This matches plan Section 1 ("every answer citing a real Act and Section verified against the corpus before display, **or it refuses**").
 
 `/rag/query` gained four response fields, all additive so existing callers keep working:
 
@@ -260,10 +260,10 @@ If an answer cites anything that is not grounded in the law retrieved for it, th
 |---|---|
 | `citations_verified` | `false` if any citation was ungrounded |
 | `unverified_citations` | The specific references that failed, e.g. `[{"type":"section","number":"9999"}]` |
-| `unsupported_claims` | Answer sentences with little lexical overlap with the retrieved law (§8: a review signal, not proof) |
+| `unsupported_claims` | Answer sentences with little lexical overlap with the retrieved law (plan Section 8: a review signal, not proof) |
 | `verifier_blocked` | `true` when the answer was withheld — **this is the count for dashboard Panel 2** |
 
-`timings` also gains `verify_ms` for the §8 Panel 4 latency breakdown.
+`timings` also gains `verify_ms` for the plan Section 8 Panel 4 latency breakdown.
 
 ### Why it checks retrieved chunks, not the whole corpus
 
@@ -279,7 +279,7 @@ Legal provisions cross-reference each other constantly ("Section 302 read with S
 
 This branch was migrated onto the **`google-genai`** SDK to match `origin/dev`, so `generation.py` should merge cleanly. Both branches independently changed the same file: dev migrated the SDK, this branch added document analysis. They are now aligned — dev's client setup, config pattern, `format_context()` and `generate_answer()` are byte-identical here, with `analyze_clauses()` and `summarize_document()` added on top.
 
-Every Gemini call now goes through one `_generate()` helper, which is what §3 asks for ("every LLM call goes through a single function").
+Every Gemini call now goes through one `_generate()` helper, which is what plan Section 3 asks for ("every LLM call goes through a single function").
 
 **One correction for dev:** dev's default is `GEMINI_MODEL=gemini-2.5-flash`, which returns `404 no longer available to new users` on newer API keys. Also, dev's commit message states `gemini-3.6-flash` "does not exist as a model name" — in testing that model returned **429 quota errors**, which means the name is valid and it was quota, not an invalid model. This branch defaults to `gemini-3.1-flash-lite`, verified working.
 
