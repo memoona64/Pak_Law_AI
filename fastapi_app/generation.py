@@ -1,7 +1,8 @@
 import logging
 import os
 from dotenv import load_dotenv
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 from .prompts import SYSTEM_PROMPT
 
 load_dotenv()
@@ -17,21 +18,23 @@ GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 # context we send instead of assuming every chunk is roughly the same length.
 MAX_CONTEXT_CHARS = 12000
 
-_model = None
+# google.generativeai (the old SDK) is fully deprecated — Google has stopped
+# shipping updates or bug fixes for it. This uses its replacement, google-genai.
+_client = None
+_generation_config = types.GenerateContentConfig(system_instruction=SYSTEM_PROMPT)
 
 
-def _get_model():
+def _get_client():
     """Lazily create the Gemini client (mirrors reranker.py's lazy loading)
     so importing this module never fails just because no key is configured
     yet — only an actual generation attempt notices."""
-    global _model
-    if _model is None:
+    global _client
+    if _client is None:
         api_key = os.getenv("GEMINI_API_KEY")
         if not api_key:
             raise RuntimeError("GEMINI_API_KEY is not set")
-        genai.configure(api_key=api_key)
-        _model = genai.GenerativeModel(GEMINI_MODEL, system_instruction=SYSTEM_PROMPT)
-    return _model
+        _client = genai.Client(api_key=api_key)
+    return _client
 
 
 def format_context(chunks) -> str:
@@ -77,7 +80,11 @@ def generate_answer(query: str, chunks) -> str:
     prompt = f"USER QUESTION:\n{query}\n\nRETRIEVED LEGAL CONTEXT:\n{context}"
 
     try:
-        response = _get_model().generate_content(prompt)
+        response = _get_client().models.generate_content(
+            model=GEMINI_MODEL,
+            contents=prompt,
+            config=_generation_config,
+        )
         return response.text
     except Exception as exc:
         logger.warning("Gemini generation unavailable: %s", exc)
