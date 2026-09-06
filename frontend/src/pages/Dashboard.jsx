@@ -2,142 +2,98 @@ import React from 'react';
 import { Icon, Chip, Btn, Eyebrow, Card, BarChart, Gauge } from '../components/primitives';
 import AppSidebar from '../components/AppSidebar';
 
-// Evaluation dashboard — our real metrics, with obvious placeholder values until a real eval run exists.
+// Evaluation dashboard — plain-language metric names first (technical terms
+// as small secondary tags), with obvious placeholder values until a real
+// evaluation run exists.
 export default function Dashboard() {
   return (
-    <div className="flex h-screen w-full bg-[#F8F5F0] overflow-hidden">
+    <div className="flex h-screen w-full bg-[#F7F6F0] overflow-hidden">
       <AppSidebar />
-      <div className="flex-1 flex flex-col min-w-0 text-[#2C221E] font-sans">
+      <div className="flex-1 flex flex-col min-w-0 text-[#2A2F22] font-sans">
       {/* Header */}
-      <div className="px-10 pt-10 pb-6 flex items-end justify-between border-b rule-hair">
+      <div className="px-4 sm:px-10 pt-6 sm:pt-10 pb-6 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 border-b rule-hair">
         <div>
-          <Eyebrow>Evaluation Dashboard</Eyebrow>
-          <h1 className="mt-2 font-serif text-[42px] leading-[1.02] tracking-[-0.01em]">
-            The evidence, on the <span className="italic text-[#8C6D53]">record.</span>
+          <Eyebrow>Evaluation</Eyebrow>
+          <h1 className="mt-2 font-serif text-[30px] sm:text-[42px] leading-[1.05] tracking-[-0.01em]">
+            Is PakLaw AI <span className="italic text-[#6B7F5E]">getting it right?</span>
           </h1>
-          <p className="mt-3 text-[16px] text-[#6E5540] max-w-[560px]">
-            Retrieval, citation validity, and refusal handling — measured against our evaluation set of 120+ questions across the statutes in our corpus.
+          <p className="mt-3 text-[16px] text-[#4A5540] max-w-[560px]">
+            We test it against 120+ real questions and check the answers by hand. This page shows how it's doing.
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <Btn variant="outline" icon="filter">Statute · All</Btn>
-          <Btn variant="primary" icon="play">Run evaluation</Btn>
+        <div className="flex flex-wrap items-center gap-2">
+          <Btn variant="primary" icon="play">Run a test</Btn>
         </div>
       </div>
 
-      <div className="flex-1 overflow-auto pl-scroll px-10 py-8 space-y-8">
+      <div className="flex-1 overflow-auto pl-scroll px-4 sm:px-10 py-6 sm:py-8 space-y-8">
         {/* Placeholder banner — every value below is invented until a real run exists */}
-        <div className="flex items-center gap-2.5">
-          <Chip tone="flag" icon="alert-triangle">Placeholder data</Chip>
-          <span className="text-[14px] text-[#6E5540]">Every number on this page is a placeholder — none of it comes from a real evaluation run yet.</span>
+        <div className="flex flex-wrap items-center gap-2.5">
+          <Chip tone="flag" icon="alert-triangle">Example numbers</Chip>
+          <span className="text-[14px] text-[#4A5540]">These aren't real results yet — they'll be replaced once we run a full test.</span>
         </div>
 
-        {/* 4 metric cards — our real metrics */}
-        <div className="grid grid-cols-4 gap-5">
+        {/* 2 metric cards — the two our corpus work most directly affects */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <MetricCard
-            icon="search" eyebrow="Recall@5" kind="gauge" value={0.72} gaugeColor="#8C6D53"
-            sub="Was the correct section in the top 5 retrieved results?"
+            icon="search" eyebrow="Finds the right law" tag="Recall@5"
+            tagHint="The technical name for this: out of every 5 results the search engine returns, how often the correct one was in there."
+            value={0.72} gaugeColor="#6B7F5E"
+            sub="Out of every 5 answers, how often the correct section was actually included."
           />
           <MetricCard
-            icon="book-marked" eyebrow="Citation Validity" kind="gauge" value={0.90} gaugeColor="#5A7A4E"
-            sub="% of cited Act + Section that actually exist in the corpus"
-          />
-          <MetricCard
-            icon="shield-alert" eyebrow="Refusal Rate" kind="gauge" value={0.65} gaugeColor="#C08A2E"
-            sub="% of out-of-scope questions correctly refused"
-          />
-          <MetricCard
-            icon="zap" eyebrow="Latency" kind="latency" latency={{ p50: 480, p95: 1150 }}
-            sub="End-to-end, current pipeline"
+            icon="book-marked" eyebrow="Citations are real" tag="Citation validity"
+            tagHint="The technical name for this: the percentage of cited Act + Section pairs that were checked and actually exist."
+            value={0.90} gaugeColor="#5C8A52"
+            sub="How often a cited law actually exists — checked against our corpus, not made up."
           />
         </div>
 
-        {/* Headline result — the largest panel on the page */}
+        {/* Headline result — the one chart we keep */}
         <ChartPanel
-          eyebrow="Headline result"
-          title="Recall@5 by retrieval mode"
-          description="Vector-only retrieval was missing the correct section too often. Adding BM25 with reciprocal rank fusion, then a reranker on top, is what fixed it — this chart is the evidence."
+          eyebrow="Why this matters"
+          title="Search got better as we improved it"
+          description="Searching by meaning alone missed the right law too often. Adding keyword search, then a final double-check step, fixed most of that — this chart shows the improvement at each stage."
           chart={
             <BarChart
               width={860} height={260}
               data={[58, 74, 82]}
-              labels={['Vector only', 'Hybrid (BM25+RRF)', 'Hybrid + reranker']}
-              color="#8C6D53"
+              labels={['Meaning search only', '+ Keyword search', '+ Double-check (now)']}
+              color="#6B7F5E"
             />
           }
-          note="Placeholder values — will be replaced once the real evaluation run finishes."
+          note="Example values — will be replaced once the real test run finishes."
         />
-
-        <div className="grid grid-cols-12 gap-5">
-          <ChartPanel
-            className="col-span-6"
-            eyebrow="By language"
-            title="Recall@5 — English, Urdu, Roman Urdu"
-            description="Reported separately for each language, not blended into a single average."
-            chart={
-              <BarChart
-                width={480} height={220}
-                data={[81, 63, 55]}
-                labels={['English', 'Urdu (script)', 'Roman Urdu']}
-                color="#8C6D53"
-              />
-            }
-            note="Placeholder values — will be replaced once the real evaluation run finishes."
-          />
-
-          <ChartPanel
-            className="col-span-6"
-            eyebrow="Latency"
-            title="Latency by pipeline stage (P50)"
-            description="Milliseconds spent in each stage of the retrieval-and-answer pipeline."
-            chart={
-              <BarChart
-                width={480} height={220}
-                data={[45, 210, 95, 340]}
-                labels={['Embed', 'Retrieve', 'Rerank', 'Generate']}
-                color="#6E5540"
-              />
-            }
-            note="Placeholder values — will be replaced once the real evaluation run finishes."
-          />
-        </div>
       </div>
       </div>
     </div>
   );
 }
 
-// ---- Metric card — either a gauge (percentage metrics) or a p50/p95 pair (latency) ----
-function MetricCard({ icon, eyebrow, kind, value, gaugeColor, latency, sub }) {
+// ---- Metric card — a plain-language label first, the technical term as a small tag ----
+function MetricCard({ icon, eyebrow, tag, tagHint, value, gaugeColor, sub }) {
   return (
     <Card>
-      <div className="flex items-start justify-between">
-        <Eyebrow>{eyebrow}</Eyebrow>
-        <div className="w-8 h-8 rounded-md bg-[#EFE4D2] border border-[#D6BFA8] flex items-center justify-center">
-          <Icon name={icon} size={14} color="#6E5540" />
+      <div className="flex items-start justify-between gap-2">
+        <div className="font-serif text-[16px] leading-tight">{eyebrow}</div>
+        <div className="w-8 h-8 rounded-md bg-[#EDE9D5] border border-[#B9C2A0] flex items-center justify-center shrink-0">
+          <Icon name={icon} size={14} color="#4A5540" />
         </div>
       </div>
-
-      {kind === 'gauge' ? (
-        <div className="mt-4 flex items-center justify-center">
-          <Gauge value={value} label={`${Math.round(value * 100)}%`} color={gaugeColor} size={104} />
-        </div>
-      ) : (
-        <div className="mt-4 space-y-1">
-          <div className="flex items-baseline gap-1.5">
-            <div className="font-serif text-[34px] leading-none tracking-tight">{latency.p50}</div>
-            <div className="text-[14px] text-[#7D7268] font-medium">ms · P50</div>
-          </div>
-          <div className="flex items-baseline gap-1.5">
-            <div className="font-serif text-[22px] leading-none tracking-tight text-[#6E5540]">{latency.p95}</div>
-            <div className="text-[14px] text-[#7D7268] font-medium">ms · P95</div>
-          </div>
+      {tag && (
+        <div className="mt-1 inline-flex items-center gap-1" title={tagHint}>
+          <Eyebrow>{tag}</Eyebrow>
+          {tagHint && <Icon name="info" size={11} color="#7A7D68" />}
         </div>
       )}
 
+      <div className="mt-4 flex items-center justify-center">
+        <Gauge value={value} label={`${Math.round(value * 100)}%`} color={gaugeColor} size={104} />
+      </div>
+
       <div className="mt-4 pt-3 border-t rule-hair">
-        <div className="text-[14px] text-[#6E5540] leading-snug">{sub}</div>
-        <div className="mt-1 text-[14px] italic text-[#B8543A]">Placeholder — pending real eval run</div>
+        <div className="text-[14px] text-[#4A5540] leading-snug">{sub}</div>
+        <div className="mt-1 text-[14px] italic text-[#B8543A]">Example — not a real result yet</div>
       </div>
     </Card>
   );
@@ -149,7 +105,7 @@ function ChartPanel({ eyebrow, title, description, chart, note, className = '' }
     <Card className={className}>
       <Eyebrow>{eyebrow}</Eyebrow>
       <div className="font-serif text-[22px] leading-tight mt-1">{title}</div>
-      {description && <p className="mt-2 text-[16px] text-[#6E5540] max-w-[640px]">{description}</p>}
+      {description && <p className="mt-2 text-[16px] text-[#4A5540] max-w-[640px]">{description}</p>}
       <div className="mt-5 overflow-x-auto">{chart}</div>
       {note && <div className="mt-3 text-[14px] italic text-[#B8543A]">{note}</div>}
     </Card>
