@@ -153,6 +153,19 @@ Page counts match the triage run exactly. One known section was spot-checked by 
     Cost: we lose cognizable vs non-cognizable, which matters for the FIR flow.
     Revisit in week 7 if there is time to extract it as structured table data.
 
+12. **CrPC chunked 2026-09-06** (`scripts/chunk_crpc.py`, output `data/chunks/crpc.json`). It had been cleaned but never chunked, so it was silently absent from the search corpus the whole time -- including §154 and §22A, the two sections the FIR flow depends on most. 496 sections (1-565), TOC and all schedules excluded per items 2 and 11 above.
+    Bugs found and fixed while building it, worth knowing about if this script is ever reused for another document:
+    - A footnote after section 1 lists enforcement dates by province and restarts its own numbering ("1. In the Punjab...", "2. In N.W.F.P...."), which looks exactly like new sections 1-4. Excluded by exact text match, not a generic rule -- a generic "section numbers can't go backward" rule was tried first and turned out to be wrong, because real inserted amendments (e.g. "193A") legitimately appear out of numeric order in the text.
+    - Real section 55 is misprinted as "655." in the cleaned text (a stray digit fused onto the number). Confirmed by position (falls exactly between 54 and 56) and title match against the table of contents; corrected by exact text match.
+    - Lettered sub-chapter headings ("F.__ Suspension and Removal") and combined-range repeal notices ("26 and 27. [...] Rep. by A.O., 1937.") don't match the section-number pattern, so without handling them they silently glued onto whichever section came before -- e.g. section 25's chunk absorbed the F. heading and the 26/27 repeal notice before the fix.
+    Known limitation: `section_title` in the metadata is best-effort. Some sections have no clean title/body separator in the source, so the title is just the whole (sometimes long) first sentence. This only affects the display title, not the section text used for search.
+
+13. **CrPC chunks had footnotes glued into the section text — fixed 2026-09-06.** Item 4 above ("footnote bodies at page bottoms... must not end up inside a section chunk") had not actually been solved for CrPC: `chunk_crpc.py`'s first version left every footnote (amendment citations like "1Subs. by Ord. No. XXXVII of 2001, s.4.") embedded mid-sentence in the chunk text, because the page-bottom footnote just got appended wherever the page happened to break, same as any other line.
+    Fixed by recognising two footnote-line shapes seen in this file — the citation number and its text sharing one line ("3The words... omitted."), or the number sitting alone on its own line with the text starting on the next ("1" then "Subs. by..." below it) — and discarding every line from the first such marker up to the next blank line, since a footnote's text keeps flowing across lines like an ordinary paragraph and the blank line is the one reliable point where it ends and real section text resumes.
+    Verified: still 496 sections (1-565), 0 duplicate ids, 0 empty text/titles, and a scan of all 496 chunks' text for leftover footnote-shaped fragments (a bare number directly followed by a capitalized word) found none. §154 and §22A re-checked and still complete and correct, including §22A's real bracketed sub-section (6) — which survived because it's written as "1[(6)...]" (an amendment-insertion bracket, not a bare footnote citation) and is therefore never mistaken for a footnote.
+    Live-query re-verification (same day) found a real gotcha, not in the chunker: a FastAPI process left running from an earlier session (since 20:40, never stopped) was still bound to port 8000. A fresh `uvicorn` start silently failed to bind ("address already in use") and exited, so every query in the first round of testing was unknowingly hitting that stale process. Its exact-citation results looked correct only because it lazily loads `data/chunks/crpc.json` on its *first-ever* query, which happened to be after this fix was already on disk -- but its on-disk Chroma vector index still had the old (footnote-laden) embeddings from its previous session, so semantic search was silently serving stale results despite the API reporting `vector_status: "ok"`. Caught by directly comparing the persisted collection's `corpus_fingerprint` metadata against a fresh fingerprint of the current chunks (mismatch), and confirmed by checking that the HNSW index's binary files on disk hadn't been touched. Fixed by killing the stale process and deleting `chroma_db/` before starting one clean process. After that, the real rebuild took about 4 minutes (embedding all 1497 corpus chunks from scratch) and the fingerprint then matched. Lesson: `vector_status: "ok"` in the response only means the vector search didn't error, not that the index is current -- when in doubt, check the collection's `corpus_fingerprint` metadata directly, and check `netstat`/`tasklist` for a leftover process before assuming a freshly-started server is the one actually serving requests.
+    Confirmed working after the real rebuild: exact-citation lookup for "Section 154 CrPC" still returns clean footnote-free text; semantic queries in Roman Urdu ("police ne meri FIR darj nahi ki") and English ("what happens if I am arrested without a warrant") both return relevant CrPC sections (§62, §60, §171, §167, §168 for the first; §81, §60, §61, §51, §56 for the second) with no footnote noise in the returned text.
+
 ---
 
 # Pattern decisions
@@ -188,13 +201,15 @@ Page counts match the triage run exactly. One known section was spot-checked by 
   - CrPC 22A — powers of Justices of the Peace
   - Constitution Article 25 — equality of citizens
 
+  Confirmed 2026-09-06 that CrPC 154 and 22A both survived chunking with correct titles and full text, and that the FastAPI exact-citation lookup returns CrPC 154 correctly for "Section 154 CrPC".
+
 ---
 
 # Open problems
 
 1. **Constitution has no amendment date inside the file** — only "27th Amendment" and "2025". Decide whether to also record the NA webpage's date (21 November 2025) and how to label its source.
 2. **PPC listed as "Under Review"** on Pakistan Code while carrying a 30-11-2025 date. Unclear what that status means for currency. Question for the legal reviewer.
-3. **TOC handling not decided.** Skip by page number (fragile) or detect TOC structure (more work, more robust)?
+3. **TOC handling not decided for the general case.** CrPC's chunker (2026-09-06) resolved this for that one document by anchoring on a distinctive phrase ("It is hereby enacted as follows:") rather than a page/line number, which is more robust than a hardcoded skip count. Still open whether the other documents' (already-chunked) TOC handling used the same approach or something more fragile — worth checking if any of them are ever re-chunked.
 4. **CrPC is 15.5 MB.** Fine on D:, but watch it if disk gets tight again.
 5. **No legal reviewer recruited.** Blocks the guided flows, not the corpus. Flagged to the team.
 
