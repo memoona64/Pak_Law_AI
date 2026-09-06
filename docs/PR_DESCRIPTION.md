@@ -65,12 +65,10 @@ Also tested: a forced hallucinated citation ("Section 9999") is overridden from 
 
 ## Test plan
 
-- [ ] `pip install -r requirements.txt`, set `GEMINI_API_KEY` and `GEMINI_MODEL` in `.env`
-- [ ] `python -m uvicorn fastapi_app.main:app --port 8000`, open `/docs`
-- [ ] `POST /rag/analyze-document` with `sample_tenancy_agreement.pdf` → clauses 2 and 4 flagged, masking counts 2/1/1
-- [ ] Upload a non-PDF → 422; a file over 10 MB → 413
-- [ ] `POST /rag/query` still returns answers with sources, and `verifier_blocked` is present
+- `pip install -r requirements.txt`, set `GEMINI_API_KEY` and `GEMINI_MODEL` in `.env`
+- `python -m uvicorn fastapi_app.main:app --port 8000`, open `/docs`
+- `POST /rag/analyze-document` with `sample_tenancy_agreement.pdf` → clauses 2 and 4 flagged, masking counts 2/1/1
+- Upload a non-PDF → 422; a file over 10 MB → 413
+- `POST /rag/query` still returns answers with sources, and `verifier_blocked` is present
 
 Full detail: `docs/document-analysis-handoff.md`.
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
