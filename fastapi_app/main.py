@@ -14,15 +14,17 @@ if sys.platform == "win32" and hasattr(sys.stdout, "buffer") and hasattr(sys.std
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
-from . import search_service
-from .errors import ModelUnavailableError
-from .generation import generate_answer
+from . import citation_verifier, doc_chunker, document_extraction, masking, search_service
+from .errors import DocumentExtractionError, ModelUnavailableError
+from .generation import analyze_clause, generate_answer
+
+MAX_CLAUSES = 200
 
 
 logger = logging.getLogger("uvicorn.error")
@@ -143,6 +145,26 @@ class QueryResponse(BaseModel):
     normalized_query: Optional[str] = None
 
 
+class ObligationItem(BaseModel):
+    date: str
+    description: str
+
+
+class ClauseAnalysis(BaseModel):
+    clause_number: Optional[str]
+    text: str
+    risk: str
+    note: str
+    citations_verified: bool
+
+
+class AnalyzeDocumentResponse(BaseModel):
+    summary: str
+    flagged_clauses: list[ClauseAnalysis]
+    obligations: list[ObligationItem]
+    masking_applied: dict
+
+
 @app.on_event("startup")
 def startup():
     search_service.initialize()
@@ -199,6 +221,100 @@ def rag_query(request: QueryRequest):
         timings=timings,
         province_filter=request.province,
         normalized_query=normalized_query,
+    )
+
+
+def _analyze_one_clause(
+    clause_text: str, province: Optional[str], use_reranker: bool
+) -> tuple[str, str, bool, Optional[dict]]:
+    """Retrieve law for one clause, get a risk analysis, and verify its citations.
+
+    Returns (risk, note, citations_verified, obligation). Any unverified
+    citation forces risk to "flag" — the model's own risk guess is never
+    trusted over an unverified citation.
+    """
+    try:
+        retrieved, _, _ = search_service.search(
+            query=clause_text, k=5, province=province, use_reranker=use_reranker
+        )
+    except ModelUnavailableError as exc:
+        logger.warning("Retrieval unavailable for a clause, analyzing with no context: %s", exc)
+        retrieved = []
+
+    result = analyze_clause(clause_text, retrieved)
+    verification = citation_verifier.verify_citations(result["note"], retrieved)
+    risk = "flag" if verification["unverified"] else result["risk"]
+    return risk, result["note"], verification["all_verified"], result["obligation"]
+
+
+@app.post("/rag/analyze-document", response_model=AnalyzeDocumentResponse)
+async def analyze_document(
+    file: UploadFile = File(...),
+    province: Optional[str] = Form(None),
+    # Off by default: reranking runs per clause and costs ~15s each, so a long
+    # document would take minutes. Turn it on for higher retrieval quality.
+    use_reranker: bool = Form(False),
+):
+    data = await file.read()
+    if not data:
+        raise HTTPException(status_code=400, detail="Uploaded file is empty")
+
+    try:
+        raw_text = document_extraction.extract_text(file.filename or "", data)
+    except DocumentExtractionError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+    mask_result = masking.mask_text(raw_text)
+    clauses = doc_chunker.chunk_document(mask_result.text)
+    if not clauses:
+        raise HTTPException(status_code=422, detail="No analyzable text found in this document")
+
+    truncated = len(clauses) > MAX_CLAUSES
+    clauses = clauses[:MAX_CLAUSES]
+
+    analyzed: list[ClauseAnalysis] = []
+    obligations: list[ObligationItem] = []
+    for index, clause in enumerate(clauses, start=1):
+        clause_number = clause["clause_number"] or str(index)
+        clause_text = clause["text"]
+        try:
+            risk, note, citations_verified, obligation = _analyze_one_clause(
+                clause_text, province, use_reranker
+            )
+        except Exception as exc:
+            # One bad clause (API error, unexpected model output) must not
+            # take down analysis of the rest of the document.
+            logger.warning("Analysis failed for clause %s: %s", clause_number, exc)
+            risk, note, citations_verified, obligation = (
+                "warn",
+                "Analysis failed for this clause; please review manually.",
+                False,
+                None,
+            )
+
+        analyzed.append(
+            ClauseAnalysis(
+                clause_number=clause_number,
+                text=clause_text,
+                risk=risk,
+                note=note,
+                citations_verified=citations_verified,
+            )
+        )
+        if obligation:
+            obligations.append(ObligationItem(**obligation))
+
+    flagged_count = sum(1 for clause in analyzed if clause.risk == "flag")
+    warn_count = sum(1 for clause in analyzed if clause.risk == "warn")
+    summary = f"{len(analyzed)} clauses analyzed. {flagged_count} flagged for review, {warn_count} warnings."
+    if truncated:
+        summary += f" Only the first {MAX_CLAUSES} clauses were analyzed due to document length."
+
+    return AnalyzeDocumentResponse(
+        summary=summary,
+        flagged_clauses=analyzed,
+        obligations=obligations,
+        masking_applied=mask_result.counts,
     )
 
 

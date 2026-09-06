@@ -1,11 +1,17 @@
+import json
 import os
+import re
 from dotenv import load_dotenv
 import google.generativeai as genai
-from .prompts import SYSTEM_PROMPT
+from .prompts import CLAUSE_ANALYSIS_PROMPT, SYSTEM_PROMPT
 
 load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 model = genai.GenerativeModel("gemini-3.6-flash", system_instruction=SYSTEM_PROMPT)
+clause_model = genai.GenerativeModel("gemini-3.6-flash", system_instruction=CLAUSE_ANALYSIS_PROMPT)
+
+VALID_RISK_LEVELS = {"ok", "warn", "flag"}
+_JSON_FENCE = re.compile(r"^```(?:json)?\s*|\s*```$", re.IGNORECASE | re.MULTILINE)
 
 # Chunks vary a lot in size (some large, some small), so we cap the total
 # context we send instead of assuming every chunk is roughly the same length.
@@ -49,3 +55,33 @@ def generate_answer(query: str, chunks) -> str:
     prompt = f"USER QUESTION:\n{query}\n\nRETRIEVED LEGAL CONTEXT:\n{context}"
     response = model.generate_content(prompt)
     return response.text
+
+
+def analyze_clause(clause_text: str, chunks) -> dict:
+    """Ask Gemini to classify one document clause's risk against retrieved law.
+
+    Returns {"risk": "ok"|"warn"|"flag", "note": str, "obligation": dict|None}.
+    Falls back to a "warn" result (rather than raising) if the model's
+    response isn't valid JSON, so one bad clause doesn't stop the rest.
+    """
+    context = format_context(chunks) if chunks else "(no matching legal context found)"
+    prompt = f"CLAUSE TEXT:\n{clause_text}\n\nRETRIEVED LEGAL CONTEXT:\n{context}"
+    response = clause_model.generate_content(prompt)
+    raw = _JSON_FENCE.sub("", response.text.strip())
+
+    try:
+        parsed = json.loads(raw)
+        risk = parsed.get("risk")
+        if risk not in VALID_RISK_LEVELS:
+            raise ValueError(f"unexpected risk level: {risk!r}")
+        return {
+            "risk": risk,
+            "note": parsed.get("note", ""),
+            "obligation": parsed.get("obligation"),
+        }
+    except (json.JSONDecodeError, ValueError, AttributeError):
+        return {
+            "risk": "warn",
+            "note": "Could not parse the model's analysis for this clause.",
+            "obligation": None,
+        }
