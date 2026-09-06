@@ -6,6 +6,19 @@
 
 ---
 
+## Scope of this branch — what was completed
+
+Two plan tasks, both on the Python/FastAPI side:
+
+| Plan task | Delivered |
+|---|---|
+| **Phase 2 task 1** — FastAPI `/rag/query` with per-stage timing, **plus `/rag/analyze-document`** | Both endpoints working. Document analysis implements every §9b step |
+| **Phase 1 task 5** — Citation verifier + unsupported-claim detector ("the hallucination guard") | Verifier wired as the §6 blocking gate on `/rag/query`, plus the §8 unsupported-claim detector |
+
+**Not in this branch, and not this task:** the Express routes and `Documents` schema (Phase 2 task 3), the upload UI and masking badge (Phase 3 task 3), and the corpus chunker script (Phase 1 task 2). See section 3.
+
+---
+
 ## 0. How it works, in plain language
 
 **The problem we are solving.** Someone signs a rent agreement without understanding it. We want to tell them, in plain words, what the document makes them do — and warn them about clauses that conflict with actual Pakistani law.
@@ -32,6 +45,8 @@
 
 - **Failures are contained.** Every AI call can fail — the network drops, the free quota runs out, the model returns something malformed. If that happens, the affected clauses come back marked `warn` with an honest "analysis failed, please review manually" note, and **every other clause still gets analysed**. A document is never thrown away because one part of it failed.
 - **Each clause costs one AI request, plus one for the summary.** A 5-clause document costs 6 requests. This adds up fast on the free Gemini tier, so avoid re-running the same document repeatedly while testing. A batching optimisation (8 clauses per request) was written and then deliberately set aside before submission because it had not been verified against the live API — see limitation 5.
+
+**The same guard also protects normal chat.** Step 6 above is not only for uploaded documents. The same verifier now runs on every answer from `/rag/query`: if the AI cites a section that was not among the law we retrieved, the answer is **withheld** rather than shown, and we log it. §1 of the plan requires exactly this — every answer cites verified law "or it refuses".
 
 **Where this fits in the system.** The browser never talks to Python directly (§3). The React page will call Express, and Express calls this Python endpoint and saves the result in MongoDB. That Express layer is not built yet — see section 3 below.
 
@@ -129,6 +144,32 @@ Retrieval is local and costs no quota. If you see every clause come back as *"An
 ---
 
 ## 3. What still needs doing
+
+### ⚠️ Read first if you consume `/rag/query` (Express chat, chat UI, dashboard)
+
+`/rag/query` **changed**. It can now withhold an answer, and it returns four new fields. All additions are backward compatible — nothing you have already built will break — but two things need action:
+
+1. **The answer can now be a refusal.** If the model cites law that was not retrieved, the answer text is replaced with a refusal message and `verifier_blocked` is `true`. The retrieved `chunks` are still returned. The chat UI should show the sources even when the answer is withheld, rather than rendering an empty state.
+2. **`/rag/query` no longer 500s when generation fails.** It returns 200 with the sources and an honest note. If you wrote error handling that assumed a 500 on Gemini failure, it will no longer fire.
+
+| New field | Who needs it |
+|---|---|
+| `citations_verified` (bool) | Chat UI — whether to show a verified badge |
+| `unverified_citations` (list) | Logging / debugging |
+| `unsupported_claims` (list) | Dashboard Panel 3 (§8) |
+| `verifier_blocked` (bool) | **Dashboard Panel 2 — "count of answers blocked by the verifier"** |
+| `timings.verify_ms` | Dashboard Panel 4 latency breakdown (measured: ~0.2 ms) |
+
+### Dashboard — Phase 2 task 6 / Phase 3 task 6 (§8)
+
+Panel 2 and Panel 3 numbers now come straight off the `/rag/query` response, no extra work on the Python side:
+
+- **Citation validity** = share of responses where `citations_verified` is `true`
+- **Answers blocked by the verifier** = count where `verifier_blocked` is `true`
+- **Unsupported claim rate** = responses where `unsupported_claims` is non-empty
+- **Verification latency** = `timings.verify_ms`
+
+§8 is explicit that "true hallucination rate" is **not** automatable — report invalid-citation rate and refusal rate instead, and say what was measured.
 
 ### Express — Phase 2 task 3 (§11)
 
