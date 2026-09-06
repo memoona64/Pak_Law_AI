@@ -1,4 +1,4 @@
-# Document Analysis — Handoff
+# Document Analysis Explanation
 
 **Plan reference:** §9b (Document analysis), §6 (citation verifier), §11 (endpoints, collections), §13 Phase 1 task 5 + Phase 2 task 1
 **Status:** FastAPI side complete. Express and frontend still to do.
@@ -169,7 +169,7 @@ Retrieval is local and costs no quota. If you see every clause come back as *"An
 
 ## 3. What still needs doing
 
-### ⚠️ Read first if you consume `/rag/query` (Express chat, chat UI, dashboard)
+### Read first if you consume `/rag/query` (Express chat, chat UI, dashboard)
 
 `/rag/query` **changed**. It can now withhold an answer, and it returns four new fields. All additions are backward compatible — nothing you have already built will break — but two things need action:
 
