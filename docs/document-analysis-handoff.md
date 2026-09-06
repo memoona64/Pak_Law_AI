@@ -71,8 +71,9 @@ Two plan tasks, both on the Python/FastAPI side:
 
 ### Verified behaviour, not just written
 
-- **Two live runs saved in `docs/evidence/`** (real Gemini API, not mocked): `sample-analysis-output.json` and `sample-analysis-output-run2.json`. On the sample tenancy agreement both runs masked 2 CNICs, 1 phone and 1 email; flagged the 15% rent escalation against the 10% ceiling in Section 9(2) of the Sindh Rented Premises Ordinance; flagged self-help re-entry against Section 15's requirement to apply to the Controller; extracted both dated obligations; and verified every citation. Cost: 2 API requests per run.
-- **Reproducible:** the two runs, made independently, produced **identical risk classifications on all five clauses** and identical masking counts. Wording differs between runs (the model rephrases), the findings do not.
+- **Three live runs saved in `docs/evidence/`** (real Gemini API, not mocked): `sample-analysis-output.json`, `sample-analysis-output-run2.json`, and `sample-analysis-output-run3-google-genai.json` — the last one produced *after* the `google-genai` SDK migration, so it reflects exactly the code in this branch. On the sample tenancy agreement both runs masked 2 CNICs, 1 phone and 1 email; flagged the 15% rent escalation against the 10% ceiling in Section 9(2) of the Sindh Rented Premises Ordinance; flagged self-help re-entry against Section 15's requirement to apply to the Controller; extracted both dated obligations; and verified every citation. Cost: 2 API requests per run.
+- **Reproducible where it matters:** across all three runs — including one on a different SDK — the same two clauses were flagged (the 15% escalation and the self-help re-entry), every citation verified, both obligations extracted, and masking counts identical (2 CNIC, 1 phone, 1 email).
+- **What does vary:** wording is rephrased each run, and a borderline clause can move between `ok` and `warn` — clause 1 (an administrative "parties and premises" clause) came back `ok` in two runs and `warn` in the third. The serious findings were stable; low-stakes judgement calls are not deterministic. Do not claim run-to-run identical output.
 - **Hallucinated citation test:** when the model was forced to return `"risk": "ok"` while citing a fabricated "Section 9999", the endpoint overrode it to `flag` with `citations_verified: false`. An unverified citation can never pass through as safe.
 - Rejections: non-PDF → 422, scanned PDF with no text layer → 422, oversized → 413, empty → 400.
 
@@ -92,7 +93,7 @@ Then open `http://127.0.0.1:8000/docs`, expand `POST /rag/analyze-document`, cli
 | Variable | Purpose |
 |---|---|
 | `GEMINI_API_KEY` | Your Gemini API key |
-| `GEMINI_MODEL` | Which model to use. Defaults to `gemini-3.1-flash-lite`. **Change this first if you hit a quota error** — the daily limit is per model, so another model usually has a fresh allowance |
+| `GEMINI_MODEL` | Which model to use. Defaults to `gemini-3.1-flash-lite`. **Change this first if you hit a quota error** — the daily limit is per model, so another model usually has a fresh allowance. Verified working: `gemini-3.1-flash-lite`, `gemini-flash-latest`. **`gemini-2.5-flash` returns 404 "no longer available to new users"** on newer keys |
 
 If the page loads but requests fail with "Failed to fetch", the server is not running — check `http://127.0.0.1:8000/health` returns `{"status":"ok"}`.
 
@@ -174,6 +175,7 @@ Retrieval is local and costs no quota. If you see every clause come back as *"An
 
 1. **The answer can now be a refusal.** If the model cites law that was not retrieved, the answer text is replaced with a refusal message and `verifier_blocked` is `true`. The retrieved `chunks` are still returned. The chat UI should show the sources even when the answer is withheld, rather than rendering an empty state.
 2. **`/rag/query` no longer 500s when generation fails.** It returns 200 with the sources and an honest note. If you wrote error handling that assumed a 500 on Gemini failure, it will no longer fire.
+3. **`/rag/query` can still return `503`**, with a `detail` message, when the embedding or reranker model cannot be loaded (`ModelUnavailableError`). That is a retrieval-side failure, not a generation one, and it is worth showing the user as "search is unavailable" rather than a generic error. `/rag/analyze-document` never returns 503 — it falls back to analysing the clause with no retrieved context instead.
 
 | New field | Who needs it |
 |---|---|
@@ -273,8 +275,18 @@ Legal provisions cross-reference each other constantly ("Section 302 read with S
 
 ---
 
+## 5b. SDK migration note (for whoever merges into dev)
+
+This branch was migrated onto the **`google-genai`** SDK to match `origin/dev`, so `generation.py` should merge cleanly. Both branches independently changed the same file: dev migrated the SDK, this branch added document analysis. They are now aligned — dev's client setup, config pattern, `format_context()` and `generate_answer()` are byte-identical here, with `analyze_clauses()` and `summarize_document()` added on top.
+
+Every Gemini call now goes through one `_generate()` helper, which is what §3 asks for ("every LLM call goes through a single function").
+
+**One correction for dev:** dev's default is `GEMINI_MODEL=gemini-2.5-flash`, which returns `404 no longer available to new users` on newer API keys. Also, dev's commit message states `gemini-3.6-flash` "does not exist as a model name" — in testing that model returned **429 quota errors**, which means the name is valid and it was quota, not an invalid model. This branch defaults to `gemini-3.1-flash-lite`, verified working.
+
+---
+
 ## 6. Attribution
 
 - `masking.py`, `doc_chunker.py`, `citation_verifier.py`, `document_extraction.py`, the `/rag/analyze-document` endpoint, `analyze_clauses()`, `summarize_document()`, and the two new prompts — this branch.
-- `generation.py` and `prompts.py` were created by Wania Imran on `llm-generation`; this branch merged that work and added to it.
+- `generation.py` and `prompts.py` were created by Wania Imran on `llm-generation`; this branch merged that work and added to it. The `google-genai` client setup in `generation.py` follows the migration done on `origin/dev`.
 - `search_service.py` is Kaneeza's and was reused unchanged.

@@ -19,7 +19,9 @@
 
 **If you want to show proof rather than describe it:** two real runs are saved in `docs/evidence/`. Open `sample-analysis-output.json`.
 
-> "I ran the same tenancy agreement twice. Both times it classified all five clauses identically and verified every citation. It found two separate problems: the rent increase is 15 percent where the law caps it at 10, and the landlord clause claims they can evict without going to court, which the ordinance does not allow." 
+>  "I ran the same tenancy agreement three times, including once after changing the AI library. Every time it found the same two problems: the rent increase is 15 percent where the law caps it at 10, and the landlord clause claims they can evict without going to court, which the ordinance does not allow. Every citation checked out each time, and the masking counts were identical.
+>
+> To be accurate about it — the wording changes between runs, and one minor administrative clause moved between ok and a warning. The serious findings were stable, but I would not claim it gives byte-identical output every time." 
 
 ---
 
@@ -118,6 +120,12 @@ Then walk through the steps:
 **"What happened with the API quota?"** *(worth telling — it is a good engineering story)*
 
 > "Our free tier only allows twenty requests per day, and it turned out to be per model, not just per project. So two things: I batched the clauses, which cut a document from twenty-one requests down to four, and I made the model name a setting in the .env file instead of hard-coded. When we ran out on one model, we switched to another in about ten seconds with no code change. The plan says every AI call should sit behind one swappable function exactly so a provider change takes under a day — this is that working in practice."
+
+**"Does your branch conflict with dev?"**
+
+> "It did, and I fixed it. Dev had migrated to the new google-genai SDK while I was building document analysis on the old one. I moved my code onto the new SDK too, so the client setup and the shared functions are now identical to dev's. What is left in my file is only the new functions I added, which means merging should be simple rather than someone having to untangle two different versions.
+>
+> One thing to check on dev though — its default model is gemini-2.5-flash, and that gives a 404 saying it is no longer available to new users. I am defaulting to gemini-3.1-flash-lite, which works."
 
 **"What if the Gemini quota runs out during the demo?"**
 
