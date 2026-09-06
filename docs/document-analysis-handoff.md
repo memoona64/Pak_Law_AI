@@ -63,7 +63,7 @@ Two plan tasks, both on the Python/FastAPI side:
 | Mask PII | `fastapi_app/masking.py` | Regex only — CNIC, phone, email. Returns a count per category |
 | Chunk it | `fastapi_app/doc_chunker.py` | Splits by numbered clause; sentence-window fallback for unstructured documents |
 | Retrieve relevant law | `fastapi_app/search_service.py` | **Reused unchanged.** No second retrieval pipeline (§14 risk) |
-| LLM explains the clause | `fastapi_app/generation.py` → `analyze_clause()` | One Gemini call per clause. Returns risk + note + obligation |
+| LLM explains the clause | `fastapi_app/generation.py` → `analyze_clauses()` | 8 clauses per Gemini call. Returns risk + note + obligation each |
 | Citation verifier | `fastapi_app/citation_verifier.py` | See limitation 1 below |
 | Summary + flagged clauses | `fastapi_app/main.py` | `summarize_document()` writes the 3–5 sentence summary |
 
@@ -71,9 +71,30 @@ Two plan tasks, both on the Python/FastAPI side:
 
 ### Verified behaviour, not just written
 
-- Real PDF end to end: masked 1 CNIC and 1 phone, correctly flagged a 15% rent escalation against the 10% statutory ceiling in the Sindh Rented Premises Ordinance, and extracted the vacate date as an obligation.
+- **Two live runs saved in `docs/evidence/`** (real Gemini API, not mocked): `sample-analysis-output.json` and `sample-analysis-output-run2.json`. On the sample tenancy agreement both runs masked 2 CNICs, 1 phone and 1 email; flagged the 15% rent escalation against the 10% ceiling in Section 9(2) of the Sindh Rented Premises Ordinance; flagged self-help re-entry against Section 15's requirement to apply to the Controller; extracted both dated obligations; and verified every citation. Cost: 2 API requests per run.
+- **Reproducible:** the two runs, made independently, produced **identical risk classifications on all five clauses** and identical masking counts. Wording differs between runs (the model rephrases), the findings do not.
 - **Hallucinated citation test:** when the model was forced to return `"risk": "ok"` while citing a fabricated "Section 9999", the endpoint overrode it to `flag` with `citations_verified: false`. An unverified citation can never pass through as safe.
 - Rejections: non-PDF → 422, scanned PDF with no text layer → 422, oversized → 413, empty → 400.
+
+---
+
+## 1b. Running it locally
+
+```bash
+pip install -r requirements.txt
+python -m uvicorn fastapi_app.main:app --port 8000
+```
+
+Then open `http://127.0.0.1:8000/docs`, expand `POST /rag/analyze-document`, click **Try it out**, choose a PDF, and click **Execute**. `sample_tenancy_agreement.pdf` in the repo root is a ready-made test file.
+
+`.env` needs two values (see `.env.example`):
+
+| Variable | Purpose |
+|---|---|
+| `GEMINI_API_KEY` | Your Gemini API key |
+| `GEMINI_MODEL` | Which model to use. Defaults to `gemini-3.1-flash-lite`. **Change this first if you hit a quota error** — the daily limit is per model, so another model usually has a fresh allowance |
+
+If the page loads but requests fail with "Failed to fetch", the server is not running — check `http://127.0.0.1:8000/health` returns `{"status":"ok"}`.
 
 ---
 
@@ -131,13 +152,15 @@ A single clause failing (API error, quota exhausted, unparseable model output) d
 
 ### API quota cost per upload
 
-**One Gemini call per clause, plus one for the summary.**
+**The Gemini free tier allows only 20 requests per day, per project _and per model_.** Because the cap is per model, switching models is the fastest way to recover an exhausted quota — set `GEMINI_MODEL` in `.env` (currently `gemini-3.1-flash-lite`). No code change needed, which is what §3 asks for. Clauses are therefore analysed **8 per call**, plus one call for the summary.
 
-| Document size | Gemini calls |
-|---|---|
-| 5 clauses | 6 |
-| 20 clauses | 21 |
-| 40 clauses | 41 |
+| Document size | Gemini calls | Runs available per day |
+|---|---|---|
+| 5 clauses | 2 | ~10 |
+| 20 clauses | 4 | ~5 |
+| 40 clauses | 6 | ~3 |
+
+Without batching a 20-clause contract would need 21 calls, more than the entire daily allowance, so the feature could not analyse a realistic document at all. Retrieval is local and costs no quota.
 
 Retrieval is local and costs no quota. If you see every clause come back as *"Analysis failed for this clause"* with `masking_applied` still populated, that is almost always the **free-tier quota** (HTTP 429 in the server log), not a bug — a new API key on the same Google account will not help, since quota is per project.
 
@@ -206,7 +229,7 @@ The section-aware corpus chunker is **not committed anywhere** — only its outp
 
 4. **Basic masking only.** CNIC, phone and email by regex. Names and addresses are not attempted, per §9b.
 
-5. **A batching optimisation exists but was not shipped.** Sending 8 clauses per Gemini call (cutting a 20-clause document from 21 requests to 4) was written and unit-tested, but the free-tier quota ran out before it could be verified against the live API. Rather than ship unverified behaviour before submission, the proven one-call-per-clause version was kept. The patch is worth revisiting after submission if quota limits become a problem.
+5. **Clause batching — confirmed working against live Gemini** (see the saved evidence run). Clauses are sent 8 per call because the free tier permits only 20 requests per day; one call per clause cannot analyse a realistic contract within that. If a run returns "analysis failed" for every clause while `masking_applied` is still correct, check the server log: a 429 means quota (switch `GEMINI_MODEL`), anything else may be malformed model output — `CLAUSE_BATCH_SIZE` in `main.py` can be lowered.
 
 ---
 
@@ -252,6 +275,6 @@ Legal provisions cross-reference each other constantly ("Section 302 read with S
 
 ## 6. Attribution
 
-- `masking.py`, `doc_chunker.py`, `citation_verifier.py`, `document_extraction.py`, the `/rag/analyze-document` endpoint, `analyze_clause()`, `summarize_document()`, and the two new prompts — this branch.
+- `masking.py`, `doc_chunker.py`, `citation_verifier.py`, `document_extraction.py`, the `/rag/analyze-document` endpoint, `analyze_clauses()`, `summarize_document()`, and the two new prompts — this branch.
 - `generation.py` and `prompts.py` were created by Wania Imran on `llm-generation`; this branch merged that work and added to it.
 - `search_service.py` is Kaneeza's and was reused unchanged.

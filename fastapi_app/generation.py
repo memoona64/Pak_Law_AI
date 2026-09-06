@@ -7,9 +7,14 @@ from .prompts import CLAUSE_ANALYSIS_PROMPT, DOCUMENT_SUMMARY_PROMPT, SYSTEM_PRO
 
 load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-model = genai.GenerativeModel("gemini-3.6-flash", system_instruction=SYSTEM_PROMPT)
-clause_model = genai.GenerativeModel("gemini-3.6-flash", system_instruction=CLAUSE_ANALYSIS_PROMPT)
-summary_model = genai.GenerativeModel("gemini-3.6-flash", system_instruction=DOCUMENT_SUMMARY_PROMPT)
+
+# The free tier caps requests per day per model, so switching models is the
+# quickest way to recover from an exhausted quota. Set GEMINI_MODEL in .env.
+MODEL_NAME = os.getenv("GEMINI_MODEL", "gemini-3.1-flash-lite")
+
+model = genai.GenerativeModel(MODEL_NAME, system_instruction=SYSTEM_PROMPT)
+clause_model = genai.GenerativeModel(MODEL_NAME, system_instruction=CLAUSE_ANALYSIS_PROMPT)
+summary_model = genai.GenerativeModel(MODEL_NAME, system_instruction=DOCUMENT_SUMMARY_PROMPT)
 
 VALID_RISK_LEVELS = {"ok", "warn", "flag"}
 MAX_SUMMARY_CHARS = 8000
@@ -59,34 +64,59 @@ def generate_answer(query: str, chunks) -> str:
     return response.text
 
 
-def analyze_clause(clause_text: str, chunks) -> dict:
-    """Ask Gemini to classify one document clause's risk against retrieved law.
+def _unparsed_clause(note: str) -> dict:
+    return {"risk": "warn", "note": note, "obligation": None}
 
-    Returns {"risk": "ok"|"warn"|"flag", "note": str, "obligation": dict|None}.
-    Falls back to a "warn" result (rather than raising) if the model's
-    response isn't valid JSON, so one bad clause doesn't stop the rest.
+
+def _clause_result(entry) -> dict:
+    """Validate one clause object from the model's array."""
+    if not isinstance(entry, dict):
+        return _unparsed_clause("Could not parse the model's analysis for this clause.")
+    risk = entry.get("risk")
+    if risk not in VALID_RISK_LEVELS:
+        return _unparsed_clause("The model returned an unrecognised risk level for this clause.")
+    return {
+        "risk": risk,
+        "note": entry.get("note", ""),
+        "obligation": entry.get("obligation"),
+    }
+
+
+def analyze_clauses(items: list[dict]) -> list[dict]:
+    """Classify several clauses against their retrieved law in ONE Gemini call.
+
+    Each item is {"clause_number": str, "text": str, "chunks": list}. Returns
+    one result per item, in the same order. Batching matters: a call per
+    clause exhausts the free API tier quickly on a real document.
     """
-    context = format_context(chunks) if chunks else "(no matching legal context found)"
-    prompt = f"CLAUSE TEXT:\n{clause_text}\n\nRETRIEVED LEGAL CONTEXT:\n{context}"
-    response = clause_model.generate_content(prompt)
+    blocks = []
+    for item in items:
+        context = format_context(item["chunks"]) if item["chunks"] else "(no matching legal context found)"
+        blocks.append(
+            f"CLAUSE {item['clause_number']}:\n{item['text']}\n\n"
+            f"RETRIEVED LEGAL CONTEXT FOR CLAUSE {item['clause_number']}:\n{context}"
+        )
+
+    response = clause_model.generate_content("\n\n---\n\n".join(blocks))
     raw = _JSON_FENCE.sub("", response.text.strip())
 
     try:
         parsed = json.loads(raw)
-        risk = parsed.get("risk")
-        if risk not in VALID_RISK_LEVELS:
-            raise ValueError(f"unexpected risk level: {risk!r}")
-        return {
-            "risk": risk,
-            "note": parsed.get("note", ""),
-            "obligation": parsed.get("obligation"),
-        }
+        if not isinstance(parsed, list):
+            raise ValueError("expected a JSON array of clause results")
     except (json.JSONDecodeError, ValueError, AttributeError):
-        return {
-            "risk": "warn",
-            "note": "Could not parse the model's analysis for this clause.",
-            "obligation": None,
-        }
+        return [_unparsed_clause("Could not parse the model's analysis for this clause.") for _ in items]
+
+    # Match on clause number rather than position: the model can drop or
+    # reorder entries, and a silently shifted result would attach one clause's
+    # risk to another clause's text.
+    by_number = {
+        str(entry.get("clause_number")): entry for entry in parsed if isinstance(entry, dict)
+    }
+    return [
+        _clause_result(by_number.get(str(item["clause_number"])))
+        for item in items
+    ]
 
 
 def summarize_document(document_text: str, flagged_notes: list[str]) -> str:

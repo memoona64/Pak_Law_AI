@@ -22,10 +22,13 @@ from pydantic import BaseModel, Field
 
 from . import citation_verifier, doc_chunker, document_extraction, masking, search_service
 from .errors import DocumentExtractionError, ModelUnavailableError
-from .generation import analyze_clause, generate_answer, summarize_document
+from .generation import analyze_clauses, generate_answer, summarize_document
 
 MAX_CLAUSES = 200
 MAX_UPLOAD_BYTES = 10 * 1024 * 1024
+# Clauses per Gemini call. The free tier allows only 20 requests per day, so
+# one call per clause cannot analyze a realistic contract at all.
+CLAUSE_BATCH_SIZE = 8
 
 
 logger = logging.getLogger("uvicorn.error")
@@ -261,27 +264,16 @@ def rag_query(request: QueryRequest):
     )
 
 
-def _analyze_one_clause(
-    clause_text: str, province: Optional[str], use_reranker: bool
-) -> tuple[str, str, bool, Optional[dict]]:
-    """Retrieve law for one clause, get a risk analysis, and verify its citations.
-
-    Returns (risk, note, citations_verified, obligation). Any unverified
-    citation forces risk to "flag" — the model's own risk guess is never
-    trusted over an unverified citation.
-    """
+def _retrieve_for_clause(clause_text: str, province: Optional[str], use_reranker: bool) -> list[dict]:
+    """Find the law relevant to one clause. Local only — no LLM call, no quota cost."""
     try:
         retrieved, _, _ = search_service.search(
             query=clause_text, k=5, province=province, use_reranker=use_reranker
         )
+        return retrieved
     except ModelUnavailableError as exc:
         logger.warning("Retrieval unavailable for a clause, analyzing with no context: %s", exc)
-        retrieved = []
-
-    result = analyze_clause(clause_text, retrieved)
-    verification = citation_verifier.verify_citations(result["note"], retrieved)
-    risk = "flag" if verification["unverified"] else result["risk"]
-    return risk, result["note"], verification["all_verified"], result["obligation"]
+        return []
 
 
 @app.post("/rag/analyze-document", response_model=AnalyzeDocumentResponse)
@@ -315,37 +307,47 @@ async def analyze_document(
     truncated = len(clauses) > MAX_CLAUSES
     clauses = clauses[:MAX_CLAUSES]
 
+    prepared = [
+        {
+            "clause_number": clause["clause_number"] or str(index),
+            "text": clause["text"],
+            "chunks": _retrieve_for_clause(clause["text"], province, use_reranker),
+        }
+        for index, clause in enumerate(clauses, start=1)
+    ]
+
     analyzed: list[ClauseAnalysis] = []
     obligations: list[ObligationItem] = []
-    for index, clause in enumerate(clauses, start=1):
-        clause_number = clause["clause_number"] or str(index)
-        clause_text = clause["text"]
+    for start in range(0, len(prepared), CLAUSE_BATCH_SIZE):
+        batch = prepared[start : start + CLAUSE_BATCH_SIZE]
         try:
-            risk, note, citations_verified, obligation = _analyze_one_clause(
-                clause_text, province, use_reranker
-            )
+            results = analyze_clauses(batch)
         except Exception as exc:
-            # One bad clause (API error, unexpected model output) must not
-            # take down analysis of the rest of the document.
-            logger.warning("Analysis failed for clause %s: %s", clause_number, exc)
-            risk, note, citations_verified, obligation = (
-                "warn",
-                "Analysis failed for this clause; please review manually.",
-                False,
-                None,
-            )
+            # One failed batch (API error, quota) must not discard the rest.
+            logger.warning("Analysis failed for clauses starting at %s: %s", start + 1, exc)
+            results = [
+                {
+                    "risk": "warn",
+                    "note": "Analysis failed for this clause; please review manually.",
+                    "obligation": None,
+                }
+                for _ in batch
+            ]
 
-        analyzed.append(
-            ClauseAnalysis(
-                clause_number=clause_number,
-                text=clause_text,
-                risk=risk,
-                note=note,
-                citations_verified=citations_verified,
+        for item, result in zip(batch, results):
+            verification = citation_verifier.verify_citations(result["note"], item["chunks"])
+            analyzed.append(
+                ClauseAnalysis(
+                    clause_number=item["clause_number"],
+                    text=item["text"],
+                    # An unverified citation outranks whatever risk the model claimed.
+                    risk="flag" if verification["unverified"] else result["risk"],
+                    note=result["note"],
+                    citations_verified=verification["all_verified"],
+                )
             )
-        )
-        if obligation:
-            obligations.append(ObligationItem(**obligation))
+            if result["obligation"]:
+                obligations.append(ObligationItem(**result["obligation"]))
 
     flagged_notes = [clause.note for clause in analyzed if clause.risk == "flag"]
     try:

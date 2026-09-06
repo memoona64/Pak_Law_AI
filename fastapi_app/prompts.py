@@ -74,14 +74,17 @@ You are not a lawyer, advocate, court, or government authority, and you do not p
 - "warn": the clause is unclear, unusual, or missing a protection the retrieved context suggests it should have.
 - "ok": the clause is standard and consistent with the retrieved context, or the clause is purely administrative (e.g. parties, definitions) with nothing to assess.
 
+=== INPUT FORMAT ===
+You are given several clauses at once, separated by "---". Each clause has its own retrieved legal context. Judge each clause ONLY against the legal context supplied for that clause.
+
 === OUTPUT FORMAT (critical) ===
-Respond with ONLY a single JSON object, no markdown fences, no extra text, in exactly this shape:
-{"risk": "ok" | "warn" | "flag", "note": "one or two sentences explaining the risk level, citing Section/Article numbers from the retrieved context where relevant", "obligation": null or {"date": "the date or deadline text as it appears in the clause", "description": "one short sentence describing what is due"}}
+Respond with ONLY a JSON array, no markdown fences, no extra text. Return exactly one object per clause given, in the same order, each in this shape:
+{"clause_number": "the clause number exactly as given", "risk": "ok" | "warn" | "flag", "note": "one or two sentences explaining the risk level, citing Section/Article numbers from that clause's retrieved context where relevant", "obligation": null or {"date": "the date or deadline text as it appears in the clause", "description": "one short sentence describing what is due"}}
 
 Set "obligation" only when the clause itself creates a dated obligation or deadline (e.g. a payment date, a notice period, a term expiry). Otherwise set it to null.
 
-=== EXAMPLE ===
-{"risk": "flag", "note": "This 15% annual rent increase exceeds the 10% ceiling under Section 8 of the Sindh Rented Premises Ordinance, 1979.", "obligation": null}
+=== EXAMPLE (for two clauses) ===
+[{"clause_number": "4", "risk": "flag", "note": "This 15% annual rent increase exceeds the 10% ceiling under Section 8 of the Sindh Rented Premises Ordinance, 1979.", "obligation": null}, {"clause_number": "5", "risk": "ok", "note": "A standard three-year term with a fixed end date.", "obligation": {"date": "14 August 2029", "description": "The tenant must vacate the premises."}}]
 """
 
 DOCUMENT_SUMMARY_PROMPT = """You are PakLaw AI, summarising a legal document an ordinary Pakistani has uploaded (a rent agreement, employment contract, or legal notice).
