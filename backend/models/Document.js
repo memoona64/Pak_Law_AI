@@ -1,36 +1,3 @@
-// const mongoose = require('mongoose');
-
-// const clauseSchema = new mongoose.Schema({
-//   clauseNumber: { type: String },
-//   text: { type: String, required: true },
-//   status: { type: String, enum: ['ok', 'warn', 'flag'], required: true }, // mapped from FastAPI's "risk"
-//   note: { type: String },
-//   citationsVerified: { type: Boolean, default: true }, // FastAPI does not yet return per-clause citation objects — see note in ragService.js
-// }, { _id: false });
-
-// const obligationSchema = new mongoose.Schema({
-//   date: { type: String },
-//   description: { type: String, required: true },
-// }, { _id: false });
-
-// const documentSchema = new mongoose.Schema({
-//   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
-//   filename: { type: String, required: true },
-//   summary: { type: String, required: true },
-//   clauses: { type: [clauseSchema], default: [] },
-//   obligations: { type: [obligationSchema], default: [] },
-//   masking: {
-//     cnic: { type: Number, default: 0 },
-//     phone: { type: Number, default: 0 },
-//     email: { type: Number, default: 0 },
-//   },
-//   truncated: { type: Boolean, default: false }, // true if FastAPI's MAX_CLAUSES limit was hit
-// }, { timestamps: true }); // gives createdAt / updatedAt automatically
-
-// module.exports = mongoose.model('Document', documentSchema);
-
-
-
 /**
  * Document Data Model
  * Stores the analysis of one uploaded legal document.

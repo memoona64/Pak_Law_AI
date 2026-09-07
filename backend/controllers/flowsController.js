@@ -18,15 +18,15 @@ const localize = (localizedObj, lang) => {
  */
 exports.getAllFlows = async (req, res, next) => {
   try {
-    const { lang } = req.query; // 'en', 'ur', 'roman_ur' ya undefined
+    const { lang } = req.query; // 'en', 'ur', 'roman_ur', or undefined
     const flows = await Flow.find({}, 'slug title situation').lean();
 
-    // Agar query mein lang na ho to raw full structure return karein
+    // No lang given: return the full multilingual structure as-is.
     if (!lang) {
       return res.status(200).json(flows);
     }
 
-    // Direct requested language filter karein
+    // Filter down to just the requested language.
     const localizedFlows = flows.map((flow) => ({
       _id: flow._id,
       slug: flow.slug,
@@ -47,7 +47,7 @@ exports.getAllFlows = async (req, res, next) => {
 exports.getFlowBySlug = async (req, res, next) => {
   try {
     const { slug } = req.params;
-    const { lang } = req.query; // 'en', 'ur', 'roman_ur' ya undefined
+    const { lang } = req.query; // 'en', 'ur', 'roman_ur', or undefined
 
     const flow = await Flow.findOne({ slug: slug.toLowerCase() }).lean();
 
@@ -58,12 +58,12 @@ exports.getFlowBySlug = async (req, res, next) => {
       });
     }
 
-    // Agar query mein lang na ho to raw full structure return karein
+    // No lang given: return the full multilingual structure as-is.
     if (!lang) {
       return res.status(200).json(flow);
     }
 
-    // Requested language ke mutabiq object format karein
+    // Format the object down to the requested language.
     const localizedFlow = {
       _id: flow._id,
       slug: flow.slug,
