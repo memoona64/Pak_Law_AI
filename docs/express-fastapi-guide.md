@@ -50,6 +50,8 @@ GEMINI_API_KEY=your_key_here
 GEMINI_MODEL=gemini-3.1-flash-lite
 ```
 
+**The first search after pulling new law files is slow** — around 70 seconds — because Python re-reads all 1,497 law chunks and rebuilds its search index. It also needs about **3 GB of free memory**, or it fails with a "not enough free memory" error. Run one search and let it finish *before* demoing. After that, searches are fast.
+
 Then open **http://127.0.0.1:8000/docs** in a browser. Find `POST /rag/analyze-document`, click **Try it out**, choose `sample_tenancy_agreement.pdf`, click **Execute**, and wait 1–3 minutes.
 
 ### What comes back
