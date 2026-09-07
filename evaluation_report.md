@@ -55,6 +55,8 @@ The final evaluation covered **150 unique labelled questions** across the major 
 | Roman Urdu | **37** |
 | Urdu | **28** |
 
+These dimensions are descriptive tags, not mutually exclusive buckets — a single question can carry more than one (for example, a query can be both **Multi-section** and **Province-sensitive**), so the rows above do not sum to 150 or to 133. This is why counts here differ from Section 6's per-category breakdown, where every legal question is assigned to exactly **one** category for scoring purposes instead.
+
 One OOS-labelled record was identified during review as having legal intent. It was excluded from the true non-legal refusal denominator rather than being incorrectly treated as a non-legal OOS question.
 
 ---
@@ -166,6 +168,8 @@ The multi-section category used a **strict all-expected-sources criterion**.
 If a query expected two legal sections and the system retrieved only one of them, the query was counted as a miss.
 
 The resulting 0% therefore means the complete expected source set was not recovered for those strict cases. It does not mean no relevant source was ever retrieved.
+
+This table's count of 5 is smaller than Section 2's "Multi-section: 14" for the reason explained there: Section 2 counts every question *tagged* multi-section, including ones that overlap with other tags (province-sensitive, family-law, etc.), while this table assigns each question to a single category bucket for scoring. The 5 shown here are the ones scored specifically as multi-section; the rest of the 14 tagged questions were scored under whichever other category they primarily belong to.
 
 ### Strongest evaluated areas
 
