@@ -23,26 +23,12 @@ const chatRateLimiter = rateLimit({
   }
 });
 
-// const askValidation = [
-//   body('question').trim().notEmpty().withMessage('Question is required'),
-//   body('language')
-//     .isIn(['en', 'ur', 'roman_ur'])
-//     .withMessage('Language must be one of: en, ur, roman_ur'),
-//   body('conversationId')
-//     .optional({ nullable: true })
-//     .isMongoId()
-//     .withMessage('Invalid conversationId format'),
-//   body('province')
-//     .optional({ nullable: true })
-//     .trim()
-//     .toLowerCase()
-//     .isIn(['punjab', 'sindh', 'kpk', 'balochistan', 'islamabad', 'gb', 'ajk'])
-//     .withMessage('Invalid province specified')
-// ];
-
-
 const askValidation = [
   body('question').trim().notEmpty().withMessage('Question is required'),
+  body('language')
+    .optional({ nullable: true })
+    .isIn(['en', 'ur', 'roman_ur'])
+    .withMessage('Language must be one of: en, ur, roman_ur'),
   body('conversationId')
     .optional({ nullable: true })
     .isMongoId()
