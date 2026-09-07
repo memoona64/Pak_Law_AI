@@ -3,6 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { Btn, Field, Icon, Eyebrow } from '../components/primitives';
 import { PLSeal, PLWordmark } from '../components/seal';
 
+// The Express backend (auth, chat, history). Override via a .env file
+// (VITE_API_URL) if it runs somewhere other than localhost.
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 // Sign in / create account — split brand + form layout. Stacks vertically
 // on narrow screens instead of forcing the 55/45 side-by-side split.
 export default function Login() {
@@ -12,10 +16,38 @@ export default function Login() {
   const [pw, setPw] = React.useState('');
   const [showPw, setShowPw] = React.useState(false);
   const [name, setName] = React.useState('');
+  const [error, setError] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate('/chat');
+    setError('');
+    setLoading(true);
+    try {
+      const endpoint = mode === 'signin' ? '/api/auth/login' : '/api/auth/register';
+      const body = mode === 'signin'
+        ? { email, password: pw }
+        : { name, email, password: pw };
+
+      const res = await fetch(`${API_URL}${endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || data.errors?.[0]?.msg || 'Something went wrong. Please try again.');
+      }
+
+      localStorage.setItem('paklaw_token', data.token);
+      localStorage.setItem('paklaw_user', JSON.stringify(data.user));
+      navigate('/chat');
+    } catch (err) {
+      setError(err.message || "Couldn't reach the server — make sure the backend is running.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -129,8 +161,15 @@ export default function Login() {
                 </div>
               )}
 
-              <Btn type="submit" variant="primary" size="lg" iconRight="arrow-right" className="w-full mt-2">
-                {mode === 'signin' ? 'Sign in' : 'Create account'}
+              {error && (
+                <div className="flex items-start gap-2.5 text-[14px] text-[#8A3B24] bg-[#F3DDD5] border border-[#D9A797] rounded-md p-3">
+                  <Icon name="alert-triangle" size={14} color="#8A3B24" />
+                  <div>{error}</div>
+                </div>
+              )}
+
+              <Btn type="submit" variant="primary" size="lg" iconRight="arrow-right" className="w-full mt-2" disabled={loading}>
+                {loading ? 'Please wait…' : mode === 'signin' ? 'Sign in' : 'Create account'}
               </Btn>
 
               <div className="sm:hidden text-center text-[14px] pt-1">

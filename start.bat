@@ -4,6 +4,7 @@ cd D:\Pak_Law_AI
 set TMP=D:\Pak_Law_AI\.tmp
 set TEMP=D:\Pak_Law_AI\.tmp
 set PIP_CACHE_DIR=D:\Pak_Law_AI\.pipcache
+set HF_HOME=D:\Pak_Law_AI\.hfcache
 call .venv\Scripts\activate
 echo Environment ready. Python:
 python --version

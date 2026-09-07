@@ -13,7 +13,7 @@
  * @param {import('express').NextFunction} next - Express Next function
  */
 const errorHandler = (err, req, res, next) => {
-  const statusCode = err.statusCode || res.statusCode === 200 ? 500 : res.statusCode;
+  const statusCode = err.statusCode || (res.statusCode === 200 ? 500 : res.statusCode);
 
   console.error(`[Server Error] Path: ${req.path} | Error: ${err.message}`);
 
