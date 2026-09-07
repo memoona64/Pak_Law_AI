@@ -1,79 +1,83 @@
 /**
- * Flows Controller Module
- * Handles loading, in-memory caching, and serving of guided legal procedures.
+ * Guided Procedure Flows Controller Module
  */
 
-const fs = require('fs');
-const path = require('path');
-
-// In-memory cache variables initialized at module startup
-let flowsListCache = [];
-let flowsDetailCacheMap = new Map();
+const Flow = require('../models/Flow');
 
 /**
- * Reads flows.json once on startup into memory.
- * Pre-computes list-view objects (excluding 'steps') and maps full objects by slug.
+ * Helper to pick localized content based on ?lang query
  */
-const initializeFlowsCache = () => {
-  try {
-    const flowsFilePath = path.join(__dirname, '../data/flows.json');
-    const rawData = fs.readFileSync(flowsFilePath, 'utf8');
-    const fullFlows = JSON.parse(rawData);
-
-    // Pre-calculate list-view metadata without step details
-    flowsListCache = fullFlows.map((flow) => ({
-      slug: flow.slug,
-      category: flow.category,
-      icon: flow.icon,
-      title: flow.title,
-      subtitle: flow.subtitle,
-      stepCount: flow.stepCount,
-      estimatedMinutes: flow.estimatedMinutes
-    }));
-
-    // Populate slug lookup map for efficient detail retrieval
-    flowsDetailCacheMap.clear();
-    fullFlows.forEach((flow) => {
-      flowsDetailCacheMap.set(flow.slug, flow);
-    });
-
-    console.log(`[Flows Cache] Loaded ${fullFlows.length} guided flows into memory.`);
-  } catch (error) {
-    console.error(`[Flows Error] Failed to load data/flows.json: ${error.message}`);
-    flowsListCache = [];
-    flowsDetailCacheMap.clear();
-  }
+const localize = (localizedObj, lang) => {
+  if (!localizedObj) return '';
+  return localizedObj[lang] || localizedObj['en'];
 };
 
-// Perform immediate sync loading when server starts up
-initializeFlowsCache();
-
 /**
- * Retrieves all flows summarized for list-view.
- * Route: GET /api/flows
+ * Retrieves summary metadata for all guided flows.
+ * Route: GET /api/flows?lang=ur
  */
-exports.getAllFlows = (req, res, next) => {
+exports.getAllFlows = async (req, res, next) => {
   try {
-    return res.status(200).json({ flows: flowsListCache });
+    const { lang } = req.query; // 'en', 'ur', 'roman_ur' ya undefined
+    const flows = await Flow.find({}, 'slug title situation').lean();
+
+    // Agar query mein lang na ho to raw full structure return karein
+    if (!lang) {
+      return res.status(200).json(flows);
+    }
+
+    // Direct requested language filter karein
+    const localizedFlows = flows.map((flow) => ({
+      _id: flow._id,
+      slug: flow.slug,
+      title: localize(flow.title, lang),
+      situation: localize(flow.situation, lang)
+    }));
+
+    return res.status(200).json(localizedFlows);
   } catch (error) {
     next(error);
   }
 };
 
 /**
- * Retrieves full details and step-by-step guidance for a specific flow slug.
- * Route: GET /api/flows/:slug
+ * Retrieves a single guided flow document by its unique slug.
+ * Route: GET /api/flows/:slug?lang=ur
  */
-exports.getFlowBySlug = (req, res, next) => {
+exports.getFlowBySlug = async (req, res, next) => {
   try {
     const { slug } = req.params;
-    const flow = flowsDetailCacheMap.get(slug);
+    const { lang } = req.query; // 'en', 'ur', 'roman_ur' ya undefined
+
+    const flow = await Flow.findOne({ slug: slug.toLowerCase() }).lean();
 
     if (!flow) {
-      return res.status(404).json({ error: 'Flow not found' });
+      return res.status(404).json({
+        error: 'Not Found',
+        message: `Guided procedure flow with slug '${slug}' was not found.`
+      });
     }
 
-    return res.status(200).json(flow);
+    // Agar query mein lang na ho to raw full structure return karein
+    if (!lang) {
+      return res.status(200).json(flow);
+    }
+
+    // Requested language ke mutabiq object format karein
+    const localizedFlow = {
+      _id: flow._id,
+      slug: flow.slug,
+      title: localize(flow.title, lang),
+      situation: localize(flow.situation, lang),
+      steps: flow.steps.map((step) => ({
+        label: localize(step.label, lang),
+        body: localize(step.body, lang)
+      })),
+      createdAt: flow.createdAt,
+      updatedAt: flow.updatedAt
+    };
+
+    return res.status(200).json(localizedFlow);
   } catch (error) {
     next(error);
   }
