@@ -225,6 +225,10 @@ node_modules/
 
 # pip install --target artifacts (venv-style wrappers, man pages, runtime DB)
 /Scripts/
+# Git on Windows/macOS matches the above case-insensitively, which would
+# otherwise also hide the real, tracked scripts/ directory used throughout
+# this project -- explicitly keep it.
+!/scripts/
 /share/
 chroma_db/
 docs/team-briefing-script.md

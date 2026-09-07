@@ -5,16 +5,16 @@
 @tailwind utilities;
 
 :root {
-  --pl-espresso: #2C221E;
-  --pl-espresso-2: #3A2E28;
-  --pl-cream: #F8F5F0;
-  --pl-cream-2: #EFEAE1;
-  --pl-taupe: #D3C5BD;
-  --pl-taupe-2: #7D7268;
-  --pl-bronze: #8C6D53;
-  --pl-bronze-ink: #6E5540;
+  --pl-espresso: #2A2F22;
+  --pl-espresso-2: #363B2C;
+  --pl-cream: #F7F6F0;
+  --pl-cream-2: #F0EFE3;
+  --pl-taupe: #D8D9C8;
+  --pl-taupe-2: #7A7D68;
+  --pl-bronze: #6B7F5E;
+  --pl-bronze-ink: #4A5540;
   --pl-flag: #B8543A;
-  --pl-ok: #5A7A4E;
+  --pl-ok: #5C8A52;
 }
 
 body {
@@ -28,15 +28,15 @@ body {
 .font-mono-jb { font-family: 'JetBrains Mono', ui-monospace, monospace; }
 
 .paper-grain {
-  background-image: radial-gradient(rgba(44,34,30,0.035) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(42,47,34,0.035) 1px, transparent 1px);
   background-size: 3px 3px;
 }
 
-.rule-hair { border-color: rgba(44,34,30,0.12); }
-.rule-hair-strong { border-color: rgba(44,34,30,0.22); }
+.rule-hair { border-color: rgba(42,47,34,0.12); }
+.rule-hair-strong { border-color: rgba(42,47,34,0.22); }
 
 .pl-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
-.pl-scroll::-webkit-scrollbar-thumb { background: rgba(44,34,30,0.15); border-radius: 999px; }
+.pl-scroll::-webkit-scrollbar-thumb { background: rgba(42,47,34,0.15); border-radius: 999px; }
 .pl-scroll::-webkit-scrollbar-track { background: transparent; }
 
 .smallcaps { font-variant: all-small-caps; letter-spacing: 0.14em; }
@@ -44,4 +44,4 @@ body {
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { scrollbar-width: none; }
 
-.focus-bronze:focus { outline: 2px solid #8C6D53; outline-offset: 2px; }
+.focus-bronze:focus { outline: 2px solid #6B7F5E; outline-offset: 2px; }
