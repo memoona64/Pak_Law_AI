@@ -6,6 +6,7 @@ Gracefully degrades to offline dictionary or original query if no API key is set
 """
 
 import json
+import logging
 import os
 import urllib.error
 import urllib.request
@@ -17,6 +18,8 @@ Output ONLY the rewritten English search query. Do not include explanations, quo
 
 User Question: {query}
 Rewritten Legal Query:"""
+
+logger = logging.getLogger("uvicorn.error")
 
 # Offline fallback dictionary for common Roman Urdu / Urdu legal terms
 FALLBACK_DICT = {
@@ -47,23 +50,26 @@ def normalize_query(query: str) -> tuple[str, bool]:
     groq_key = os.getenv("GROQ_API_KEY")
     openai_key = os.getenv("OPENAI_API_KEY")
 
+    # Failures are logged, never silent. A silently failing normalizer looks
+    # identical to poor retrieval, which is how a dead model name went
+    # unnoticed while every Roman Urdu query quietly degraded.
     if gemini_key:
         try:
             return _call_gemini(clean_query, gemini_key), True
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.warning("Query normalization via Gemini failed: %s", exc)
 
     if groq_key:
         try:
             return _call_groq(clean_query, groq_key), True
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.warning("Query normalization via Groq failed: %s", exc)
 
     if openai_key:
         try:
             return _call_openai(clean_query, openai_key), True
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.warning("Query normalization via OpenAI failed: %s", exc)
 
     # Offline / No API Key Fallback
     lower_q = clean_query.lower()
@@ -75,7 +81,12 @@ def normalize_query(query: str) -> tuple[str, bool]:
 
 
 def _call_gemini(query: str, api_key: str) -> str:
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
+    # Must stay in step with generation.py's GEMINI_MODEL. This was pinned to
+    # gemini-2.5-flash, which now returns 404 "no longer available to new
+    # users" — so normalization silently failed and every Roman Urdu query was
+    # searched as raw Roman Urdu against English legal text.
+    model = os.getenv("GEMINI_MODEL", "gemini-3.1-flash-lite")
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
     payload = {
         "contents": [{"parts": [{"text": PROMPT_TEMPLATE.format(query=query)}]}],
         "generationConfig": {"temperature": 0.1, "maxOutputTokens": 60},
