@@ -1,0 +1,55 @@
+{
+  "summary": "This is a residential tenancy agreement for a property in Bahadurabad, Karachi, between Mr. Tariq Mehmood and Mrs. Sana Raza for a three-year period. By signing, you agree to pay a monthly rent of Rs. 125,000 in advance and accept a 15% annual rent increase upon renewal. You should pay close attention to the clauses regarding rent increases and the landlord's right to re-enter the property, as these terms may conflict with local regulations regarding rent caps and the legal eviction process. Please be aware that the agreement requires you to vacate the premises by 14 August 2029.",
+  "flagged_clauses": [
+    {
+      "clause_number": "1",
+      "text": "1. Parties and premises. The Landlord lets the premises at\nBahadurabad, Karachi to the Tenant for residential use only.",
+      "risk": "ok",
+      "note": "This clause identifies the parties and premises as required by Section 5 of The Sind Rented Premises Ordinance, 1979, which mandates that rental agreements be in writing.",
+      "citations_verified": true
+    },
+    {
+      "clause_number": "2",
+      "text": "2. Rent. The Tenant shall pay monthly rent of Rs. 125,000 in\nadvance before the fifth day of each month. The rent shall stand\nenhanced by fifteen per centum (15%) per annum on each renewal.",
+      "risk": "flag",
+      "note": "The 15% annual rent increase exceeds the 10% maximum limit permitted under Section 9(2) of The Sind Rented Premises Ordinance, 1979.",
+      "citations_verified": true
+    },
+    {
+      "clause_number": "3",
+      "text": "3. Security deposit. The Tenant shall deposit two months rent as\nsecurity, refundable on vacation less lawful deductions.",
+      "risk": "ok",
+      "note": "The ordinance does not explicitly restrict security deposits, and the clause allows for lawful deductions.",
+      "citations_verified": true
+    },
+    {
+      "clause_number": "4",
+      "text": "4. Forfeiture and re-entry. On any default beyond seven days, the\nLandlord shall, without notice or recourse to any court, be\nentitled to re-enter the premises and take possession thereof.",
+      "risk": "flag",
+      "note": "Self-help eviction and re-entry without a court order or Controller intervention violate the process mandated by Section 15 of The Sind Rented Premises Ordinance, 1979.",
+      "citations_verified": true
+    },
+    {
+      "clause_number": "5",
+      "text": "5. Term. This lease is for three years and the Tenant shall vacate\non or before 14 August 2029.",
+      "risk": "ok",
+      "note": "The clause establishes a fixed three-year term, which is standard for residential agreements.",
+      "citations_verified": true
+    }
+  ],
+  "obligations": [
+    {
+      "date": "fifth day of each month",
+      "description": "The tenant must pay monthly rent in advance."
+    },
+    {
+      "date": "14 August 2029",
+      "description": "The tenant must vacate the premises."
+    }
+  ],
+  "masking_applied": {
+    "cnic": 2,
+    "phone": 1,
+    "email": 1
+  }
+}

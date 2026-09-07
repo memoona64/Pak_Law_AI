@@ -5,6 +5,8 @@ data/raw/*.pdf
 __pycache__/
 *.py[codz]
 *$py.class
+.omc/ 
+Claude outputs/
 
 # C extensions
 *.so
@@ -229,3 +231,4 @@ node_modules/
 !/scripts/
 /share/
 chroma_db/
+docs/team-briefing-script.md

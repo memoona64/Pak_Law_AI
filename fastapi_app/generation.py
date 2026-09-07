@@ -1,27 +1,36 @@
+import json
 import logging
 import os
+import re
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
-from .prompts import SYSTEM_PROMPT
+from .prompts import CLAUSE_ANALYSIS_PROMPT, DOCUMENT_SUMMARY_PROMPT, SYSTEM_PROMPT
 
 load_dotenv()
 
 logger = logging.getLogger("uvicorn.error")
 
-# "gemini-3.6-flash" does not exist as a model name — every call would fail
-# with an invalid-model error even with a valid key. Overridable via env in
-# case the default needs to move to a newer model later.
-GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+# The free tier caps requests per day per model, so an exhausted quota is
+# recovered fastest by pointing this at another model rather than editing code.
+# Verified working: gemini-3.1-flash-lite, gemini-flash-latest. Note that
+# gemini-2.5-flash returns 404 "no longer available to new users" on newer keys.
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.1-flash-lite")
 
 # Chunks vary a lot in size (some large, some small), so we cap the total
 # context we send instead of assuming every chunk is roughly the same length.
 MAX_CONTEXT_CHARS = 12000
+MAX_SUMMARY_CHARS = 8000
+
+VALID_RISK_LEVELS = {"ok", "warn", "flag"}
+_JSON_FENCE = re.compile(r"^```(?:json)?\s*|\s*```$", re.IGNORECASE | re.MULTILINE)
 
 # google.generativeai (the old SDK) is fully deprecated — Google has stopped
 # shipping updates or bug fixes for it. This uses its replacement, google-genai.
 _client = None
 _generation_config = types.GenerateContentConfig(system_instruction=SYSTEM_PROMPT)
+_clause_config = types.GenerateContentConfig(system_instruction=CLAUSE_ANALYSIS_PROMPT)
+_summary_config = types.GenerateContentConfig(system_instruction=DOCUMENT_SUMMARY_PROMPT)
 
 
 def _get_client():
@@ -35,6 +44,17 @@ def _get_client():
             raise RuntimeError("GEMINI_API_KEY is not set")
         _client = genai.Client(api_key=api_key)
     return _client
+
+
+def _generate(prompt: str, config: types.GenerateContentConfig) -> str:
+    """The single point every Gemini call goes through, so changing provider
+    or model stays a one-place change (plan section 3)."""
+    response = _get_client().models.generate_content(
+        model=GEMINI_MODEL,
+        contents=prompt,
+        config=config,
+    )
+    return response.text
 
 
 def format_context(chunks) -> str:
@@ -61,6 +81,7 @@ def format_context(chunks) -> str:
         used += len(block)
     return "\n".join(parts)
 
+
 def generate_answer(query: str, chunks) -> str:
     """Take the user's question + retrieved chunks, ask Gemini for a grounded answer.
 
@@ -80,12 +101,7 @@ def generate_answer(query: str, chunks) -> str:
     prompt = f"USER QUESTION:\n{query}\n\nRETRIEVED LEGAL CONTEXT:\n{context}"
 
     try:
-        response = _get_client().models.generate_content(
-            model=GEMINI_MODEL,
-            contents=prompt,
-            config=_generation_config,
-        )
-        return response.text
+        return _generate(prompt, _generation_config)
     except Exception as exc:
         logger.warning("Gemini generation unavailable: %s", exc)
         return (
@@ -93,3 +109,72 @@ def generate_answer(query: str, chunks) -> str:
             "sources below. This is general legal information, not a substitute for "
             "professional legal advice."
         )
+
+
+def _unparsed_clause(note: str) -> dict:
+    return {"risk": "warn", "note": note, "obligation": None}
+
+
+def _clause_result(entry) -> dict:
+    """Validate one clause object from the model's array."""
+    if not isinstance(entry, dict):
+        return _unparsed_clause("Could not parse the model's analysis for this clause.")
+    risk = entry.get("risk")
+    if risk not in VALID_RISK_LEVELS:
+        return _unparsed_clause("The model returned an unrecognised risk level for this clause.")
+    return {
+        "risk": risk,
+        "note": entry.get("note", ""),
+        "obligation": entry.get("obligation"),
+    }
+
+
+def analyze_clauses(items: list[dict]) -> list[dict]:
+    """Classify several document clauses against their retrieved law in ONE call.
+
+    Each item is {"clause_number": str, "text": str, "chunks": list}. Returns
+    one result per item, in the same order. Batching matters: the free tier
+    allows only 20 requests per day, so one call per clause cannot analyze a
+    realistic contract at all.
+    """
+    blocks = []
+    for item in items:
+        context = (
+            format_context(item["chunks"])
+            if item["chunks"]
+            else "(no matching legal context found)"
+        )
+        blocks.append(
+            f"CLAUSE {item['clause_number']}:\n{item['text']}\n\n"
+            f"RETRIEVED LEGAL CONTEXT FOR CLAUSE {item['clause_number']}:\n{context}"
+        )
+
+    raw = _JSON_FENCE.sub("", _generate("\n\n---\n\n".join(blocks), _clause_config).strip())
+
+    try:
+        parsed = json.loads(raw)
+        if not isinstance(parsed, list):
+            raise ValueError("expected a JSON array of clause results")
+    except (json.JSONDecodeError, ValueError, AttributeError):
+        return [
+            _unparsed_clause("Could not parse the model's analysis for this clause.")
+            for _ in items
+        ]
+
+    # Match on clause number rather than position: the model can drop or
+    # reorder entries, and a silently shifted result would attach one clause's
+    # risk to another clause's text.
+    by_number = {
+        str(entry.get("clause_number")): entry for entry in parsed if isinstance(entry, dict)
+    }
+    return [_clause_result(by_number.get(str(item["clause_number"]))) for item in items]
+
+
+def summarize_document(document_text: str, flagged_notes: list[str]) -> str:
+    """Write the plain-language document summary: what it is and what it obligates you to."""
+    concerns = "\n".join(f"- {note}" for note in flagged_notes) or "(none flagged)"
+    prompt = (
+        f"DOCUMENT TEXT:\n{document_text[:MAX_SUMMARY_CHARS]}\n\n"
+        f"CLAUSES FLAGGED AS RISKY:\n{concerns}"
+    )
+    return _generate(prompt, _summary_config).strip()

@@ -1,0 +1,55 @@
+{
+  "summary": "This document is a residential tenancy agreement between Mr. Tariq Mehmood and Mrs. Sana Raza for a property in Bahadurabad, Karachi, lasting for three years. By signing this, the tenant agrees to pay a monthly rent of Rs. 125,000, provide a two-month security deposit, and vacate the premises by 14 August 2029. You should pay close attention to the clauses regarding the annual rent increase and the landlord's power to re-enter the property, as these terms may conflict with standard local rental regulations. These specific sections could potentially lead to disputes regarding your rights to a fair rent increment and the legal process required for eviction.",
+  "flagged_clauses": [
+    {
+      "clause_number": "1",
+      "text": "1. Parties and premises. The Landlord lets the premises at\nBahadurabad, Karachi to the Tenant for residential use only.",
+      "risk": "warn",
+      "note": "Section 5 of the Sind Rented Premises Ordinance, 1979 requires that the rental agreement be in writing and attested by the Controller, a Civil Judge, or a First-Class Magistrate.",
+      "citations_verified": true
+    },
+    {
+      "clause_number": "2",
+      "text": "2. Rent. The Tenant shall pay monthly rent of Rs. 125,000 in\nadvance before the fifth day of each month. The rent shall stand\nenhanced by fifteen per centum (15%) per annum on each renewal.",
+      "risk": "flag",
+      "note": "The 15% annual rent increase exceeds the 10% maximum annual increase permitted under Section 9(2) of the Sind Rented Premises Ordinance, 1979.",
+      "citations_verified": true
+    },
+    {
+      "clause_number": "3",
+      "text": "3. Security deposit. The Tenant shall deposit two months rent as\nsecurity, refundable on vacation less lawful deductions.",
+      "risk": "ok",
+      "note": "The provision for a security deposit is not explicitly prohibited under the provided sections of the Sind Rented Premises Ordinance, 1979.",
+      "citations_verified": true
+    },
+    {
+      "clause_number": "4",
+      "text": "4. Forfeiture and re-entry. On any default beyond seven days, the\nLandlord shall, without notice or recourse to any court, be\nentitled to re-enter the premises and take possession thereof.",
+      "risk": "flag",
+      "note": "A landlord cannot unilaterally re-enter or take possession without an order from the Controller, as eviction must be processed according to Section 15 of the Sind Rented Premises Ordinance, 1979.",
+      "citations_verified": true
+    },
+    {
+      "clause_number": "5",
+      "text": "5. Term. This lease is for three years and the Tenant shall vacate\non or before 14 August 2029.",
+      "risk": "ok",
+      "note": "The specified term and vacate date are consistent with standard contractual practice, provided the agreement is properly documented under Section 5 of the Sind Rented Premises Ordinance, 1979.",
+      "citations_verified": true
+    }
+  ],
+  "obligations": [
+    {
+      "date": "fifth day of each month",
+      "description": "The tenant must pay the monthly rent."
+    },
+    {
+      "date": "14 August 2029",
+      "description": "The tenant must vacate the premises."
+    }
+  ],
+  "masking_applied": {
+    "cnic": 2,
+    "phone": 1,
+    "email": 1
+  }
+}
