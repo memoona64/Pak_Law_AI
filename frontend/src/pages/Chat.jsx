@@ -4,9 +4,9 @@ import { PLSeal } from '../components/seal';
 import AppSidebar from '../components/AppSidebar';
 
 // The real FastAPI retrieval service (hybrid BM25 + vector search over the
-// actual corpus). No generated answer comes back from this yet — that piece
-// needs an LLM API key that isn't configured. Override via a .env file
-// (VITE_RAG_API_URL) if the service runs somewhere other than localhost.
+// actual corpus, plus a Gemini-generated answer grounded in the retrieved
+// sections). Override via a .env file (VITE_RAG_API_URL) if the service
+// runs somewhere other than localhost.
 const RAG_API_URL = import.meta.env.VITE_RAG_API_URL || 'http://127.0.0.1:8000';
 
 // Chat interface — the hero. Sidebar + central messages with expandable citation pills.
@@ -72,10 +72,10 @@ export default function ChatScreen() {
     },
   ]);
 
-  // Sends the typed question to the real retrieval service and shows the
-  // matching corpus sections. There's no LLM key configured yet, so no
-  // generated answer comes back — only genuine retrieved sections, labeled
-  // honestly rather than faked.
+  // Sends the typed question to the real retrieval service and shows both
+  // the generated answer and the matching corpus sections it was grounded
+  // in. If generation is unavailable (no API key, quota, network), the
+  // service itself returns an honest fallback message instead of an answer.
   const handleSend = async () => {
     const text = input.trim();
     if (!text || sending) return;
@@ -95,6 +95,7 @@ export default function ChatScreen() {
       setMessages(prev => [...prev, {
         id: `r-${Date.now()}`,
         role: 'retrieval',
+        answer: data.answer,
         chunks: data.chunks || [],
         normalizedQuery: data.normalized_query,
         originalQuery: text,
@@ -220,8 +221,8 @@ function SystemNote({ text }) {
   );
 }
 
-// Real results from the retrieval service — matched corpus sections, not a
-// generated answer (no LLM key is configured, so we don't fake one).
+// Real results from the retrieval service — the generated answer (if any)
+// plus the matched corpus sections it's grounded in.
 function RetrievalResult({ m, expanded, setExpanded }) {
   return (
     <div className="flex gap-3">
@@ -234,8 +235,11 @@ function RetrievalResult({ m, expanded, setExpanded }) {
           <Chip tone="taupe" icon="search">{m.chunks.length} matching section{m.chunks.length === 1 ? '' : 's'}</Chip>
         </div>
         <div className="bg-[#F7F6F0] border border-[#DFE0CE] rounded-2xl rounded-tl-md px-5 py-4 text-[16px] leading-[1.7] text-[#2A2F22]">
-          <p className="text-[#4A5540] italic">
-            No generated answer yet — that needs an AI service that isn't connected. Here are the closest matching sections from Pakistani law:
+          {m.answer && <p>{m.answer}</p>}
+          <p className={`text-[#4A5540] ${m.answer ? 'mt-3 text-[14px]' : 'italic'}`}>
+            {m.answer
+              ? 'Matching sections this answer is grounded in:'
+              : 'Here are the closest matching sections from Pakistani law:'}
           </p>
           {m.normalizedQuery && m.normalizedQuery !== m.originalQuery && (
             <p className="mt-2 text-[14px] text-[#7A7D68]">Searched for: <span className="italic">"{m.normalizedQuery}"</span></p>

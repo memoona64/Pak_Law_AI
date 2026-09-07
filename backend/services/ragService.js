@@ -42,8 +42,49 @@ exports.query = async ({ question, language, province }) => {
 
   try {
     const pythonUrl = `${process.env.PYTHON_SERVICE_URL || 'http://localhost:8000'}/rag/query`;
-    const response = await axios.post(pythonUrl, { question, language, province });
-    return response.data;
+    // The Python service's request contract is { query, province, use_reranker,
+    // normalize } -- it has no "question" or "language" field. Sending the
+    // wrong field names here means the service's own validation always
+    // rejects the request with a 422 before it ever runs a search.
+    const response = await axios.post(pythonUrl, {
+      query: question,
+      province,
+      use_reranker: true,
+      normalize: true,
+    });
+    const { chunks = [], answer, timings } = response.data;
+
+    // The Python service returns { chunks, answer, timings, ... }, not the
+    // { citations, sources, verified, safetyTriggered } shape the rest of
+    // this backend expects (that shape only exists in the mock above).
+    // Translate real chunks into citation objects here so callers don't
+    // need to know which mode produced the result.
+    const citations = chunks.map((chunk) => {
+      const meta = chunk.metadata || {};
+      return {
+        id: chunk.id,
+        act: meta.act,
+        shortCode: meta.short_code,
+        section: meta.section || meta.Article,
+        title: meta.section_title,
+        verbatim: chunk.text,
+        jurisdiction: meta.jurisdiction,
+        province: meta.province,
+      };
+    });
+
+    return {
+      answer,
+      citations,
+      sources: [],
+      // Neither of these is actually computed by /rag/query today -- citation
+      // verification and safety checks only exist on the separate
+      // document-analysis endpoint. Reporting true/false here would claim a
+      // check ran when it didn't, so this reports "not evaluated" instead.
+      verified: null,
+      safetyTriggered: null,
+      timings,
+    };
   } catch (error) {
     console.error(`[RAG Service Error] ${error.message}`);
     throw new Error('Python FastAPI retrieval service is unreachable or returned an error.');
