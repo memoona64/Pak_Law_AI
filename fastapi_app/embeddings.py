@@ -21,9 +21,19 @@ def get_model() -> SentenceTransformer:
         try:
             _model = SentenceTransformer(MODEL_NAME)
         except Exception as exc:
+            # Out of memory and not-yet-downloaded look identical from here,
+            # but they need opposite fixes. Windows reports low memory as
+            # "paging file is too small" (OSError 1455) — saying "check your
+            # internet" for that sends people looking in the wrong place.
+            if "paging file" in str(exc) or isinstance(exc, MemoryError):
+                hint = (
+                    "Not enough free memory to load it — this model needs roughly 3 GB free. "
+                    "Close other applications and retry."
+                )
+            else:
+                hint = "Connect to the internet once to cache it locally, then retry."
             raise ModelUnavailableError(
-                f"Could not load embedding model '{MODEL_NAME}'. "
-                "Connect to the internet once to cache it locally, then retry."
+                f"Could not load embedding model '{MODEL_NAME}'. {hint}"
             ) from exc
     return _model
 

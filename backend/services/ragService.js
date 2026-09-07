@@ -10,10 +10,17 @@
  * - There is no safety-trigger detection yet, so `safetyTriggered` below is an
  *   honest placeholder (always false). Do NOT change it to a hardcoded true —
  *   that would present an unbuilt safety feature as working.
- * - Citation metadata key names differ between corpus files ("section" vs
- *   "section_number", "Article" vs "Article_number"). _mapChunkToCitation()
- *   tries each known name and logs a warning when a field is genuinely absent,
- *   rather than inventing a value.
+ * - Citation metadata key names differ between corpus files: statutes (PPC,
+ *   CrPC) use "section"/"section_number"/"section_title"; the Constitution
+ *   uses "Article"/"Article_number"/"article_title" (lowercase "a" on the
+ *   title key specifically — confirmed from real corpus samples).
+ *   _mapChunkToCitation() below uses the confirmed real key names and logs a
+ *   warning when a field is genuinely absent, rather than guessing or faking
+ *   a value.
+ * - amendedUpTo maps to the corpus's real "amendment_note" field, which
+ *   exists on every chunk but is empty (null) in every sampled chunk so far —
+ *   this is a data-completeness gap, not a missing feature.
+ * - corpusVersion has no equivalent field anywhere in the corpus yet.
  *
  * Citation verification DOES now exist in FastAPI. `verified` below is a real
  * value from citation_verifier.py, not a placeholder.
@@ -27,16 +34,25 @@ const ANALYZE_TIMEOUT_MS = 300000;
 
 /**
  * Maps one FastAPI chunk to the frontend-facing citation shape.
- * Defensive, because different corpus files use different metadata key names.
+ * Uses confirmed real corpus metadata keys (see file header for the
+ * statute-vs-Constitution key differences).
  */
 function _mapChunkToCitation(chunk) {
   const meta = chunk.metadata || {};
 
-  const act = meta.act || meta.act_name || meta.law_name || null;
-  const title = meta.title || meta.heading || meta.section_title || null;
-  const section = meta.section || meta.section_number || meta.Article || meta.Article_number || null;
-  const amendedUpTo = meta.amended_up_to || meta.amendedUpTo || meta.last_verified || null;
-  const corpusVersion = meta.corpus_version || meta.corpusVersion || meta.index_version || null;
+  // Confirmed real keys from actual corpus samples (PPC, CrPC, Constitution):
+  // act, short_code, section/section_number (statutes) OR Article/Article_number
+  // (Constitution), section_title (statutes) OR article_title (Constitution,
+  // lowercase "a" -- NOT "Article_title"), jurisdiction, province,
+  // amendment_note (usually null but the field is real), source_status.
+  // MFLO and the Sindh Rented Premises Ordinance instead store the heading
+  // under a plain "title" key -- kept as a fallback below.
+  // corpusVersion has no corpus equivalent at all -- stays null until added upstream.
+  const act = meta.act || null;
+  const title = meta.section_title || meta.article_title || meta.title || null;
+  const section = meta.section_number || meta.section || meta.Article_number || meta.Article || null;
+  const amendedUpTo = meta.amendment_note || null; // field exists but is empty for every sampled chunk so far
+  const corpusVersion = meta.corpus_version || meta.corpusVersion || null; // no equivalent found in corpus yet
 
   const missing = [
     ['act', act], ['title', title], ['amendedUpTo', amendedUpTo], ['corpusVersion', corpusVersion],
@@ -53,7 +69,7 @@ function _mapChunkToCitation(chunk) {
     section: section ? String(section) : '',
     title: title || '',
     verbatim: chunk.text || '',
-    jurisdiction: meta.province ? 'province' : 'federal',
+    jurisdiction: meta.jurisdiction || (meta.province ? 'province' : 'federal'), // real field now used directly
     province: meta.province || null,
     amendedUpTo,     // null if genuinely absent — not faked
     corpusVersion,   // null if genuinely absent — not faked
