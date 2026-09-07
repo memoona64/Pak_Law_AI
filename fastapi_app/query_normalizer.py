@@ -8,6 +8,7 @@ Gracefully degrades to offline dictionary or original query if no API key is set
 import json
 import logging
 import os
+import time
 import urllib.error
 import urllib.request
 
@@ -92,13 +93,34 @@ def _call_gemini(query: str, api_key: str) -> str:
         "generationConfig": {"temperature": 0.1, "maxOutputTokens": 60},
     }
     data = json.dumps(payload).encode("utf-8")
-    req = urllib.request.Request(
-        url, data=data, headers={"Content-Type": "application/json"}
-    )
-    with urllib.request.urlopen(req, timeout=5) as response:
-        res = json.loads(response.read().decode("utf-8"))
-        text = res["candidates"][0]["content"]["parts"][0]["text"].strip()
-        return text if text else query
+
+    # One retry for transient failures. Gemini returns 503 when overloaded, and
+    # a single 503 otherwise silently degrades a Roman Urdu query into an
+    # untranslated search against English law. Quota errors (429) are NOT
+    # retried — retrying only burns more of a limit that is already exhausted.
+    last_error = None
+    for attempt in (1, 2):
+        req = urllib.request.Request(
+            url, data=data, headers={"Content-Type": "application/json"}
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=5) as response:
+                res = json.loads(response.read().decode("utf-8"))
+                text = res["candidates"][0]["content"]["parts"][0]["text"].strip()
+                return text if text else query
+        except urllib.error.HTTPError as exc:
+            if exc.code == 429 or attempt == 2:
+                raise
+            last_error = exc
+            logger.warning("Normalization attempt %s failed (%s), retrying", attempt, exc)
+            time.sleep(1)
+        except Exception:
+            if attempt == 2:
+                raise
+            logger.warning("Normalization attempt %s failed, retrying", attempt)
+            time.sleep(1)
+
+    raise last_error
 
 
 def _call_groq(query: str, api_key: str) -> str:
