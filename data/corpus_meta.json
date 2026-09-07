@@ -29,7 +29,7 @@
     "pages": 307,
     "extraction_method": "text_layer",
     "quality_notes": "Most recently updated document in the corpus. Uses 22A with no hyphen for the Justice of the Peace section. source_url is a landing page. The site generates PDFs dynamically, so freshness cannot be auto-checked for this document - requires manual re-download.",
-    "known_gaps": "FILL_ME - pending Second Schedule decision"
+    "known_gaps": "Chunked 2026-09-06 (496 sections, 1-565); footnote citations (amendment history like \"1Subs. by Ord. No. XXXVII of 2001, s.4.\") stripped from the chunk text the same day so sections contain just the law, and the embeddings index was rebuilt and verified against the new text (see notes/decisions.md item 13 for a live-query stale-process gotcha hit and fixed along the way). The Second Schedule and all other schedules (forms, repealed-enactments list) are excluded per the 2026-08-30 decision -- they are tables/forms, not numbered sections, and extract as scattered fragments rather than usable text. A handful of sections have a verbose section_title in the chunk metadata (the source text has no clean title/body separator for them); this only affects the display title, not the full section text used for search."
   },
   {
     "short_code": "mfl",

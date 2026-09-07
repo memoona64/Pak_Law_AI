@@ -347,7 +347,17 @@ async def analyze_document(
                 )
             )
             if result["obligation"]:
-                obligations.append(ObligationItem(**result["obligation"]))
+                try:
+                    obligations.append(ObligationItem(**result["obligation"]))
+                except Exception as exc:
+                    # The model's JSON doesn't always match the expected shape
+                    # (missing/extra keys, wrong types). One malformed
+                    # obligation must not discard every clause analyzed so far.
+                    logger.warning(
+                        "Skipping malformed obligation for clause %s: %s",
+                        item["clause_number"],
+                        exc,
+                    )
 
     flagged_notes = [clause.note for clause in analyzed if clause.risk == "flag"]
     try:
