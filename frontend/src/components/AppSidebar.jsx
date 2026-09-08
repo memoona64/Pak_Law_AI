@@ -19,9 +19,31 @@ const NAV_ITEMS = [
 // every page just renders <AppSidebar /> with no wiring of its own. Not used
 // on /login (its own full-screen layout) or /safety (must have nothing to
 // click away to).
+// Reads the logged-in user's name from the same localStorage entry Login.jsx
+// writes on sign-in. No fallback name is invented — a signed-out visitor
+// just sees "Guest" rather than someone else's identity.
+function useCurrentUser() {
+  const [user] = React.useState(() => {
+    try {
+      const raw = localStorage.getItem('paklaw_user');
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  });
+  return user;
+}
+
+const initials = (name) => {
+  if (!name) return '?';
+  const parts = name.trim().split(/\s+/);
+  return ((parts[0]?.[0] || '') + (parts[1]?.[0] || '')).toUpperCase() || '?';
+};
+
 export default function AppSidebar({ dark = true }) {
   const [open, setOpen] = React.useState(false);
   const location = useLocation();
+  const user = useCurrentUser();
 
   const bg = dark ? 'bg-[#2A2F22] text-[#F7F6F0]' : 'bg-[#F0EFE3] text-[#2A2F22]';
   const rowActive = dark ? 'bg-[#363B2C] border-[#6B7F5E]' : 'bg-white border-[#6B7F5E]';
@@ -76,9 +98,9 @@ export default function AppSidebar({ dark = true }) {
 
         {/* User strip */}
         <div className={`p-3 border-t ${rule} flex items-center gap-2.5`}>
-          <div className="w-8 h-8 rounded-full bg-[#6B7F5E] flex items-center justify-center font-serif text-[14px] text-[#F7F6F0]">AR</div>
+          <div className="w-8 h-8 rounded-full bg-[#6B7F5E] flex items-center justify-center font-serif text-[14px] text-[#F7F6F0]">{initials(user?.name)}</div>
           <div className="flex-1 min-w-0 leading-tight">
-            <div className="text-[14px] font-medium truncate">Aisha Rahman</div>
+            <div className="text-[14px] font-medium truncate">{user?.name || 'Guest'}</div>
           </div>
           <button disabled title="Settings — coming soon" className="w-7 h-7 rounded-md flex items-center justify-center opacity-40 cursor-not-allowed">
             <Icon name="settings" size={14} />

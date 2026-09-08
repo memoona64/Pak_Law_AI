@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Icon, Btn, Eyebrow } from '../components/primitives';
+import { Icon, Eyebrow } from '../components/primitives';
 import AppSidebar from '../components/AppSidebar';
 
 // The Express backend. Override via a .env file (VITE_API_URL) if it runs
@@ -72,12 +72,6 @@ export default function FlowsScreen() {
               ))}
             </div>
           )}
-
-          {/* Discovery band */}
-          <div className="mt-6 rounded-lg border border-dashed border-[#6B7F5E]/40 bg-[#ECEBD9]/40 px-5 py-3.5 flex flex-wrap items-center justify-between gap-3">
-            <span className="text-[14px] text-[#4A5540]">Don't see your situation? Describe it in your own words and we'll build a flow.</span>
-            <Btn variant="bronze" size="sm" iconRight="arrow-right">Compose flow</Btn>
-          </div>
         </div>
       </div>
     </div>
