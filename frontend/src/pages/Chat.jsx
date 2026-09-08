@@ -195,7 +195,7 @@ export default function ChatScreen() {
             ) : messages.length === 0 && !sending && (
               <div className="flex flex-col items-center justify-center text-center py-16">
                 <div className="w-14 h-14 rounded-full bg-[#2A2F22] flex items-center justify-center">
-                  <PLSeal size={26} tone="espresso" ring={false} />
+                  <PLSeal size={26} ring={false} />
                 </div>
                 <div className="mt-5 font-serif text-[22px] leading-tight">Ask your first question.</div>
                 <p className="mt-2 text-[16px] text-[#4A5540] max-w-[420px]">
@@ -214,7 +214,7 @@ export default function ChatScreen() {
             {sending && (
               <div className="flex items-center gap-3 text-[14px] text-[#7A7D68]">
                 <div className="w-8 h-8 rounded-full bg-[#2A2F22] flex items-center justify-center">
-                  <div className="w-3.5 h-3.5"><PLSeal size={22} tone="espresso" ring={false}/></div>
+                  <div className="w-3.5 h-3.5"><PLSeal size={22} ring={false}/></div>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#6B7F5E] animate-pulse" />
@@ -308,7 +308,7 @@ function AssistantMessage({ m, expanded, setExpanded }) {
   return (
     <div className="flex gap-3">
       <div className="w-9 h-9 shrink-0 rounded-full bg-[#2A2F22] flex items-center justify-center">
-        <PLSeal size={30} tone="espresso" ring={false} />
+        <PLSeal size={30} ring={false} />
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-1.5 flex-wrap">
