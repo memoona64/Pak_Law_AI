@@ -233,3 +233,8 @@ node_modules/
 /share/
 chroma_db/
 docs/team-briefing-script.md
+
+# Windows treats Scripts/ and scripts/ as the same path, so the !/scripts/
+# rule above accidentally un-ignores the venv Scripts/ folder. Re-ignore the
+# venv executables specifically (this comes last, so it wins).
+/Scripts/*.exe

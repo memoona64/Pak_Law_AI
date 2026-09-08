@@ -118,7 +118,7 @@ def _call_gemini(query: str, api_key: str) -> str:
             if attempt == 2:
                 raise
             last_error = exc
-            logger.warning("Normalization attempt %s failed, retrying", attempt)
+            logger.warning("Normalization attempt %s failed (%s), retrying", attempt, exc)
             time.sleep(1)
 
     raise last_error or RuntimeError("Gemini normalization failed after retries")
