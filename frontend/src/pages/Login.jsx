@@ -74,13 +74,13 @@ export default function Login() {
 
         {/* Top nav row */}
         <div className="relative flex items-center justify-between px-6 pt-8 lg:px-14 lg:pt-14">
-          <PLWordmark tone="espresso" size={40} />
+          <PLWordmark size={40} />
         </div>
 
         {/* Center composition — abstract seal */}
         <div className="relative mt-8 lg:mt-14 flex flex-col items-center px-6 pb-10 lg:px-14 lg:pb-0">
           <div className="relative">
-            <PLSeal size={140} tone="espresso" />
+            <PLSeal size={140} />
             {/* orbit dots */}
             <svg className="absolute -inset-8" viewBox="0 0 240 240" width="240" height="240">
               <circle cx="120" cy="120" r="110" fill="none" stroke="#B9C2A0" strokeOpacity="0.25" strokeDasharray="1 4" />

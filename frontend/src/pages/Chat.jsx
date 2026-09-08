@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Icon, Chip, Btn, Eyebrow, Disclaimer } from '../components/primitives';
 import { PLSeal } from '../components/seal';
 import AppSidebar from '../components/AppSidebar';
@@ -15,13 +16,81 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 const URDU_SCRIPT_RE = /[؀-ۿ]/;
 const isUrduScript = (text) => URDU_SCRIPT_RE.test(text);
 
+const formatTime = (iso) => {
+  try {
+    return new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  } catch {
+    return '';
+  }
+};
+
+// A stored conversation has one entry per question/answer pair; the UI
+// wants each side as its own bubble.
+const expandStoredMessages = (storedMessages) => {
+  const expanded = [];
+  for (const msg of storedMessages) {
+    expanded.push({ id: `${msg.id}-q`, role: 'user', time: formatTime(msg.timestamp), text: msg.question });
+    expanded.push({
+      id: msg.id,
+      role: 'assistant',
+      time: formatTime(msg.timestamp),
+      body: <p className="whitespace-pre-wrap">{msg.answer}</p>,
+      citations: msg.citations || [],
+    });
+  }
+  return expanded;
+};
+
 // Chat interface — the hero. Sidebar + central messages with expandable citation pills.
 export default function ChatScreen() {
+  const { id: routeConversationId } = useParams();
+  const navigate = useNavigate();
   const [expanded, setExpanded] = React.useState({});
   const [input, setInput] = React.useState('');
   const [sending, setSending] = React.useState(false);
+  const [loadingConversation, setLoadingConversation] = React.useState(!!routeConversationId);
   const [messages, setMessages] = React.useState([]);
+  const [conversationId, setConversationId] = React.useState(routeConversationId || null);
   const messagesEndRef = React.useRef(null);
+
+  // Loads a past conversation's real messages when arriving via /chat/:id
+  // (e.g. clicking a row in History). A bare /chat starts empty.
+  React.useEffect(() => {
+    if (!routeConversationId) {
+      setMessages([]);
+      setConversationId(null);
+      setLoadingConversation(false);
+      return;
+    }
+
+    setLoadingConversation(true);
+    setConversationId(routeConversationId);
+    const token = localStorage.getItem('paklaw_token');
+    if (!token) {
+      setMessages([{ id: 'note-auth', role: 'note', text: 'Please sign in to view this conversation.' }]);
+      setLoadingConversation(false);
+      return;
+    }
+
+    fetch(`${API_URL}/api/chat/history/${encodeURIComponent(routeConversationId)}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(async (res) => {
+        if (res.status === 404) throw new Error("This conversation wasn't found.");
+        if (res.status === 401) {
+          localStorage.removeItem('paklaw_token');
+          localStorage.removeItem('paklaw_user');
+          throw new Error('Your session expired — please sign in again.');
+        }
+        if (!res.ok) throw new Error(`Chat service returned ${res.status}`);
+        const data = await res.json();
+        setMessages(expandStoredMessages(data.messages || []));
+      })
+      .catch((err) => {
+        setMessages([{ id: 'note-load-error', role: 'note', text: err.message || "Couldn't load this conversation." }]);
+      })
+      .finally(() => setLoadingConversation(false));
+  }, [routeConversationId]);
 
   // Keeps the newest message in view instead of leaving it below the fold.
   React.useEffect(() => {
@@ -58,7 +127,9 @@ export default function ChatScreen() {
         },
         // No language field — the backend detects and normalizes the
         // query's language itself (Roman Urdu / Urdu script / English).
-        body: JSON.stringify({ question: text }),
+        // conversationId appends to the open conversation once one exists,
+        // instead of starting a new one on every message.
+        body: JSON.stringify({ question: text, conversationId: conversationId || undefined }),
       });
 
       if (res.status === 401) {
@@ -83,6 +154,14 @@ export default function ChatScreen() {
         body: <p className="whitespace-pre-wrap">{data.answer}</p>,
         citations: data.citations || [],
       }]);
+
+      // First message of a new conversation: remember its id so follow-up
+      // questions append to it, and reflect it in the URL so History links
+      // straight back here.
+      if (data.conversationId && data.conversationId !== conversationId) {
+        setConversationId(data.conversationId);
+        navigate(`/chat/${data.conversationId}`, { replace: true });
+      }
     } catch {
       setMessages(prev => [...prev, {
         id: `note-${Date.now()}`,
@@ -111,10 +190,12 @@ export default function ChatScreen() {
           <div className="max-w-[840px] mx-auto px-8 py-8 space-y-8">
             <Disclaimer />
 
-            {messages.length === 0 && !sending && (
+            {loadingConversation ? (
+              <div className="text-center py-16 text-[16px] text-[#7A7D68]">Loading conversation…</div>
+            ) : messages.length === 0 && !sending && (
               <div className="flex flex-col items-center justify-center text-center py-16">
                 <div className="w-14 h-14 rounded-full bg-[#2A2F22] flex items-center justify-center">
-                  <PLSeal size={26} tone="espresso" ring={false} />
+                  <PLSeal size={26} ring={false} />
                 </div>
                 <div className="mt-5 font-serif text-[22px] leading-tight">Ask your first question.</div>
                 <p className="mt-2 text-[16px] text-[#4A5540] max-w-[420px]">
@@ -133,7 +214,7 @@ export default function ChatScreen() {
             {sending && (
               <div className="flex items-center gap-3 text-[14px] text-[#7A7D68]">
                 <div className="w-8 h-8 rounded-full bg-[#2A2F22] flex items-center justify-center">
-                  <div className="w-3.5 h-3.5"><PLSeal size={22} tone="espresso" ring={false}/></div>
+                  <div className="w-3.5 h-3.5"><PLSeal size={22} ring={false}/></div>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#6B7F5E] animate-pulse" />
@@ -227,7 +308,7 @@ function AssistantMessage({ m, expanded, setExpanded }) {
   return (
     <div className="flex gap-3">
       <div className="w-9 h-9 shrink-0 rounded-full bg-[#2A2F22] flex items-center justify-center">
-        <PLSeal size={30} tone="espresso" ring={false} />
+        <PLSeal size={30} ring={false} />
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-1.5 flex-wrap">
