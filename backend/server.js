@@ -11,6 +11,7 @@ dotenv.config();
 
 const connectDB = require('./config/db.js');
 const errorHandler = require('./middleware/errorHandler.js');
+const ragService = require('./services/ragService.js'); // NEW — for the FastAPI health check
 
 const app = express();
 
@@ -29,11 +30,14 @@ app.use(
   })
 );
 
-/** Health Check Endpoint */
-app.get('/api/health', (req, res) => {
+/** Health Check Endpoint — now also reports live FastAPI status */
+app.get('/api/health', async (req, res) => {
+  const pyHealth = await ragService.checkPythonHealth();
   res.status(200).json({
     status: 'ok',
-    uptime: process.uptime()
+    uptime: process.uptime(),
+    pythonService: pyHealth.reachable ? 'ok' : 'unreachable', // NEW
+    mockMode: process.env.USE_MOCK === 'true'                  // NEW
   });
 });
 
@@ -45,16 +49,47 @@ app.use('/api/documents', require('./routes/documents.js'));
 app.use('/api/feedback', require('./routes/feedback.js'));
 app.use('/api/eval', require('./routes/eval.js'));
 
+// 404 Fallback Handler for undefined routes
+app.use((req, res) => {
+  res.status(404).json({
+    error: 'Not Found',
+    message: `Route ${req.originalUrl} does not exist.`
+  });
+});
+
 // Global Exception Handler
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
-  await connectDB();
-  app.listen(PORT, () => {
-    console.log(`[PakLaw Server] Running on port ${PORT} | Env: ${process.env.NODE_ENV || 'development'}`);
-  });
+  try {
+    await connectDB();
+    app.listen(PORT, async () => {
+      console.log(`[PakLaw Server] Running on port ${PORT} | Env: ${process.env.NODE_ENV || 'development'}`);
+
+      // NEW — check FastAPI reachability at startup, warn but don't crash if it's down
+      const pyHealth = await ragService.checkPythonHealth();
+      if (pyHealth.reachable) {
+        console.log(`[PakLaw Server] FastAPI reachable — ${pyHealth.chunksLoaded} chunks loaded`);
+      } else {
+        console.warn(`[PakLaw Server] FastAPI NOT reachable: ${pyHealth.error}`);
+        if (process.env.USE_MOCK === 'true') {
+          console.warn('[PakLaw Server] USE_MOCK=true, so chat/documents will work on mock data anyway.');
+        } else {
+          console.warn('[PakLaw Server] USE_MOCK is not true — chat/documents will fail until FastAPI is running.');
+        }
+      }
+    });
+  } catch (error) {
+    console.error('[PakLaw Server Error] Database connection failed:', error.message);
+    process.exit(1);
+  }
 };
+
+// Global Unhandled Rejection Safeguard
+process.on('unhandledRejection', (err) => {
+  console.error('[Unhandled Rejection]', err);
+});
 
 startServer();

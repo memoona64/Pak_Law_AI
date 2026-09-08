@@ -1,6 +1,5 @@
 /**
- * Flows Express Router
- * Express routes for retrieving static guided-procedure content.
+ * Guided Procedure Flows Express Router
  */
 
 const express = require('express');

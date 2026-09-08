@@ -1,201 +1,430 @@
-[
-  {
-    "slug": "fir",
-    "category": "Criminal Law",
-    "icon": "shield-alert",
-    "title": "Filing a First Information Report (FIR)",
-    "subtitle": "Step-by-step guide to reporting a cognizable offense to Pakistani police",
-    "stepCount": 3,
-    "estimatedMinutes": 45,
-    "steps": [
-      {
-        "number": 1,
-        "title": "Reporting to the Police Station",
-        "whatTheLawSays": "Under Section 154 CrPC, the Station House Officer (SHO) is legally bound to record an FIR immediately when information regarding a cognizable offense is presented, whether orally or in writing.",
-        "citations": [
-          {
-            "act": "Code of Criminal Procedure 1898",
-            "section": "Section 154"
-          }
-        ],
-        "whereToGo": "The local Police Station (Thana) having territorial jurisdiction over the place of incident.",
-        "whatToFile": "Written complaint detailing the date, time, place of incident, names/descriptions of accused, and witness details.",
-        "cost": "Free of cost. Demanding money for registering an FIR is illegal.",
-        "howLong": "15 to 30 minutes for initial recording.",
-        "ifRefused": "If the SHO refuses to record the FIR, submit a written application to the Superintendent of Police (SP) or Justice of Peace (Ex-officio Sessions Judge under Section 22-A/22-B CrPC)."
+{
+  "flows": [
+    {
+      "slug": "fir-refusal",
+      "title": {
+        "en": "Police refusing to register an FIR",
+        "ur": "پولیس کا ایف آئی آر درج کرنے سے انکار",
+        "roman_ur": "Police ka FIR darj karne se inkar"
       },
-      {
-        "number": 2,
-        "title": "Verification and Signature",
-        "whatTheLawSays": "The recorded statement must be read over to the informant and signed or thumb-imprinted by them to verify accuracy before entry into the police register (Form 5.24).",
-        "citations": [
-          {
-            "act": "Police Rules 1934",
-            "section": "Chapter 24 Rule 5"
-          }
-        ],
-        "whereToGo": "Duty Officer / Station House Officer (SHO) office within the police station.",
-        "whatToFile": "Your signed or thumb-imprinted statement as recorded by the officer.",
-        "cost": "Free of cost.",
-        "howLong": "10 to 15 minutes.",
-        "ifRefused": "Do not sign if the statement recorded differs from your actual account. Request correct re-transcription."
+      "situation": {
+        "en": "You went to the police station to report a cognizable crime (theft, assault, fraud, etc.) and the officer refused to register an FIR, or kept delaying it.",
+        "ur": "آپ تھانے گئے تاکہ ایک قابلِ دست اندازی جرم (چوری، تشدد، فراڈ وغیرہ) رپورٹ کریں، مگر ایس ایچ او نے ایف آئی آر درج کرنے سے انکار کر دیا یا ٹال مٹول کر رہا ہے۔",
+        "roman_ur": "Aap thana gaye takay ek cognizable jurm (chori, tashaddud, fraud, waghera) report karain, magar SHO ne FIR darj karne se inkar kar diya ya taal mataal kar raha hai."
       },
-      {
-        "number": 3,
-        "title": "Obtaining a Certified Copy",
-        "whatTheLawSays": "The informant has an absolute legal right to receive a copy of the recorded FIR free of cost immediately after registration.",
-        "citations": [
-          {
-            "act": "Code of Criminal Procedure 1898",
-            "section": "Section 154"
+      "steps": [
+        {
+          "label": { "en": "What the law says", "ur": "قانون کیا کہتا ہے", "roman_ur": "Qanoon kya kehta hai" },
+          "body": {
+            "en": "Under Section 154 CrPC, registering an FIR for a cognizable offence is mandatory, not discretionary — the officer cannot run an 'inquiry' first to decide whether to register it. Refusal or delay is itself unlawful.",
+            "ur": "دفعہ 154 ضابطہ فوجداری کے تحت، قابلِ دست اندازی جرم پر ایف آئی آر درج کرنا لازمی ہے، اختیاری نہیں — افسر پہلے 'انکوائری' کر کے یہ فیصلہ نہیں کر سکتا کہ درج کرے یا نہیں۔ انکار یا تاخیر خود ایک غیر قانونی عمل ہے۔",
+            "roman_ur": "Section 154 CrPC ke tehat, cognizable jurm par FIR darj karna lazmi hai, ikhtiyari nahi — afsar pehle 'inquiry' kar ke yeh faisla nahi kar sakta ke darj kare ya nahi. Inkar ya taakheer khud ek ghair-qanooni amal hai."
           }
-        ],
-        "whereToGo": "Police Station Front Desk or Police Service Center (Khidmat Markaz).",
-        "whatToFile": "Request for official stamped copy of the registered FIR.",
-        "cost": "Free of cost.",
-        "howLong": "Issued immediately upon registration.",
-        "ifRefused": "File a complaint with the District Police Officer (DPO) or Ombudsman (Mohtasib)."
-      }
-    ]
-  },
-  {
-    "slug": "eviction",
-    "category": "Property Law",
-    "icon": "home-x",
-    "title": "Handling Illegal Tenant Eviction",
-    "subtitle": "Legal protections for tenants against unlawful landlord eviction",
-    "stepCount": 1,
-    "estimatedMinutes": 30,
-    "steps": [
-     
-      {
-        "number": 1,
-        "title": "Notice Review and Response",
-        "whatTheLawSays": "Landlords must provide statutory notice and apply via the Rent Tribunal under relevant provincial rented premises acts.",
-        "citations": [
-          {
-            "act": "Punjab Rented Premises Act 2009 / Sindh Rented Premises Ordinance 1979",
-            "section": "Section 15"
+        },
+        {
+          "label": { "en": "Where to go", "ur": "کہاں جانا ہے", "roman_ur": "Kahan jana hai" },
+          "body": {
+            "en": "First escalate in writing to the SSP under Section 154(3) CrPC. If that fails, file a petition under Sections 22-A/22-B CrPC before the Sessions Court (Ex-Officio Justice of Peace).",
+            "ur": "پہلے دفعہ 154(3) کے تحت ایس ایس پی کو تحریری درخواست دیں۔ اگر اس سے بات نہ بنے تو دفعہ 22-اے/22-بی کے تحت سیشن کورٹ (ایگزیکٹو مجسٹریٹِ انصاف) میں درخواست دائر کریں۔",
+            "roman_ur": "Pehle Section 154(3) ke tehat SSP ko tehreeri darkhwast dein. Agar is se baat na bane to Section 22-A/22-B ke tehat Sessions Court (Justice of Peace) mein petition dayer karein."
           }
-        ],
-        "whereToGo": "Rent Tribunal / Rent Controller Office.",
-        "whatToFile": "Written reply to eviction notice with rent payment receipts.",
-        "cost": "Varies based on court fee stamps.",
-        "howLong": "1 to 2 weeks.",
-        "ifRefused": "Seek stay order from the Rent Controller."
-      }
-    ]
-  },
-  {
-    "slug": "khula",
-    "category": "Family Law",
-    "icon": "heart-off",
-    "title": "Filing for Khula (Dissolution of Marriage)",
-    "subtitle": "Process for a woman seeking judicial dissolution of marriage",
-    "stepCount": 1,
-    "estimatedMinutes": 60,
-    "steps": [
-      
-      {
-        "number": 1,
-        "title": "Filing Family Suit",
-        "whatTheLawSays": "A Muslim wife is entitled to seek Khula through the Family Court subject to relinquishment of deferred Haq Mehr.",
-        "citations": [
-          {
-            "act": "West Pakistan Family Courts Act 1964",
-            "section": "Section 10"
+        },
+        {
+          "label": { "en": "What to file", "ur": "کیا جمع کروانا ہے", "roman_ur": "Kya jama karwana hai" },
+          "body": {
+            "en": "A written 22-A/22-B petition stating the date you approached the SHO, what happened, and that the police failed/refused to register it. Attach proof of any earlier written application.",
+            "ur": "ایک تحریری 22-اے/22-بی درخواست جس میں یہ لکھا ہو کہ آپ کب ایس ایچ او کے پاس گئے، کیا ہوا، اور پولیس نے درج کرنے سے انکار/کوتاہی کی۔ پہلے دی گئی درخواست کا ثبوت بھی منسلک کریں۔",
+            "roman_ur": "Ek tehreeri 22-A/22-B petition jismein likha ho ke aap kab SHO ke paas gaye, kya hua, aur police ne darj karne se inkar/kotahi ki. Pehle di gayi darkhwast ka saboot bhi mansalik karein."
           }
-        ],
-        "whereToGo": "Family Court in the district where the wife resides.",
-        "whatToFile": "Plaint for dissolution of marriage supported by affidavit and Nikahnama copy.",
-        "cost": "Standard nominal court fees apply.",
-        "howLong": "3 to 6 months.",
-        "ifRefused": "Appeal against decree as per Family Court procedures."
-      }
-    ]
-  },
-  {
-    "slug": "unpaid-salary",
-    "category": "Labor Law",
-    "icon": "banknote-off",
-    "title": "Recovering Unpaid Wages & Salary",
-    "subtitle": "Recourse for employees facing non-payment or delayed wages",
-    "stepCount": 1,
-    "estimatedMinutes": 30,
-    "steps": [
-      
-      {
-        "number": 1,
-        "title": "Filing Claim with Payment of Wages Authority",
-        "whatTheLawSays": "Employees can file claims against illegal wage deductions or non-payment within statutory timelines.",
-        "citations": [
-          {
-            "act": "Payment of Wages Act 1936",
-            "section": "Section 15"
+        },
+        {
+          "label": { "en": "Cost", "ur": "خرچہ", "roman_ur": "Kharcha" },
+          "body": {
+            "en": "Nominal court fee for the petition (a few hundred rupees); lawyer fees vary widely by city and lawyer.",
+            "ur": "درخواست پر معمولی کورٹ فیس (چند سو روپے)؛ وکیل کی فیس شہر اور وکیل کے مطابق مختلف ہوتی ہے۔",
+            "roman_ur": "Petition par mamooli court fee (chand so rupay); wakeel ki fee shehar aur wakeel ke mutabiq mukhtalif hoti hai."
           }
-        ],
-        "whereToGo": "Authority appointed under Payment of Wages Act / Labor Court.",
-        "whatToFile": "Claim application along with employment contract, appointment letter, and bank statements.",
-        "cost": "Exempted or minimal court fees for labor claims.",
-        "howLong": "30 to 90 days.",
-        "ifRefused": "File appeal before the Labor Appellate Tribunal."
-      }
-    ]
-  },
-  {
-    "slug": "online-harassment",
-    "category": "Cybercrime Law",
-    "icon": "message-square-warning",
-    "title": "Reporting Cyber Harassment & Blackmail",
-    "subtitle": "Steps to register complaints with FIA Cybercrime Wing",
-    "stepCount": 1,
-    "estimatedMinutes": 40,
-    "steps": [
-      
-      {
-        "number": 1,
-        "title": "Submitting Cybercrime Complaint",
-        "whatTheLawSays": "Harassment, stalking, or blackmailing via electronic communications is a punishable offense under PECA.",
-        "citations": [
-          {
-            "act": "Prevention of Electronic Crimes Act (PECA) 2016",
-            "section": "Section 20 & 24"
+        },
+        {
+          "label": { "en": "Timeline", "ur": "وقت کا تخمینہ", "roman_ur": "Waqt ka takhmina" },
+          "body": {
+            "en": "A Justice of the Peace petition is usually fixed for hearing within days to a couple of weeks; simple cases can get a direction to register the FIR at the first or second hearing.",
+            "ur": "جسٹس آف پیس کی درخواست عام طور پر چند دنوں سے دو ہفتوں میں سماعت کے لیے مقرر ہو جاتی ہے؛ سادہ کیسز میں پہلی یا دوسری سماعت پر ہی ایف آئی آر درج کرنے کا حکم مل سکتا ہے۔",
+            "roman_ur": "Justice of Peace ki petition aam tor par chand dinon se do haftay mein sunwai ke liye fix ho jati hai; simple cases mein pehli ya doosri sunwai par hi FIR darj karne ka hukum mil sakta hai."
           }
-        ],
-        "whereToGo": "FIA Cyber Crime Reporting Center or online via NR3C Portal.",
-        "whatToFile": "Screenshots, URLs, phone numbers, and digital evidence.",
-        "cost": "Free of cost.",
-        "howLong": "Initial processing within 7 days.",
-        "ifRefused": "Lodge grievance with the Ministry of Interior or High Court writ petition."
-      }
-    ]
-  },
-  {
-    "slug": "arrest-24h",
-    "category": "Constitutional Rights",
-    "icon": "lock",
-    "title": "Rights Upon Police Arrest (24-Hour Rule)",
-    "subtitle": "Constitutional safeguards against unlawful detention",
-    "stepCount": 1,
-    "estimatedMinutes": 20,
-    "steps": [
-      
-      {
-        "number": 1,
-        "title": "Production Before Magistrate",
-        "whatTheLawSays": "Every arrested person must be produced before the nearest Magistrate within 24 hours of arrest excluding journey time.",
-        "citations": [
-          {
-            "act": "Constitution of Pakistan 1973",
-            "section": "Article 10(2)"
+        },
+        {
+          "label": { "en": "If refused", "ur": "اگر پھر بھی انکار ہو", "roman_ur": "Agar phir bhi inkar ho" },
+          "body": {
+            "en": "If the Sessions Court also does not give effective relief, escalate to a writ petition under Article 199 before the High Court.",
+            "ur": "اگر سیشن کورٹ سے بھی مؤثر ریلیف نہ ملے تو آرٹیکل 199 کے تحت ہائی کورٹ میں رٹ پٹیشن دائر کریں۔",
+            "roman_ur": "Agar Sessions Court se bhi mo'assar relief na mile to Article 199 ke tehat High Court mein writ petition dayer karein."
           }
-        ],
-        "whereToGo": "Judicial Magistrate Court.",
-        "whatToFile": "Habeas corpus application or representation through legal counsel.",
-        "cost": "Legal representation fees apply.",
-        "howLong": "Mandatory within 24 hours.",
-        "ifRefused": "File Habeas Corpus petition under Article 199 in High Court or Section 491 CrPC in Sessions Court."
-      }
-    ]
-  }
-]
+        },
+        {
+          "label": { "en": "Warning", "ur": "احتیاط", "roman_ur": "Ehtiyat" },
+          "body": {
+            "en": "Filing a false FIR or false complaint is itself an offence under PPC Sections 182/211 — only proceed if the underlying facts are true.",
+            "ur": "جھوٹی ایف آئی آر یا جھوٹی شکایت درج کروانا خود پاکستان پینل کوڈ کی دفعہ 182/211 کے تحت جرم ہے — صرف اسی صورت میں آگے بڑھیں جب حقائق درست ہوں۔",
+            "roman_ur": "Jhooti FIR ya jhooti shikayat darj karwana khud PPC Section 182/211 ke tehat jurm hai — sirf usi soorat mein aagay barhein jab haqaiq durust hon."
+          }
+        }
+      ]
+    },
+    {
+      "slug": "eviction-security-deposit-sindh",
+      "title": {
+        "en": "Landlord eviction or security deposit dispute (Sindh)",
+        "ur": "مالکِ مکان کی بے دخلی یا سیکیورٹی ڈپازٹ کا تنازعہ (سندھ)",
+        "roman_ur": "Landlord eviction ya security deposit ka tanaza (Sindh)"
+      },
+      "situation": {
+        "en": "Your landlord in Sindh is trying to evict you without a court order, or is refusing to refund your security deposit at the end of the tenancy.",
+        "ur": "سندھ میں آپ کا مالکِ مکان بغیر عدالتی حکم کے آپ کو نکالنے کی کوشش کر رہا ہے، یا کرایہ داری ختم ہونے پر سیکیورٹی ڈپازٹ واپس نہیں کر رہا۔",
+        "roman_ur": "Sindh mein aapka landlord bina adalati hukum ke aapko nikalne ki koshish kar raha hai, ya tenancy khatam hone par security deposit wapis nahi kar raha."
+      },
+      "steps": [
+        {
+          "label": { "en": "What the law says", "ur": "قانون کیا کہتا ہے", "roman_ur": "Qanoon kya kehta hai" },
+          "body": {
+            "en": "Governed by the Sindh Rented Premises Ordinance, 1979. Eviction requires an order from the Rent Controller on specific lawful grounds. A frivolous eviction case can make the landlord liable to pay compensation of up to ten times the monthly rent.",
+            "ur": "یہ معاملہ سندھ رینٹڈ پریمسز آرڈیننس 1979 کے تحت آتا ہے۔ بے دخلی کے لیے رینٹ کنٹرولر کا حکم اور مخصوص قانونی بنیاد درکار ہوتی ہے۔ بلاجواز بے دخلی کے کیس پر مالکِ مکان کو ماہانہ کرائے کے دس گنا تک معاوضہ دینا پڑ سکتا ہے۔",
+            "roman_ur": "Yeh maamla Sindh Rented Premises Ordinance 1979 ke tehat aata hai. Eviction ke liye Rent Controller ka hukum aur mukhsoos qanooni bunyad darkar hoti hai. Bila-jawaz eviction case par landlord ko monthly rent ke das guna tak muawza dena par sakta hai."
+          }
+        },
+        {
+          "label": { "en": "Where to go", "ur": "کہاں جانا ہے", "roman_ur": "Kahan jana hai" },
+          "body": {
+            "en": "The Rent Controller (functionally the Civil Judge) for the district where the property is located.",
+            "ur": "اس ضلع کے رینٹ کنٹرولر (عملی طور پر سول جج) کے پاس جہاں جائیداد واقع ہے۔",
+            "roman_ur": "Us zilay ke Rent Controller (amli tor par Civil Judge) ke paas jahan jaidaad waqe hai."
+          }
+        },
+        {
+          "label": { "en": "What to file", "ur": "کیا جمع کروانا ہے", "roman_ur": "Kya jama karwana hai" },
+          "body": {
+            "en": "A written reply to an eviction case, or an application for recovery of the deposit — supported by the tenancy agreement and payment proof.",
+            "ur": "بے دخلی کے کیس کا تحریری جواب، یا ڈپازٹ کی واپسی کے لیے درخواست — کرایہ داری کے معاہدے اور ادائیگی کے ثبوت کے ساتھ۔",
+            "roman_ur": "Eviction case ka tehreeri jawab, ya deposit ki wapsi ke liye darkhwast — tenancy agreement aur payment proof ke sath."
+          }
+        },
+        {
+          "label": { "en": "Cost", "ur": "خرچہ", "roman_ur": "Kharcha" },
+          "body": {
+            "en": "Court fee on a rent case is modest; lawyer fees vary by city.",
+            "ur": "رینٹ کیس پر کورٹ فیس معمولی ہوتی ہے؛ وکیل کی فیس شہر کے مطابق مختلف ہے۔",
+            "roman_ur": "Rent case par court fee mamooli hoti hai; wakeel ki fee shehar ke mutabiq mukhtalif hai."
+          }
+        },
+        {
+          "label": { "en": "Timeline", "ur": "وقت کا تخمینہ", "roman_ur": "Waqt ka takhmina" },
+          "body": {
+            "en": "Meant to be faster than ordinary civil suits, but contested cases can still take several months.",
+            "ur": "عام دیوانی مقدمات سے تیز ہونا مقصود ہے، مگر متنازعہ کیسز میں کئی مہینے بھی لگ سکتے ہیں۔",
+            "roman_ur": "Aam civil cases se tez hona maqsood hai, magar mutanaza cases mein kai mahiny bhi lag saktay hain."
+          }
+        },
+        {
+          "label": { "en": "If refused", "ur": "اگر پھر بھی انکار ہو", "roman_ur": "Agar phir bhi inkar ho" },
+          "body": {
+            "en": "Appeal lies to the District Court. If the landlord uses force or threats, that is a separate criminal matter (FIR route).",
+            "ur": "اپیل ڈسٹرکٹ کورٹ میں کی جا سکتی ہے۔ اگر مالکِ مکان زبردستی یا دھمکی کا استعمال کرے تو یہ الگ فوجداری معاملہ ہے (ایف آئی آر کا راستہ)۔",
+            "roman_ur": "Appeal District Court mein ki ja sakti hai. Agar landlord zabardasti ya dhamki ka istemal kare to yeh alag criminal maamla hai (FIR ka rasta)."
+          }
+        },
+        {
+          "label": { "en": "Warning", "ur": "احتیاط", "roman_ur": "Ehtiyat" },
+          "body": {
+            "en": "This covers only the Sindh ordinance — Punjab, KP, and Balochistan have separate rented-premises laws.",
+            "ur": "یہ صرف سندھ آرڈیننس کا احاطہ کرتا ہے — پنجاب، خیبرپختونخوا اور بلوچستان کے اپنے الگ کرایہ داری قوانین ہیں۔",
+            "roman_ur": "Yeh sirf Sindh ordinance ka ehata karta hai — Punjab, KP aur Balochistan ke apne alag rented-premises laws hain."
+          }
+        }
+      ]
+    },
+    {
+      "slug": "khula-divorce",
+      "title": {
+        "en": "Khula / divorce procedure",
+        "ur": "خلع / طلاق کا طریقہ کار",
+        "roman_ur": "Khula / talaq ka tareeqa kaar"
+      },
+      "situation": {
+        "en": "A wife wants to end her marriage and her husband will not agree to a talaq, or the couple wants a mutual separation.",
+        "ur": "بیوی شادی ختم کرنا چاہتی ہے اور شوہر طلاق دینے پر راضی نہیں، یا دونوں باہمی رضامندی سے علیحدگی چاہتے ہیں۔",
+        "roman_ur": "Biwi shadi khatam karna chahti hai aur shohar talaq dene par raazi nahi, ya dono mutual tor par alag hona chahtay hain."
+      },
+      "steps": [
+        {
+          "label": { "en": "What the law says", "ur": "قانون کیا کہتا ہے", "roman_ur": "Qanoon kya kehta hai" },
+          "body": {
+            "en": "Under the West Pakistan Family Courts Act, 1964, a wife can seek Khula from the Family Court even without the husband's consent — her firm statement that the marriage cannot continue is itself sufficient ground.",
+            "ur": "ویسٹ پاکستان فیملی کورٹس ایکٹ 1964 کے تحت، بیوی شوہر کی رضامندی کے بغیر بھی فیملی کورٹ سے خلع لے سکتی ہے — اس کا یہ پختہ بیان کہ نکاح جاری نہیں رہ سکتا، خود کافی بنیاد ہے۔",
+            "roman_ur": "West Pakistan Family Courts Act 1964 ke tehat, biwi shohar ki razamandi ke baghair bhi Family Court se khula le sakti hai — uska yeh pukhta bayan ke nikah jaari nahi reh sakta, khud kaafi bunyad hai."
+          }
+        },
+        {
+          "label": { "en": "Where to go", "ur": "کہاں جانا ہے", "roman_ur": "Kahan jana hai" },
+          "body": {
+            "en": "The Family Court of the district where the wife resides, where the couple last lived together, or where the Nikah took place.",
+            "ur": "اس ضلع کی فیملی کورٹ جہاں بیوی رہائش پذیر ہے، جہاں میاں بیوی آخری بار ساتھ رہے، یا جہاں نکاح ہوا۔",
+            "roman_ur": "Us zilay ki Family Court jahan biwi rihaish-pazeer hai, jahan mian biwi aakhri baar sath rahay, ya jahan nikah hua."
+          }
+        },
+        {
+          "label": { "en": "What to file", "ur": "کیا جمع کروانا ہے", "roman_ur": "Kya jama karwana hai" },
+          "body": {
+            "en": "A Khula suit attaching a certified copy of the Nikahnama, CNIC, and a plaint stating that reconciliation is not possible.",
+            "ur": "خلع کا دعویٰ نکاح نامے کی تصدیق شدہ کاپی، شناختی کارڈ، اور یہ بیان کہ صلح ممکن نہیں، کے ساتھ دائر کریں۔",
+            "roman_ur": "Khula ka dawa Nikahnama ki tasdeeq-shuda copy, CNIC, aur yeh bayan ke sulah mumkin nahi, ke sath dayer karein."
+          }
+        },
+        {
+          "label": { "en": "Cost", "ur": "خرچہ", "roman_ur": "Kharcha" },
+          "body": {
+            "en": "Nominal court fee; lawyer fees for a contested matter commonly range from roughly PKR 25,000–100,000+, far less if uncontested.",
+            "ur": "کورٹ فیس معمولی ہے؛ متنازعہ کیس میں وکیل کی فیس عام طور پر تقریباً 25,000 سے 100,000+ روپے تک ہوتی ہے، غیر متنازعہ کیس میں کم۔",
+            "roman_ur": "Court fee mamooli hai; mutanaza case mein wakeel ki fee aam tor par taqreeban 25,000 se 100,000+ rupay tak hoti hai, ghair-mutanaza case mein kam."
+          }
+        },
+        {
+          "label": { "en": "Timeline", "ur": "وقت کا تخمینہ", "roman_ur": "Waqt ka takhmina" },
+          "body": {
+            "en": "Uncontested Khula commonly takes about 3–6 months, followed by the iddat period (about 90 days) before the final certificate.",
+            "ur": "غیر متنازعہ خلع میں عام طور پر تقریباً 3 سے 6 ماہ لگتے ہیں، اس کے بعد عدت کی مدت (تقریباً 90 دن) اور پھر حتمی سرٹیفکیٹ۔",
+            "roman_ur": "Ghair-mutanaza khula mein aam tor par taqreeban 3 se 6 mahiny lagtay hain, iske baad iddat ki muddat (taqreeban 90 din) aur phir final certificate."
+          }
+        },
+        {
+          "label": { "en": "If refused", "ur": "اگر پھر بھی انکار ہو", "roman_ur": "Agar phir bhi inkar ho" },
+          "body": {
+            "en": "The husband cannot indefinitely block Khula — if the court is satisfied reconciliation has failed, it proceeds even over his objection.",
+            "ur": "شوہر خلع کو غیر معینہ مدت تک روک نہیں سکتا — اگر عدالت مطمئن ہو کہ صلح ناکام ہو چکی ہے تو وہ شوہر کے اعتراض کے باوجود آگے بڑھتی ہے۔",
+            "roman_ur": "Shohar khula ko ghair-moayyan muddat tak rok nahi sakta — agar adalat mutmain ho ke sulah nakam ho chuki hai to woh shohar ke aitraaz ke bawajood aagay barhti hai."
+          }
+        },
+        {
+          "label": { "en": "Warning", "ur": "احتیاط", "roman_ur": "Ehtiyat" },
+          "body": {
+            "en": "In Khula the wife typically has to return the prompt dower already received — the exact obligation should be confirmed with a family lawyer before filing.",
+            "ur": "خلع میں بیوی کو عام طور پر وصول شدہ حق مہر واپس کرنا پڑتا ہے — درخواست دائر کرنے سے پہلے فیملی وکیل سے دقیق ذمہ داری کی تصدیق کر لیں۔",
+            "roman_ur": "Khula mein biwi ko aam tor par wasool-shuda haq mehr wapis karna parta hai — darkhwast dayer karne se pehle family lawyer se sahih zimmedari ki tasdeeq kar lein."
+          }
+        }
+      ]
+    },
+    {
+      "slug": "unpaid-salary-wrongful-termination",
+      "title": {
+        "en": "Unpaid salary or wrongful termination",
+        "ur": "غیر ادا شدہ تنخواہ یا ناجائز برطرفی",
+        "roman_ur": "Ghair ada shuda tankhwah ya najaiz bartarfi"
+      },
+      "situation": {
+        "en": "An employer has stopped paying salary, delayed final settlement after leaving the job, or terminated the employee without following the required procedure.",
+        "ur": "آجر نے تنخواہ دینا بند کر دی ہے، نوکری چھوڑنے کے بعد حتمی سیٹلمنٹ میں تاخیر کر رہا ہے، یا ضروری طریقہ کار اپنائے بغیر ملازم کو نکال دیا۔",
+        "roman_ur": "Employer ne tankhwah dena band kar diya hai, naukri chhorne ke baad final settlement mein deri kar raha hai, ya required procedure follow kiye baghair naukri se nikal diya."
+      },
+      "steps": [
+        {
+          "label": { "en": "What the law says", "ur": "قانون کیا کہتا ہے", "roman_ur": "Qanoon kya kehta hai" },
+          "body": {
+            "en": "Ordinary termination requires one month's notice or pay in lieu. Unpaid wages are covered by the Payment of Wages Act, 1936; final dues are generally expected within about 7–14 days of leaving.",
+            "ur": "عام برطرفی کے لیے ایک ماہ کا نوٹس یا اس کے بدلے تنخواہ ضروری ہے۔ غیر ادا شدہ تنخواہ پیمنٹ آف ویجز ایکٹ 1936 کے تحت آتی ہے؛ حتمی واجبات عام طور پر نوکری چھوڑنے کے 7 سے 14 دن میں دینے متوقع ہوتے ہیں۔",
+            "roman_ur": "Aam bartarfi ke liye ek mahine ka notice ya iske badle tankhwah zaroori hai. Ghair-ada-shuda tankhwah Payment of Wages Act 1936 ke tehat aati hai; final dues aam tor par naukri chhorne ke 7 se 14 din mein dene mutawaqqa hotay hain."
+          }
+        },
+        {
+          "label": { "en": "Where to go", "ur": "کہاں جانا ہے", "roman_ur": "Kahan jana hai" },
+          "body": {
+            "en": "For unpaid wages: the Payment of Wages Authority / Labour Commissioner. For wrongful termination: the Labour Court, usually after a grievance notice first.",
+            "ur": "غیر ادا شدہ تنخواہ کے لیے: پیمنٹ آف ویجز اتھارٹی / لیبر کمشنر۔ ناجائز برطرفی کے لیے: لیبر کورٹ، عام طور پر پہلے شکایتی نوٹس کے بعد۔",
+            "roman_ur": "Ghair-ada-shuda tankhwah ke liye: Payment of Wages Authority / Labour Commissioner. Najaiz bartarfi ke liye: Labour Court, aam tor par pehle shikayati notice ke baad."
+          }
+        },
+        {
+          "label": { "en": "What to file", "ur": "کیا جمع کروانا ہے", "roman_ur": "Kya jama karwana hai" },
+          "body": {
+            "en": "A grievance notice to the employer first, then an application/claim supported by the employment contract, payslips, and termination letter where available.",
+            "ur": "پہلے آجر کو شکایتی نوٹس، پھر ملازمت کے معاہدے، تنخواہ کی سلپس، اور برطرفی کے خط (اگر دستیاب ہو) کے ساتھ درخواست دائر کریں۔",
+            "roman_ur": "Pehle employer ko shikayati notice, phir employment contract, payslips, aur termination letter (agar dastyaab ho) ke sath darkhwast dayer karein."
+          }
+        },
+        {
+          "label": { "en": "Cost", "ur": "خرچہ", "roman_ur": "Kharcha" },
+          "body": {
+            "en": "Filing before the Payment of Wages Authority or Labour Court is comparatively low-cost; lawyer fees vary by city.",
+            "ur": "پیمنٹ آف ویجز اتھارٹی یا لیبر کورٹ میں درخواست دائر کرنا نسبتاً کم خرچ ہے؛ وکیل کی فیس شہر کے مطابق مختلف ہے۔",
+            "roman_ur": "Payment of Wages Authority ya Labour Court mein darkhwast dayer karna nisbatan kam kharch hai; wakeel ki fee shehar ke mutabiq mukhtalif hai."
+          }
+        },
+        {
+          "label": { "en": "Timeline", "ur": "وقت کا تخمینہ", "roman_ur": "Waqt ka takhmina" },
+          "body": {
+            "en": "Varies significantly by city and court backlog — commonly several months for a contested case.",
+            "ur": "شہر اور عدالتی بیک لاگ کے مطابق کافی مختلف ہوتا ہے — متنازعہ کیس میں عام طور پر کئی مہینے لگتے ہیں۔",
+            "roman_ur": "Shehar aur adalati backlog ke mutabiq kaafi mukhtalif hota hai — mutanaza case mein aam tor par kai mahiny lagtay hain."
+          }
+        },
+        {
+          "label": { "en": "If refused", "ur": "اگر پھر بھی انکار ہو", "roman_ur": "Agar phir bhi inkar ho" },
+          "body": {
+            "en": "A writ petition under Article 199 before the High Court is available as a last resort — slower and more expensive.",
+            "ur": "آخری چارہ کار کے طور پر آرٹیکل 199 کے تحت ہائی کورٹ میں رٹ پٹیشن دائر کی جا سکتی ہے — یہ سست اور مہنگا راستہ ہے۔",
+            "roman_ur": "Aakhri chara kaar ke tor par Article 199 ke tehat High Court mein writ petition dayer ki ja sakti hai — yeh sust aur mehnga rasta hai."
+          }
+        },
+        {
+          "label": { "en": "Warning", "ur": "احتیاط", "roman_ur": "Ehtiyat" },
+          "body": {
+            "en": "Government/corporation employees fall under a different framework — the correct forum depends on whether the employer is private, corporate, or government.",
+            "ur": "سرکاری/کارپوریشن ملازمین ایک الگ نظام کے تحت آتے ہیں — درست فورم اس بات پر منحصر ہے کہ آجر نجی، کارپوریٹ، یا سرکاری ہے۔",
+            "roman_ur": "Sarkari/corporation mulazmeen ek alag nizam ke tehat aatay hain — durust forum is baat par munhasir hai ke employer private, corporate, ya sarkari hai."
+          }
+        }
+      ]
+    },
+    {
+      "slug": "online-blackmail-harassment-hacked-account",
+      "title": {
+        "en": "Online blackmail, harassment, or a hacked account",
+        "ur": "آن لائن بلیک میلنگ، ہراسانی، یا اکاؤنٹ ہیک ہونا",
+        "roman_ur": "Online blackmailing, harassment, ya account hack hona"
+      },
+      "situation": {
+        "en": "Someone is threatening to leak private photos/messages unless paid, sending repeated harassing messages, or has taken over a social media/email account without permission.",
+        "ur": "کوئی پیسے نہ ملنے پر نجی تصاویر/پیغامات لیک کرنے کی دھمکی دے رہا ہے، بار بار ہراساں کرنے والے پیغامات بھیج رہا ہے، یا بغیر اجازت کسی کا سوشل میڈیا/ای میل اکاؤنٹ سنبھال لیا ہے۔",
+        "roman_ur": "Koi paisay na milne par private photos/messages leak karne ki dhamki de raha hai, baar baar harassing messages bhej raha hai, ya bina ijazat kisi ka social media/email account sambhal liya hai."
+      },
+      "steps": [
+        {
+          "label": { "en": "What the law says", "ur": "قانون کیا کہتا ہے", "roman_ur": "Qanoon kya kehta hai" },
+          "body": {
+            "en": "Governed by the Prevention of Electronic Crimes Act (PECA), 2016 — covering cyber harassment/blackmail, misuse of images, cyberstalking, and unauthorised access to an account.",
+            "ur": "یہ معاملہ پریوینشن آف الیکٹرانک کرائمز ایکٹ (پیکا) 2016 کے تحت آتا ہے — جو سائبر ہراسانی/بلیک میلنگ، تصاویر کے غلط استعمال، سائبر اسٹاکنگ، اور اکاؤنٹ تک غیر مجاز رسائی کا احاطہ کرتا ہے۔",
+            "roman_ur": "Yeh maamla Prevention of Electronic Crimes Act (PECA) 2016 ke tehat aata hai — jo cyber harassment/blackmailing, tasaweer ke ghalat istemal, cyberstalking, aur account tak ghair-mujaaz rasai ka ehata karta hai."
+          }
+        },
+        {
+          "label": { "en": "Where to go", "ur": "کہاں جانا ہے", "roman_ur": "Kahan jana hai" },
+          "body": {
+            "en": "The FIA Cybercrime Wing (transitioning to the National Cyber Crime Investigation Agency, NCCIA). Complaints can be filed online or in person.",
+            "ur": "ایف آئی اے سائبر کرائم ونگ (جو اب نیشنل سائبر کرائم انویسٹیگیشن ایجنسی، این سی سی آئی اے، میں منتقل ہو رہا ہے)۔ شکایت آن لائن یا ذاتی طور پر درج کروائی جا سکتی ہے۔",
+            "roman_ur": "FIA Cybercrime Wing (jo ab National Cyber Crime Investigation Agency, NCCIA, mein muntaqil ho raha hai). Shikayat online ya khud jaa kar darj karwai ja sakti hai."
+          }
+        },
+        {
+          "label": { "en": "What to file", "ur": "کیا جمع کروانا ہے", "roman_ur": "Kya jama karwana hai" },
+          "body": {
+            "en": "A written complaint with CNIC copy and preserved evidence: timestamped screenshots, original-format messages, and the perpetrator's account/number if known.",
+            "ur": "شناختی کارڈ کی کاپی کے ساتھ تحریری شکایت اور محفوظ شدہ ثبوت: ٹائم اسٹیمپ والے اسکرین شاٹس، اصل شکل میں پیغامات، اور اگر معلوم ہو تو ملزم کا اکاؤنٹ/نمبر۔",
+            "roman_ur": "CNIC copy ke sath tehreeri shikayat aur mehfooz shuda saboot: timestamp waale screenshots, asal shakal mein messages, aur agar maloom ho to mulzim ka account/number."
+          }
+        },
+        {
+          "label": { "en": "Cost", "ur": "خرچہ", "roman_ur": "Kharcha" },
+          "body": {
+            "en": "Filing an FIA cybercrime complaint is free; lawyer fees (optional) vary by city.",
+            "ur": "ایف آئی اے سائبر کرائم شکایت درج کروانا مفت ہے؛ وکیل کی فیس (اختیاری) شہر کے مطابق مختلف ہے۔",
+            "roman_ur": "FIA cybercrime shikayat darj karwana muft hai; wakeel ki fee (ikhtiyari) shehar ke mutabiq mukhtalif hai."
+          }
+        },
+        {
+          "label": { "en": "Timeline", "ur": "وقت کا تخمینہ", "roman_ur": "Waqt ka takhmina" },
+          "body": {
+            "en": "Simple harassment complaints can move within weeks; cases needing digital forensics or platform cooperation often take longer.",
+            "ur": "سادہ ہراسانی کی شکایات چند ہفتوں میں آگے بڑھ سکتی ہیں؛ ڈیجیٹل فرانزک یا پلیٹ فارم کے تعاون کی ضرورت والے کیسز میں زیادہ وقت لگتا ہے۔",
+            "roman_ur": "Simple harassment shikayat chand haftay mein aagay barh sakti hai; digital forensics ya platform cooperation ki zaroorat waale cases mein zyada waqt lagta hai."
+          }
+        },
+        {
+          "label": { "en": "If refused", "ur": "اگر پھر بھی انکار ہو", "roman_ur": "Agar phir bhi inkar ho" },
+          "body": {
+            "en": "If the local FIA office is unresponsive, escalate in writing to FIA Cybercrime Wing headquarters.",
+            "ur": "اگر مقامی ایف آئی اے دفتر جواب نہ دے تو تحریری طور پر ایف آئی اے سائبر کرائم ونگ ہیڈکوارٹرز کو شکایت بڑھائیں۔",
+            "roman_ur": "Agar mahaali FIA daftar jawab na de to tehreeri tor par FIA Cybercrime Wing headquarters ko shikayat barhayein."
+          }
+        },
+        {
+          "label": { "en": "Warning", "ur": "احتیاط", "roman_ur": "Ehtiyat" },
+          "body": {
+            "en": "Do not retaliate by hacking back or posting counter-accusations — this can itself become a separate offence. Do not pay the blackmailer.",
+            "ur": "جوابی کارروائی کے طور پر ہیک کرنا یا الزامات لگانا نہ کریں — یہ خود ایک الگ جرم بن سکتا ہے۔ بلیک میلر کو پیسے نہ دیں۔",
+            "roman_ur": "Jawabi karwai ke tor par hack karna ya ilzamat lagana na karein — yeh khud ek alag jurm ban sakta hai. Blackmailer ko paisay na dein."
+          }
+        }
+      ]
+    },
+    {
+      "slug": "wrongful-arrest-family-member-first-24-hours",
+      "title": {
+        "en": "Wrongful arrest of a family member — what to do in the first 24 hours",
+        "ur": "گھر کے فرد کی غلط گرفتاری — پہلے 24 گھنٹوں میں کیا کریں",
+        "roman_ur": "Ghar ke fard ki ghalat giraftari — pehle 24 ghanton mein kya karein"
+      },
+      "situation": {
+        "en": "A family member has just been arrested by police and you don't know what to do or what your rights are in the first hours.",
+        "ur": "آپ کے گھر کے کسی فرد کو ابھی پولیس نے گرفتار کیا ہے اور آپ کو سمجھ نہیں آ رہی کہ پہلے چند گھنٹوں میں کیا کرنا چاہیے یا آپ کے حقوق کیا ہیں۔",
+        "roman_ur": "Aapke ghar ke kisi fard ko abhi police ne giraftar kiya hai aur aapko samajh nahi aa raha ke pehle kuch ghanton mein kya karna chahiye ya aapke haqooq kya hain."
+      },
+      "steps": [
+        {
+          "label": { "en": "What the law says", "ur": "قانون کیا کہتا ہے", "roman_ur": "Qanoon kya kehta hai" },
+          "body": {
+            "en": "Article 10 of the Constitution and Sections 61/167 CrPC require production before a Magistrate within 24 hours of arrest. Confessions made to police alone are generally not admissible.",
+            "ur": "آئین کا آرٹیکل 10 اور ضابطہ فوجداری کی دفعات 61/167 کے تحت گرفتاری کے 24 گھنٹوں میں مجسٹریٹ کے سامنے پیش کرنا لازمی ہے۔ صرف پولیس کے سامنے دیا گیا اعتراف عام طور پر ناقابلِ قبول ہوتا ہے۔",
+            "roman_ur": "Aain ka Article 10 aur CrPC ki Sections 61/167 ke tehat giraftari ke 24 ghanton mein magistrate ke samne pesh karna lazmi hai. Sirf police ke samne diya gaya aitraaf aam tor par naqabil-e-qabool hota hai."
+          }
+        },
+        {
+          "label": { "en": "Where to go", "ur": "کہاں جانا ہے", "roman_ur": "Kahan jana hai" },
+          "body": {
+            "en": "The police station holding the person, to find out the FIR number and section; then the relevant Magistrate/Sessions Court for bail.",
+            "ur": "جس تھانے میں فرد کو رکھا گیا ہے وہاں جا کر ایف آئی آر نمبر اور دفعہ معلوم کریں؛ پھر ضمانت کے لیے متعلقہ مجسٹریٹ/سیشن کورٹ جائیں۔",
+            "roman_ur": "Jis thanay mein fard ko rakha gaya hai wahan ja kar FIR number aur dafa maloom karein; phir zamanat ke liye mutalliqa magistrate/Sessions Court jayein."
+          }
+        },
+        {
+          "label": { "en": "What to file", "ur": "کیا جمع کروانا ہے", "roman_ur": "Kya jama karwana hai" },
+          "body": {
+            "en": "If bailable: a bail application under Section 496 CrPC. If non-bailable: a bail application under Section 497 CrPC.",
+            "ur": "اگر قابلِ ضمانت ہو: دفعہ 496 کے تحت ضمانت کی درخواست۔ اگر ناقابلِ ضمانت ہو: دفعہ 497 کے تحت ضمانت کی درخواست۔",
+            "roman_ur": "Agar qabil-e-zamanat ho: Section 496 ke tehat zamanat ki darkhwast. Agar naqabil-e-zamanat ho: Section 497 ke tehat zamanat ki darkhwast."
+          }
+        },
+        {
+          "label": { "en": "Cost", "ur": "خرچہ", "roman_ur": "Kharcha" },
+          "body": {
+            "en": "Court fee for a bail application is minor; lawyer fees commonly range roughly PKR 20,000–100,000 depending on the city and case.",
+            "ur": "ضمانت کی درخواست پر کورٹ فیس معمولی ہے؛ وکیل کی فیس شہر اور کیس کے مطابق عام طور پر تقریباً 20,000 سے 100,000 روپے تک ہوتی ہے۔",
+            "roman_ur": "Zamanat ki darkhwast par court fee mamooli hai; wakeel ki fee shehar aur case ke mutabiq aam tor par taqreeban 20,000 se 100,000 rupay tak hoti hai."
+          }
+        },
+        {
+          "label": { "en": "Timeline", "ur": "وقت کا تخمینہ", "roman_ur": "Waqt ka takhmina" },
+          "body": {
+            "en": "The 24-hour production requirement is immediate; a bail hearing can sometimes be arranged within a day or two.",
+            "ur": "24 گھنٹے میں پیش کرنے کی شرط فوری ہے؛ ضمانت کی سماعت بعض اوقات ایک دو دن میں ہو سکتی ہے۔",
+            "roman_ur": "24 ghante mein pesh karne ki shart fori hai; zamanat ki sunwai bazauqaat ek do din mein ho sakti hai."
+          }
+        },
+        {
+          "label": { "en": "If refused", "ur": "اگر پھر بھی انکار ہو", "roman_ur": "Agar phir bhi inkar ho" },
+          "body": {
+            "en": "Holding someone beyond 24 hours without producing them before a Magistrate is itself illegal detention — a lawyer can act on it immediately.",
+            "ur": "کسی کو مجسٹریٹ کے سامنے پیش کیے بغیر 24 گھنٹوں سے زیادہ حراست میں رکھنا خود غیر قانونی حراست ہے — وکیل فوری طور پر اس پر کارروائی کر سکتا ہے۔",
+            "roman_ur": "Kisi ko magistrate ke samne pesh kiye baghair 24 ghanton se zyada hirasat mein rakhna khud ghair-qanooni hirasat hai — wakeel fori tor par is par karwai kar sakta hai."
+          }
+        },
+        {
+          "label": { "en": "Warning", "ur": "احتیاط", "roman_ur": "Ehtiyat" },
+          "body": {
+            "en": "Get a lawyer involved as early as possible — ideally before the first police interrogation. Do not sign any statement without a lawyer reviewing it.",
+            "ur": "جتنی جلدی ممکن ہو وکیل سے رابطہ کریں — ترجیحاً پہلی پولیس تفتیش سے پہلے۔ وکیل کی جانچ کے بغیر کسی بیان پر دستخط نہ کریں۔",
+            "roman_ur": "Jitni jaldi mumkin ho wakeel se rabta karein — tarjihan pehli police tafteesh se pehle. Wakeel ki jaanch ke baghair kisi bayan par dastakhat na karein."
+          }
+        }
+      ]
+    }
+  ]
+}

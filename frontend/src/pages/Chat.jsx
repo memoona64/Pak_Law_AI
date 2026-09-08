@@ -3,11 +3,13 @@ import { Icon, Chip, Btn, Eyebrow, Disclaimer } from '../components/primitives';
 import { PLSeal } from '../components/seal';
 import AppSidebar from '../components/AppSidebar';
 
-// The real FastAPI retrieval service (hybrid BM25 + vector search over the
-// actual corpus). No generated answer comes back from this yet — that piece
-// needs an LLM API key that isn't configured. Override via a .env file
-// (VITE_RAG_API_URL) if the service runs somewhere other than localhost.
-const RAG_API_URL = import.meta.env.VITE_RAG_API_URL || 'http://127.0.0.1:8000';
+// The Express backend — it calls FastAPI's retrieval + generation pipeline
+// internally and returns a finished answer with citations. Override via a
+// .env file (VITE_API_URL) if it runs somewhere other than localhost.
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
+// Chat.jsx's own language codes ('en' | 'ur' | 'ru') vs. what the backend expects.
+const BACKEND_LANG = { en: 'en', ur: 'ur', ru: 'roman_ur' };
 
 // Chat interface — the hero. Sidebar + central messages with expandable citation pills.
 export default function ChatScreen() {
@@ -15,6 +17,7 @@ export default function ChatScreen() {
   const [expanded, setExpanded] = React.useState({ 'c1': true });
   const [input, setInput] = React.useState('');
   const [sending, setSending] = React.useState(false);
+  const messagesEndRef = React.useRef(null);
 
   // Sample messages — a mix of English, Urdu, Roman Urdu
   const [messages, setMessages] = React.useState([
@@ -72,10 +75,13 @@ export default function ChatScreen() {
     },
   ]);
 
-  // Sends the typed question to the real retrieval service and shows the
-  // matching corpus sections. There's no LLM key configured yet, so no
-  // generated answer comes back — only genuine retrieved sections, labeled
-  // honestly rather than faked.
+  // Keeps the newest message in view instead of leaving it below the fold.
+  React.useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ block: 'end' });
+  }, [messages, sending]);
+
+  // Sends the typed question to the Express backend, which runs retrieval +
+  // generation and returns a finished answer with citations.
   const handleSend = async () => {
     const text = input.trim();
     if (!text || sending) return;
@@ -84,26 +90,55 @@ export default function ChatScreen() {
     setMessages(prev => [...prev, { id: `u-${Date.now()}`, role: 'user', lang: askedLang, time, text }]);
     setInput('');
     setSending(true);
-    try {
-      const res = await fetch(`${RAG_API_URL}/rag/query`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: text, use_reranker: false, normalize: true }),
-      });
-      if (!res.ok) throw new Error(`Retrieval service returned ${res.status}`);
-      const data = await res.json();
+
+    const token = localStorage.getItem('paklaw_token');
+    if (!token) {
       setMessages(prev => [...prev, {
-        id: `r-${Date.now()}`,
-        role: 'retrieval',
-        chunks: data.chunks || [],
-        normalizedQuery: data.normalized_query,
-        originalQuery: text,
+        id: `note-${Date.now()}`,
+        role: 'note',
+        text: 'Please sign in to ask a question.',
+      }]);
+      setSending(false);
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_URL}/api/chat/ask`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ question: text, language: BACKEND_LANG[askedLang] }),
+      });
+
+      if (res.status === 401) {
+        localStorage.removeItem('paklaw_token');
+        localStorage.removeItem('paklaw_user');
+        setMessages(prev => [...prev, {
+          id: `note-${Date.now()}`,
+          role: 'note',
+          text: 'Your session expired — please sign in again.',
+        }]);
+        return;
+      }
+      if (!res.ok) throw new Error(`Chat service returned ${res.status}`);
+
+      const data = await res.json();
+      const latencyLabel = data.timings?.total != null ? `${(data.timings.total / 1000).toFixed(1)}s` : null;
+      setMessages(prev => [...prev, {
+        id: data.messageId || `a-${Date.now()}`,
+        role: 'assistant',
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        latencyLabel,
+        body: <p className="whitespace-pre-wrap">{data.answer}</p>,
+        citations: data.citations || [],
       }]);
     } catch {
       setMessages(prev => [...prev, {
         id: `note-${Date.now()}`,
         role: 'note',
-        text: "Couldn't reach the retrieval service — make sure it's running, then try again.",
+        text: "Couldn't reach the chat service — make sure the backend is running, then try again.",
       }]);
     } finally {
       setSending(false);
@@ -131,7 +166,6 @@ export default function ChatScreen() {
             {messages.map(m => (
               m.role === 'user' ? <UserMessage key={m.id} m={m} lang={m.lang} />
                 : m.role === 'note' ? <SystemNote key={m.id} text={m.text} />
-                : m.role === 'retrieval' ? <RetrievalResult key={m.id} m={m} expanded={expanded} setExpanded={setExpanded} />
                 : <AssistantMessage key={m.id} m={m} expanded={expanded} setExpanded={setExpanded} />
             ))}
 
@@ -149,6 +183,7 @@ export default function ChatScreen() {
                 </div>
               </div>
             )}
+            <div ref={messagesEndRef} />
           </div>
         </div>
 
@@ -209,78 +244,13 @@ export default function ChatScreen() {
 }
 
 // ---- Messages ----
-// Honest placeholder shown after a send, since there's no live answering service yet.
+// Inline notice for auth/connection problems (not signed in, session expired, backend unreachable).
 function SystemNote({ text }) {
   return (
     <div className="flex justify-center">
       <div className="max-w-[520px] text-center text-[14px] text-[#7A7D68] italic bg-[#F0EFE3] border border-[#DFE0CE] rounded-full px-4 py-2">
         {text}
       </div>
-    </div>
-  );
-}
-
-// Real results from the retrieval service — matched corpus sections, not a
-// generated answer (no LLM key is configured, so we don't fake one).
-function RetrievalResult({ m, expanded, setExpanded }) {
-  return (
-    <div className="flex gap-3">
-      <div className="w-9 h-9 shrink-0 rounded-full bg-[#2A2F22] flex items-center justify-center">
-        <PLSeal size={30} tone="espresso" ring={false} />
-      </div>
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-          <div className="font-serif text-[14px]">PakLaw AI</div>
-          <Chip tone="taupe" icon="search">{m.chunks.length} matching section{m.chunks.length === 1 ? '' : 's'}</Chip>
-        </div>
-        <div className="bg-[#F7F6F0] border border-[#DFE0CE] rounded-2xl rounded-tl-md px-5 py-4 text-[16px] leading-[1.7] text-[#2A2F22]">
-          <p className="text-[#4A5540] italic">
-            No generated answer yet — that needs an AI service that isn't connected. Here are the closest matching sections from Pakistani law:
-          </p>
-          {m.normalizedQuery && m.normalizedQuery !== m.originalQuery && (
-            <p className="mt-2 text-[14px] text-[#7A7D68]">Searched for: <span className="italic">"{m.normalizedQuery}"</span></p>
-          )}
-          {m.chunks.length === 0 ? (
-            <p className="mt-3 text-[#4A5540]">No matching sections were found for this question.</p>
-          ) : (
-            <div className="mt-4 space-y-2">
-              {m.chunks.map(c => (
-                <RetrievedChunk key={c.id} c={c}
-                                expanded={!!expanded[c.id]}
-                                onToggle={() => setExpanded(e => ({ ...e, [c.id]: !e[c.id] }))} />
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function RetrievedChunk({ c, expanded, onToggle }) {
-  const meta = c.metadata || {};
-  return (
-    <div className={`rounded-lg border transition-colors ${expanded ? 'bg-white border-[#6B7F5E]/40' : 'bg-[#F2F1E6]/60 border-[#DFE0CE] hover:border-[#6B7F5E]/40'}`}>
-      <button onClick={onToggle} className="w-full flex items-center gap-3 px-3.5 py-2.5 text-left">
-        <div className="w-8 h-8 rounded-md shrink-0 flex items-center justify-center border bg-[#EDE9D5] border-[#B9C2A0] text-[#4A5540]">
-          <Icon name="book-marked" size={14} />
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-serif text-[14px] text-[#2A2F22]">{meta.act}</span>
-            <span className="text-[14px] font-mono-jb text-[#6B7F5E]">§{meta.section}</span>
-          </div>
-          <div className="text-[14px] text-[#4A5540] truncate mt-0.5">{meta.section_title}</div>
-        </div>
-        <Icon name={expanded ? 'chevron-up' : 'chevron-down'} size={14} color="#7A7D68" />
-      </button>
-      {expanded && (
-        <div className="px-3.5 pb-3.5 pt-1">
-          <div className="border-l-2 border-[#6B7F5E] pl-4 py-1">
-            <p className="font-serif text-[16px] leading-[1.65] text-[#363B2C]">{c.text}</p>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
@@ -314,7 +284,7 @@ function AssistantMessage({ m, expanded, setExpanded }) {
         <div className="flex items-center gap-2 mb-1.5 flex-wrap">
           <div className="font-serif text-[14px]">PakLaw AI</div>
           <Chip tone="ok" icon="shield-check" title="This answer is backed by real, quoted sources, not made up.">Backed by {m.citations.length} sources</Chip>
-          <span className="text-[14px] text-[#7A7D68]">11:04 · 1.8s</span>
+          <span className="text-[14px] text-[#7A7D68]">{m.time || '11:04'} · {m.latencyLabel || '1.8s'}</span>
         </div>
 
         {/* Answer body — editorial serif quotes, editorial spacing */}

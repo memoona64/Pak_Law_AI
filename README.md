@@ -53,12 +53,26 @@ Create a `.env` file in this folder with the following (values will depend
 on your local/dev setup — ask a teammate for actual values):
 
 ```
-PORT=
+PORT=5000
 MONGO_URI=
 JWT_SECRET=
+PYTHON_SERVICE_URL=http://localhost:8000
+USE_MOCK=false
+CORS_ORIGIN=http://localhost:5173
 ```
 
 `.env` is git-ignored — never commit it, it contains secrets.
+
+- `MONGO_URI` — if it's a `mongodb+srv://` Atlas URI and the server fails to
+  start with `querySrv ECONNREFUSED`, your network's DNS is refusing the SRV
+  lookup Node needs (this happened during development). `config/db.js` already
+  works around it by pointing Node's resolver at public DNS.
+- `PYTHON_SERVICE_URL` — the FastAPI retrieval service must be running
+  separately (`uvicorn fastapi_app.main:app --port 8000` from the project
+  root) for `/api/chat/ask` to work. `USE_MOCK=true` bypasses it entirely.
+- The FastAPI service downloads its embedding/reranker models on first use —
+  make sure `HF_HOME` is pointed at a folder with a few GB free (see the
+  project root's `start.bat`), not the default C: user cache.
 
 ## Running the server
 
@@ -79,8 +93,9 @@ npm start
 
 ## Notes
 
-- The RAG logic lives in `services/ragService.js` — this is what pulls
-  relevant chunks (from `data/chunks/` in the project root) and generates
-  answers.
+- `services/ragService.js` doesn't do retrieval or generation itself — it
+  forwards each question to the Python FastAPI service (`/rag/query`) and
+  maps the response into the shape the frontend expects. The actual chunk
+  search and answer generation live in `fastapi_app/`.
 - Auth is handled via middleware in `middleware/auth.js`, applied to routes
   that need a logged-in user.
