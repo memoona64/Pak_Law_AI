@@ -94,7 +94,7 @@ export default function History() {
                 </div>
                 <div>
                   {items.map(h => (
-                    <HistoryRow key={h.id} h={h} onClick={() => navigate('/chat')} />
+                    <HistoryRow key={h.id} h={h} onClick={() => navigate(`/chat/${h.id}`)} />
                   ))}
                 </div>
               </Card>

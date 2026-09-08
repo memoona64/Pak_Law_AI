@@ -16,6 +16,7 @@ export default function App() {
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
         <Route path="/chat" element={<Chat />} />
+        <Route path="/chat/:id" element={<Chat />} />
         <Route path="/flows" element={<Flows />} />
         <Route path="/flows/:slug" element={<FlowDetail />} />
         <Route path="/documents" element={<Documents />} />
