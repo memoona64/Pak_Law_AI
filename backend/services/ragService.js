@@ -130,7 +130,13 @@ exports.query = async ({ question, language, province }) => {
     const response = await axios.post(pythonUrl, {
       query: question,
       province: province || null,
-      use_reranker: true,
+      // The cross-encoder reranker runs on CPU and took 80-100+ seconds per
+      // query even after capping max_length (see fastapi_app/reranker.py) —
+      // confirmed via isolated testing, not a fluke: reranking real top-20
+      // candidates (chunks up to ~4000 chars) is just expensive without a
+      // GPU. Acceptable for an offline benchmark, not for an interactive
+      // chat reply, so it stays off here until this is faster.
+      use_reranker: false,
       normalize: true,
     });
 

@@ -1,6 +1,7 @@
 .venv/
 .tmp/
 .pipcache/
+.hfcache/
 data/raw/*.pdf
 __pycache__/
 *.py[codz]
