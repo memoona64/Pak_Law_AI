@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Icon } from './primitives';
-import { PLSeal } from './seal';
+import { PLWordmark } from './seal';
 
 // Primary nav — wired to real routes. "History" replaces the old "The law"
 // entry, which never had a page behind it; every item here does.
@@ -65,8 +65,7 @@ export default function AppSidebar({ dark = true }) {
       <aside className={`${open ? 'flex' : 'hidden'} md:flex w-72 md:w-[280px] shrink-0 flex-col fixed md:static inset-y-0 left-0 z-40 ${bg}`}>
         {/* Brand */}
         <div className={`h-14 flex items-center gap-2.5 px-4 border-b ${rule}`}>
-          <PLSeal size={30} tone={dark ? 'espresso' : 'cream'} />
-          <div className="font-serif text-[15.5px]">PakLaw <span className={`italic ${dark ? 'text-[#B9C2A0]' : 'text-[#6B7F5E]'}`}>AI</span></div>
+          <PLWordmark size={28} />
           <button onClick={() => setOpen(false)} className={`ml-auto w-7 h-7 rounded-md flex items-center justify-center md:hidden ${dark ? 'hover:bg-[#363B2C]' : 'hover:bg-white'}`}>
             <Icon name="chevrons-left" size={14} />
           </button>

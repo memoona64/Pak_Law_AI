@@ -1,59 +1,36 @@
-// PakLaw P·L monogram seal — used as brand mark across screens.
+// PakLaw AI brand mark — the real logo (public/logo.png, public/logo-icon.png),
+// used across screens. logo-icon.png is a tight crop of just the emblem
+// (scales, book, pen, crescent) for small avatar-style uses; logo.png is the
+// full lockup with the "PakLaw AI" wordmark baked in, for larger brand spots.
+// Both have their own black background by design, which is why every current
+// usage sits on a dark surface — check that before reusing this on a light one.
 
-import React from 'react';
-
-function PLSeal({ size = 56, tone = 'espresso', ring = true }) {
-  // tones: espresso (dark bg / cream ink), cream (cream bg / espresso ink), bronze
-  const bg = tone === 'cream' ? '#F7F6F0' : tone === 'bronze' ? '#6B7F5E' : '#2A2F22';
-  const ink = tone === 'cream' ? '#2A2F22' : '#F7F6F0';
-  const accent = tone === 'cream' ? '#6B7F5E' : '#B9C2A0';
-  const id = React.useId();
+function PLSeal({ size = 56, ring = true, className = '' }) {
   return (
-    <svg viewBox="0 0 120 120" width={size} height={size} className="block">
-      <defs>
-        <radialGradient id={`g-${id}`} cx="50%" cy="35%" r="70%">
-          <stop offset="0%" stopColor={tone === 'espresso' ? '#3A3D2E' : bg} />
-          <stop offset="100%" stopColor={bg} />
-        </radialGradient>
-      </defs>
-      <circle cx="60" cy="60" r="58" fill={`url(#g-${id})`} stroke={ink} strokeOpacity="0.15" />
-      {ring && (
-        <>
-          <circle cx="60" cy="60" r="52" fill="none" stroke={ink} strokeOpacity="0.35" strokeWidth="0.6" />
-          <circle cx="60" cy="60" r="49" fill="none" stroke={ink} strokeOpacity="0.18" strokeWidth="0.4" strokeDasharray="1 2" />
-        </>
-      )}
-      {/* Monogram: serif P and L interlaced, with a slender central hairline */}
-      <g fontFamily="Playfair Display, Georgia, serif" fontWeight="600">
-        <text x="34" y="80" fontSize="70" fill={ink} fontStyle="italic">P</text>
-        <text x="63" y="80" fontSize="70" fill={accent} fontStyle="italic">L</text>
-      </g>
-      {/* Base rule + tiny stars */}
-      <g stroke={ink} strokeOpacity="0.55">
-        <line x1="40" y1="92" x2="80" y2="92" strokeWidth="0.6" />
-      </g>
-      <g fill={ink} fillOpacity="0.55">
-        <circle cx="36" cy="92" r="0.9" />
-        <circle cx="84" cy="92" r="0.9" />
-      </g>
-      {/* Top tiny crescent nod */}
-      <path d="M56 20 a6 6 0 1 0 6 6 a5 5 0 1 1 -6 -6 z" fill={accent} opacity="0.85" />
-    </svg>
+    <div
+      className={`inline-block shrink-0 rounded-full overflow-hidden ${ring ? 'ring-1 ring-inset ring-white/15' : ''} ${className}`}
+      style={{ width: size, height: size }}
+    >
+      <img src="/logo-icon.png" alt="PakLaw AI" width={size} height={size} className="w-full h-full object-cover" />
+    </div>
   );
 }
 
-// Wordmark row (seal + serif type)
+// Wordmark row (icon + real HTML text). logo.png's own baked-in "PakLaw AI"
+// text is only legible at large sizes — at the small sizes this is normally
+// used (e.g. a 28-40px sidebar header), scaling the whole lockup image down
+// just turns the text into an illegible smudge, so the icon crop is paired
+// with crisp text instead, same as the layout this replaced.
 function PLWordmark({ size = 40, tone = 'espresso', className = '' }) {
   const ink = tone === 'espresso' ? '#F7F6F0' : '#2A2F22';
   const sub = tone === 'espresso' ? '#7A7D68' : '#6B7F5E';
   return (
-    <div className={`inline-flex items-center gap-3 ${className}`}>
-      <PLSeal size={size} tone={tone} />
+    <div className={`inline-flex items-center gap-2.5 ${className}`}>
+      <PLSeal size={size} />
       <div className="leading-none">
-        <div className="font-serif text-[20px] tracking-[0.01em]" style={{ color: ink }}>
+        <div className="font-serif tracking-[0.01em]" style={{ color: ink, fontSize: size * 0.5 }}>
           PakLaw <span style={{ color: sub, fontStyle: 'italic', fontWeight: 500 }}>AI</span>
         </div>
-        <div className="smallcaps text-[9.5px] mt-1" style={{ color: sub }}>Your rights, in plain words</div>
       </div>
     </div>
   );
