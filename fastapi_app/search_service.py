@@ -67,8 +67,35 @@ def _tokenize(text: str) -> list[str]:
     return _TOKEN_RE.findall(text.lower())
 
 
+def _bm25_text(chunk: dict) -> str:
+    """Text BM25 indexes for one chunk: metadata identity + body.
+
+    A chunk's body rarely repeats its own section number or act name — e.g.
+    ppc-1-302's text starts "Punishment of qatl-i-amd. Whoever commits..."
+    and never contains the words "302" or "PPC". So an exact-citation query
+    like "Section 302 PPC" scored zero matches on its two most distinctive
+    tokens, and ranked only on generic word overlap (confirmed: Wania found
+    the gold chunk at BM25 rank 27, ~0.28 points below the top-20 cutoff).
+    Prepending act code, section/article number, and title gives those
+    tokens something real to match. This only changes what BM25 indexes —
+    chunk["text"] itself is untouched, since embeddings, display, and the
+    citation verifier all still need the plain body text.
+    """
+    metadata = chunk.get("metadata") or {}
+    identity = " ".join(
+        str(part) for part in (
+            metadata.get("short_code") or metadata.get("act"),
+            metadata.get("section") or metadata.get("section_number")
+            or metadata.get("Article") or metadata.get("Article_number"),
+            metadata.get("section_title") or metadata.get("article_title"),
+        )
+        if part
+    )
+    return f"{identity} {chunk['text']}" if identity else chunk["text"]
+
+
 def build_bm25(chunks: list[dict]) -> BM25Okapi:
-    return BM25Okapi([_tokenize(chunk["text"]) for chunk in chunks])
+    return BM25Okapi([_tokenize(_bm25_text(chunk)) for chunk in chunks])
 
 
 def _fingerprint(chunks: list[dict]) -> str:
