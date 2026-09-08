@@ -26,6 +26,7 @@ const chatRateLimiter = rateLimit({
 const askValidation = [
   body('question').trim().notEmpty().withMessage('Question is required'),
   body('language')
+    .optional({ nullable: true })
     .isIn(['en', 'ur', 'roman_ur'])
     .withMessage('Language must be one of: en, ur, roman_ur'),
   body('conversationId')
