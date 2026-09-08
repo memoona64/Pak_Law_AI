@@ -12,6 +12,7 @@ from typing import Optional
 import chromadb
 import numpy as np
 from rank_bm25 import BM25Okapi
+import re
 
 from .embeddings import MODEL_NAME, embed, embed_query
 from .errors import ModelUnavailableError
@@ -54,8 +55,20 @@ def load_chunks(chunks_dir: Path = CHUNKS_DIR) -> list[dict]:
     return all_chunks
 
 
+# Word characters and digits only, so a trailing "?" or "." never sticks to
+# the token before it. A naive .split() leaves "theft?" as one token, which
+# never matches the document's clean "theft" token — this silently broke
+# BM25 for nearly every natural-language question, since English questions
+# almost always end with "<the key content word>?".
+_TOKEN_RE = re.compile(r"[\w]+")
+
+
+def _tokenize(text: str) -> list[str]:
+    return _TOKEN_RE.findall(text.lower())
+
+
 def build_bm25(chunks: list[dict]) -> BM25Okapi:
-    return BM25Okapi([chunk["text"].lower().split() for chunk in chunks])
+    return BM25Okapi([_tokenize(chunk["text"]) for chunk in chunks])
 
 
 def _fingerprint(chunks: list[dict]) -> str:
@@ -187,7 +200,7 @@ def _eligible_indices(province: Optional[str]) -> list[int]:
 
 def _bm25_search(query: str, eligible_indices: list[int], k: int = 20) -> list[int]:
     """Score only eligible chunks, so province filtering precedes ranking."""
-    scores = _bm25.get_scores(query.lower().split())
+    scores = _bm25.get_scores(_tokenize(query))
     ranked = sorted(eligible_indices, key=lambda index: scores[index], reverse=True)
     return ranked[:k]
 
