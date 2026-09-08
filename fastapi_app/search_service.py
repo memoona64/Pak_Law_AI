@@ -67,6 +67,18 @@ def _tokenize(text: str) -> list[str]:
     return _TOKEN_RE.findall(text.lower())
 
 
+def _section_number(metadata: dict) -> Optional[str]:
+    """A statute chunk's section number, under whichever metadata key it uses."""
+    value = metadata.get("section") or metadata.get("section_number")
+    return str(value) if value else None
+
+
+def _article_number(metadata: dict) -> Optional[str]:
+    """A Constitution chunk's article number, under whichever metadata key it uses."""
+    value = metadata.get("Article") or metadata.get("Article_number")
+    return str(value) if value else None
+
+
 def _bm25_text(chunk: dict) -> str:
     """Text BM25 indexes for one chunk: metadata identity + body.
 
@@ -85,9 +97,10 @@ def _bm25_text(chunk: dict) -> str:
     identity = " ".join(
         str(part) for part in (
             metadata.get("short_code") or metadata.get("act"),
-            metadata.get("section") or metadata.get("section_number")
-            or metadata.get("Article") or metadata.get("Article_number"),
-            metadata.get("section_title") or metadata.get("article_title"),
+            _section_number(metadata) or _article_number(metadata),
+            # MFLO and the Sindh Rented Premises Ordinance store the heading
+            # under a plain "title" key instead of section_title/article_title.
+            metadata.get("section_title") or metadata.get("article_title") or metadata.get("title"),
         )
         if part
     )
@@ -126,8 +139,8 @@ def _chroma_metadata(chunk: dict) -> dict[str, str]:
     return {
         "scope": "federal" if province is None else "province",
         "province": province or "",
-        "section": str(metadata.get("section") or metadata.get("section_number") or ""),
-        "article": str(metadata.get("Article") or metadata.get("Article_number") or ""),
+        "section": _section_number(metadata) or "",
+        "article": _article_number(metadata) or "",
         "short_code": str(metadata.get("short_code") or ""),
     }
 
