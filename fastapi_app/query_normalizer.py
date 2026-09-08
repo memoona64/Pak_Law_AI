@@ -98,7 +98,7 @@ def _call_gemini(query: str, api_key: str) -> str:
     # a single 503 otherwise silently degrades a Roman Urdu query into an
     # untranslated search against English law. Quota errors (429) are NOT
     # retried — retrying only burns more of a limit that is already exhausted.
-    last_error = None
+    last_error: Exception | None = None
     for attempt in (1, 2):
         req = urllib.request.Request(
             url, data=data, headers={"Content-Type": "application/json"}
@@ -114,13 +114,14 @@ def _call_gemini(query: str, api_key: str) -> str:
             last_error = exc
             logger.warning("Normalization attempt %s failed (%s), retrying", attempt, exc)
             time.sleep(1)
-        except Exception:
+        except Exception as exc:
             if attempt == 2:
                 raise
-            logger.warning("Normalization attempt %s failed, retrying", attempt)
+            last_error = exc
+            logger.warning("Normalization attempt %s failed (%s), retrying", attempt, exc)
             time.sleep(1)
 
-    raise last_error
+    raise last_error or RuntimeError("Gemini normalization failed after retries")
 
 
 def _call_groq(query: str, api_key: str) -> str:

@@ -3,7 +3,13 @@
  * Handles connection establishing to MongoDB database via Mongoose.
  */
 
+const dns = require('dns');
 const mongoose = require('mongoose');
+
+// Some home routers refuse the DNS "SRV" lookup that mongodb+srv:// URIs need,
+// even though normal lookups work fine. Point Node's DNS resolver at public
+// DNS servers so the Atlas connection string can be resolved.
+dns.setServers(['8.8.8.8', '1.1.1.1']);
 
 /**
  * Connects to MongoDB database using URI specified in environment configuration.

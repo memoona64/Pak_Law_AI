@@ -12,7 +12,6 @@ from typing import Optional
 import chromadb
 import numpy as np
 from rank_bm25 import BM25Okapi
-import re
 
 from .embeddings import MODEL_NAME, embed, embed_query
 from .errors import ModelUnavailableError
@@ -64,6 +63,7 @@ _TOKEN_RE = re.compile(r"[\w]+")
 
 
 def _tokenize(text: str) -> list[str]:
+    """Split text into lowercase word/digit tokens for BM25 indexing."""
     return _TOKEN_RE.findall(text.lower())
 
 

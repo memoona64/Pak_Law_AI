@@ -10,7 +10,7 @@ const messageSchema = new mongoose.Schema({
   answer: { type: String, required: true },
   citations: [mongoose.Schema.Types.Mixed],
   sources: [mongoose.Schema.Types.Mixed],
-  language: { type: String, required: true },
+  language: { type: String, default: 'en' }, // ✅ required: true ki jagah default: 'en' kar diya
   timestamp: { type: Date, default: Date.now }
 });
 
