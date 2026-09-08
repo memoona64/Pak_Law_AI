@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Icon, Eyebrow } from '../components/primitives';
 import AppSidebar from '../components/AppSidebar';
+import { FLOW_LANG_KEY, FLOW_LANGS, getSavedFlowLang } from '../lib/flowLang';
 
 // The Express backend. Override via a .env file (VITE_API_URL) if it runs
 // somewhere other than localhost.
@@ -13,16 +14,24 @@ export default function FlowsScreen() {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState('');
   const [search, setSearch] = React.useState('');
+  const [lang, setLang] = React.useState(getSavedFlowLang);
+
+  const changeLang = (id) => {
+    setLang(id);
+    try { localStorage.setItem(FLOW_LANG_KEY, id); } catch { /* best-effort only */ }
+  };
 
   React.useEffect(() => {
-    fetch(`${API_URL}/api/flows?lang=en`)
+    setLoading(true);
+    setError('');
+    fetch(`${API_URL}/api/flows?lang=${lang}`)
       .then(async (res) => {
         if (!res.ok) throw new Error(`Flows service returned ${res.status}`);
         setFlows(await res.json());
       })
       .catch((err) => setError(err.message || "Couldn't reach the backend — make sure it's running."))
       .finally(() => setLoading(false));
-  }, []);
+  }, [lang]);
 
   const query = search.trim().toLowerCase();
   const visible = query
@@ -57,6 +66,10 @@ export default function FlowsScreen() {
 
         {/* Body — flow grid */}
         <div className="flex-1 overflow-auto pl-scroll px-4 sm:px-10 py-6 sm:py-8">
+          <div className="mb-5">
+            <FlowLangToggle lang={lang} setLang={changeLang} />
+          </div>
+
           {loading ? (
             <div className="text-center py-24 text-[16px] text-[#7A7D68]">Loading…</div>
           ) : error ? (
@@ -68,12 +81,26 @@ export default function FlowsScreen() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
               {visible.map((f) => (
-                <FlowCard key={f.slug} f={f} />
+                <FlowCard key={f.slug} f={f} rtl={lang === 'ur'} />
               ))}
             </div>
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+function FlowLangToggle({ lang, setLang }) {
+  return (
+    <div className="inline-flex items-center bg-white/70 border border-[#D8D9C8] rounded-full p-1 h-9">
+      <span className="pl-2 pr-1 text-[#7A7D68]"><Icon name="languages" size={13} /></span>
+      {FLOW_LANGS.map(o => (
+        <button key={o.id} onClick={() => setLang(o.id)}
+                className={`h-7 px-3 rounded-full text-[14px] font-medium transition-colors ${lang === o.id ? 'bg-[#2A2F22] text-[#F7F6F0]' : 'text-[#3A3D2E] hover:text-[#2A2F22]'}`}>
+          {o.label}
+        </button>
+      ))}
     </div>
   );
 }
@@ -90,16 +117,16 @@ function ErrorState({ message }) {
   );
 }
 
-function FlowCard({ f }) {
+function FlowCard({ f, rtl }) {
   return (
     <Link to={`/flows/${f.slug}`} className="block rounded-xl border p-5 relative transition-colors bg-[#F7F6F0] border-[#DFE0CE] hover:border-[#6B7F5E]/40 hover:bg-white">
       <div className="flex items-start gap-4">
         <div className="w-11 h-11 rounded-lg bg-[#EDE9D5] border border-[#B9C2A0] flex items-center justify-center shrink-0">
           <Icon name="scroll-text" size={19} color="#4A5540" />
         </div>
-        <div className="flex-1 min-w-0">
-          <div className="font-serif text-[19px] leading-tight">{f.title}</div>
-          <div className="text-[14px] text-[#4A5540] mt-1.5 leading-snug line-clamp-2">{f.situation}</div>
+        <div className="flex-1 min-w-0" dir={rtl ? 'rtl' : 'ltr'}>
+          <div className={`font-serif text-[19px] leading-tight ${rtl ? 'font-nastaliq text-[20px]' : ''}`}>{f.title}</div>
+          <div className={`text-[14px] text-[#4A5540] mt-1.5 leading-snug line-clamp-2 ${rtl ? 'font-nastaliq text-[15px]' : ''}`}>{f.situation}</div>
         </div>
       </div>
       <div className="mt-4 pt-4 border-t rule-hair flex items-center justify-end text-[14px] text-[#4A5540]">
