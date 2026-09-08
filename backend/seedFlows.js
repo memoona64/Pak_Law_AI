@@ -3,12 +3,17 @@
  * Reads data/flows.json, clears the existing Flow collection, and seeds initial records.
  */
 
+const dns = require('dns');
 const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
 dotenv.config();
+
+// Some home routers refuse the DNS "SRV" lookup that mongodb+srv:// URIs need,
+// even though normal lookups work fine (see config/db.js for the same fix).
+dns.setServers(['8.8.8.8', '1.1.1.1']);
 
 const Flow = require('./models/Flow');
 
