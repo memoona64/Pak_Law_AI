@@ -89,7 +89,7 @@ function UploadView({ onUploaded }) {
   };
 
   return (
-    <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-8 px-4 sm:px-10 py-6 sm:py-10 overflow-y-auto lg:overflow-hidden">
+    <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-8 px-4 sm:px-10 py-6 sm:py-10 overflow-y-auto pl-scroll">
       <div className="lg:col-span-2">
         <div
           onDragOver={e => { e.preventDefault(); setDrag(true); }}
@@ -173,9 +173,9 @@ export function AnalysisView({ data }) {
   const warnings = clauses.filter(c => c.status === 'warn').length;
 
   return (
-    <div className="flex-1 flex flex-col overflow-y-auto lg:overflow-hidden">
-      <div className="px-4 sm:px-8 pt-6 shrink-0"><Disclaimer /></div>
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 px-4 sm:px-8 py-6 overflow-y-auto lg:overflow-hidden">
+    <div className="flex-1 overflow-y-auto pl-scroll">
+      <div className="px-4 sm:px-8 pt-6"><Disclaimer /></div>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 px-4 sm:px-8 py-6">
         {/* LEFT — Document info, masking, obligations */}
         <div className="lg:col-span-5 space-y-5">
           <Card padding="p-0" className="overflow-hidden">
@@ -221,7 +221,7 @@ export function AnalysisView({ data }) {
         </div>
 
         {/* RIGHT — Summary + clauses */}
-        <div className="lg:col-span-7 overflow-auto pl-scroll space-y-5">
+        <div className="lg:col-span-7 space-y-5">
           <Card tone="cream" padding="p-0" className="overflow-hidden">
             <div className="bg-[#2A2F22] text-[#F7F6F0] p-5">
               <div className="smallcaps text-[14px] text-[#B9C2A0]">Summary</div>
