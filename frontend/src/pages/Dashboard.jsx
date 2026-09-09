@@ -216,7 +216,7 @@ export default function Dashboard() {
         {/* Retrieval comparison */}
         <ChartPanel
           eyebrow="Retrieval comparison"
-          title="Each retrieval stage improves Recall@5"
+          title="Recall@5 improves at each stage in this benchmark"
           description="Recall@5 measures whether the expected Act + Section appeared among the five highest-ranked retrieved results."
           chart={
             <BarChart
@@ -479,6 +479,22 @@ function BreakdownPanel({ title, description, breakdownKey, modes }) {
 
   if (!rows.length) return null;
 
+  const evaluatedFor = (row) =>
+    modes.vector_only.breakdowns?.[breakdownKey]?.[row]?.evaluated ??
+    modes.hybrid.breakdowns?.[breakdownKey]?.[row]?.evaluated ??
+    modes.hybrid_reranker.breakdowns?.[breakdownKey]?.[row]?.evaluated ??
+    0;
+
+  // Province coverage is real, not a data gap to apologize for — most
+  // questions in the benchmark just aren't province-specific, so an
+  // "Unknown" row here means "no province applies," not "missing data."
+  let unknownNote = null;
+  if (breakdownKey === 'province' && rows.includes('Unknown')) {
+    const total = rows.reduce((sum, row) => sum + evaluatedFor(row), 0);
+    const unknown = evaluatedFor('Unknown');
+    unknownNote = `Province metadata is available for ${total - unknown} of these ${total} evaluable questions; the remaining ${unknown} have unknown (not province-specific) province metadata.`;
+  }
+
   return (
     <Card>
       <Eyebrow>{breakdownKey}</Eyebrow>
@@ -524,11 +540,7 @@ function BreakdownPanel({ title, description, breakdownKey, modes }) {
               const reranker =
                 modes.hybrid_reranker.breakdowns?.[breakdownKey]?.[row];
 
-              const evaluated =
-                vector?.evaluated ??
-                hybrid?.evaluated ??
-                reranker?.evaluated ??
-                0;
+              const evaluated = evaluatedFor(row);
 
               return (
                 <tr key={row} className="border-b rule-hair last:border-b-0">
@@ -553,6 +565,10 @@ function BreakdownPanel({ title, description, breakdownKey, modes }) {
           </tbody>
         </table>
       </div>
+
+      {unknownNote && (
+        <p className="mt-3 text-[13px] text-[#7A7D68]">{unknownNote}</p>
+      )}
     </Card>
   );
 }
