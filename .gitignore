@@ -224,3 +224,7 @@ __marimo__/
 /Scripts/
 /share/
 chroma_db/
+
+backend/node_modules/
+
+frontend/node_modules/

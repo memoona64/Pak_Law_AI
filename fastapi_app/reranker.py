@@ -18,7 +18,7 @@ RERANKER_MODEL = os.getenv("RERANKER_MODEL", "BAAI/bge-reranker-v2-m3")
 # which chunks a query happened to retrieve. The corpus median chunk is ~128
 # tokens and p90 is ~400, so 512 leaves over 90% of chunks untruncated, and
 # judging relevance rarely needs more than the opening of a section.
-RERANKER_MAX_LENGTH = int(os.getenv("RERANKER_MAX_LENGTH", "512"))
+RERANKER_MAX_LENGTH = int(os.getenv("RERANKER_MAX_LENGTH", "256"))
 
 _reranker = None
 
@@ -57,7 +57,8 @@ def rerank(query: str, chunks: list[dict], top_k: int = 5) -> list[dict]:
 
         pairs.append((query, document))
 
-    scores = reranker.predict(pairs)
+    scores = reranker.predict(pairs, batch_size=4)
+    
 
     scored_chunks = list(zip(scores, chunks))
     scored_chunks.sort(key=lambda x: x[0], reverse=True)
