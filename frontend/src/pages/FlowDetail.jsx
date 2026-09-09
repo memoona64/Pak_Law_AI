@@ -60,10 +60,14 @@ export default function FlowDetail() {
         </Link>
         {flow && (
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
-            <div dir={rtl ? 'rtl' : 'ltr'}>
+            <div dir={rtl ? 'rtl' : 'ltr'} className="max-w-[640px]">
               <Eyebrow>Guided procedure</Eyebrow>
-              <h1 className={`mt-2 font-serif text-[28px] sm:text-[36px] leading-[1.08] tracking-[-0.01em] ${rtl ? 'font-nastaliq' : ''}`}>{flow.title}</h1>
-              <p className={`mt-2 text-[16px] text-[#4A5540] max-w-[640px] ${rtl ? 'font-nastaliq text-[17px]' : ''}`}>{flow.situation}</p>
+              {/* tracking-[-0.01em] is a negative letter-spacing tuned for the
+                  Latin serif face; applied to Nastaliq it visually crowds the
+                  joined Arabic-script letterforms together, so it's dropped
+                  for the rtl case instead of just adding the Nastaliq font. */}
+              <h1 className={`mt-2 font-serif text-[28px] sm:text-[36px] leading-[1.08] ${rtl ? 'font-nastaliq' : 'tracking-[-0.01em]'}`}>{flow.title}</h1>
+              <p className={`mt-2 text-[16px] text-[#4A5540] ${rtl ? 'font-nastaliq text-[17px]' : ''}`}>{flow.situation}</p>
             </div>
           </div>
         )}
