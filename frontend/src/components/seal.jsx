@@ -1,9 +1,9 @@
-// PakLaw AI brand mark ΓÇö the real logo (public/logo.png, public/logo-icon.png),
+// PakLaw AI brand mark — the real logo (public/logo.png, public/logo-icon.png),
 // used across screens. logo-icon.png is a tight crop of just the emblem
 // (scales, book, pen, crescent) for small avatar-style uses; logo.png is the
 // full lockup with the "PakLaw AI" wordmark baked in, for larger brand spots.
 // Both have their own black background by design, which is why every current
-// usage sits on a dark surface ΓÇö check that before reusing this on a light one.
+// usage sits on a dark surface — check that before reusing this on a light one.
 
 function PLSeal({ size = 56, ring = true, className = '' }) {
   return (
@@ -17,7 +17,7 @@ function PLSeal({ size = 56, ring = true, className = '' }) {
 }
 
 // Wordmark row (icon + real HTML text). logo.png's own baked-in "PakLaw AI"
-// text is only legible at large sizes ΓÇö at the small sizes this is normally
+// text is only legible at large sizes — at the small sizes this is normally
 // used (e.g. a 28-40px sidebar header), scaling the whole lockup image down
 // just turns the text into an illegible smudge, so the icon crop is paired
 // with crisp text instead, same as the layout this replaced.

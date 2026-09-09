@@ -31,7 +31,7 @@ export default function Safety() {
         </h1>
 
         <p className="mt-5 text-[20px] leading-[1.6]">
-          You described something that sounds like an emergency ΓÇö this app only answers legal questions and cannot help you right now. Please contact one of the numbers below.
+          You described something that sounds like an emergency — this app only answers legal questions and cannot help you right now. Please contact one of the numbers below.
         </p>
 
         <div className="mt-10 flex flex-col gap-6">

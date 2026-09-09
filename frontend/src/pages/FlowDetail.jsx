@@ -34,7 +34,7 @@ export default function FlowDetail() {
         setCurrentStep(0);
         setExpanded({ 0: true });
       })
-      .catch((err) => setError(err.message || "Couldn't reach the backend ΓÇö make sure it's running."))
+      .catch((err) => setError(err.message || "Couldn't reach the backend — make sure it's running."))
       .finally(() => setLoading(false));
   }, [slug, lang]);
 
@@ -74,7 +74,7 @@ export default function FlowDetail() {
           <Disclaimer />
 
           {loading ? (
-            <div className="text-center py-24 text-[16px] text-[#7A7D68]">LoadingΓÇª</div>
+            <div className="text-center py-24 text-[16px] text-[#7A7D68]">Loading…</div>
           ) : error ? (
             <ErrorState message={error} />
           ) : (

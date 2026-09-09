@@ -33,12 +33,12 @@ export default function DocumentDetail() {
         if (res.status === 401) {
           localStorage.removeItem('paklaw_token');
           localStorage.removeItem('paklaw_user');
-          throw new Error('Your session expired ΓÇö please sign in again.');
+          throw new Error('Your session expired — please sign in again.');
         }
         if (!res.ok) throw new Error(`Documents service returned ${res.status}`);
         setData(await res.json());
       })
-      .catch((err) => setError(err.message || "Couldn't reach the backend ΓÇö make sure it's running."))
+      .catch((err) => setError(err.message || "Couldn't reach the backend — make sure it's running."))
       .finally(() => setLoading(false));
   }, [id]);
 
@@ -55,7 +55,7 @@ export default function DocumentDetail() {
         </div>
 
         {loading ? (
-          <div className="text-center py-24 text-[16px] text-[#7A7D68]">LoadingΓÇª</div>
+          <div className="text-center py-24 text-[16px] text-[#7A7D68]">Loading…</div>
         ) : error ? (
           <ErrorState message={error} />
         ) : (

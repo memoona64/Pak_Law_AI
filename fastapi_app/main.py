@@ -14,15 +14,21 @@ if sys.platform == "win32" and hasattr(sys.stdout, "buffer") and hasattr(sys.std
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
-from . import search_service
-from .errors import ModelUnavailableError
-from .generation import generate_answer
+from . import citation_verifier, doc_chunker, document_extraction, masking, search_service
+from .errors import DocumentExtractionError, ModelUnavailableError
+from .generation import analyze_clauses, generate_answer, summarize_document
+
+MAX_CLAUSES = 200
+MAX_UPLOAD_BYTES = 10 * 1024 * 1024
+# Clauses per Gemini call. The free tier allows only 20 requests per day, so
+# one call per clause cannot analyze a realistic contract at all.
+CLAUSE_BATCH_SIZE = 8
 
 
 logger = logging.getLogger("uvicorn.error")
@@ -141,6 +147,30 @@ class QueryResponse(BaseModel):
     timings: dict
     province_filter: Optional[str]
     normalized_query: Optional[str] = None
+    citations_verified: bool = True
+    unverified_citations: list[dict] = []
+    unsupported_claims: list[str] = []
+    verifier_blocked: bool = False
+
+
+class ObligationItem(BaseModel):
+    date: str
+    description: str
+
+
+class ClauseAnalysis(BaseModel):
+    clause_number: Optional[str]
+    text: str
+    risk: str
+    note: str
+    citations_verified: bool
+
+
+class AnalyzeDocumentResponse(BaseModel):
+    summary: str
+    flagged_clauses: list[ClauseAnalysis]
+    obligations: list[ObligationItem]
+    masking_applied: dict
 
 
 @app.on_event("startup")
@@ -191,7 +221,35 @@ def rag_query(request: QueryRequest):
     except ModelUnavailableError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
 
-    answer = generate_answer(request.query, chunks)
+    try:
+        answer = generate_answer(request.query, chunks)
+    except Exception as exc:
+        # Retrieval succeeded, so return the sources with an honest note rather
+        # than a 500: the user still gets the law even when generation fails.
+        logger.warning("Answer generation failed: %s", exc)
+        answer = (
+            "The answer could not be generated right now. The relevant legal sources "
+            "retrieved for this question are listed below."
+        )
+
+    # Citation verifier: a blocking gate between generation and display. An
+    # answer citing law that was never retrieved is withheld, not shown.
+    started = time.perf_counter()
+    verification = citation_verifier.verify_citations(answer, chunks)
+    unsupported = citation_verifier.find_unsupported_claims(answer, chunks)
+    blocked = bool(verification["unverified"])
+    if blocked:
+        logger.warning(
+            "Answer blocked: unverified citations %s for query %r",
+            verification["unverified"],
+            request.query,
+        )
+        answer = (
+            "This answer was withheld because it cited legal provisions that could not be "
+            "verified against the retrieved sources. The sources found for your question are "
+            "listed below. Please consult a qualified Pakistani legal professional."
+        )
+    timings["verify_ms"] = round((time.perf_counter() - started) * 1000, 1)
 
     return QueryResponse(
         chunks=chunks,
@@ -199,6 +257,128 @@ def rag_query(request: QueryRequest):
         timings=timings,
         province_filter=request.province,
         normalized_query=normalized_query,
+        citations_verified=verification["all_verified"],
+        unverified_citations=verification["unverified"],
+        unsupported_claims=unsupported,
+        verifier_blocked=blocked,
+    )
+
+
+def _retrieve_for_clause(clause_text: str, province: Optional[str], use_reranker: bool) -> list[dict]:
+    """Find the law relevant to one clause. Local only — no LLM call, no quota cost."""
+    try:
+        retrieved, _, _ = search_service.search(
+            query=clause_text, k=5, province=province, use_reranker=use_reranker
+        )
+        return retrieved
+    except ModelUnavailableError as exc:
+        logger.warning("Retrieval unavailable for a clause, analyzing with no context: %s", exc)
+        return []
+
+
+@app.post("/rag/analyze-document", response_model=AnalyzeDocumentResponse)
+async def analyze_document(
+    file: UploadFile = File(...),
+    province: Optional[str] = Form(None),
+    # Off by default: reranking runs per clause and costs ~15s each, so a long
+    # document would take minutes. Turn it on for higher retrieval quality.
+    use_reranker: bool = Form(False),
+):
+    data = await file.read()
+    if not data:
+        raise HTTPException(status_code=400, detail="Uploaded file is empty")
+
+    if len(data) > MAX_UPLOAD_BYTES:
+        raise HTTPException(
+            status_code=413,
+            detail=f"File is too large. Maximum size is {MAX_UPLOAD_BYTES // (1024 * 1024)} MB.",
+        )
+
+    try:
+        raw_text = document_extraction.extract_text(file.filename or "", data)
+    except DocumentExtractionError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+    mask_result = masking.mask_text(raw_text)
+    clauses = doc_chunker.chunk_document(mask_result.text)
+    if not clauses:
+        raise HTTPException(status_code=422, detail="No analyzable text found in this document")
+
+    truncated = len(clauses) > MAX_CLAUSES
+    clauses = clauses[:MAX_CLAUSES]
+
+    prepared = [
+        {
+            "clause_number": clause["clause_number"] or str(index),
+            "text": clause["text"],
+            "chunks": _retrieve_for_clause(clause["text"], province, use_reranker),
+        }
+        for index, clause in enumerate(clauses, start=1)
+    ]
+
+    analyzed: list[ClauseAnalysis] = []
+    obligations: list[ObligationItem] = []
+    for start in range(0, len(prepared), CLAUSE_BATCH_SIZE):
+        batch = prepared[start : start + CLAUSE_BATCH_SIZE]
+        try:
+            results = analyze_clauses(batch)
+        except Exception as exc:
+            # One failed batch (API error, quota) must not discard the rest.
+            logger.warning("Analysis failed for clauses starting at %s: %s", start + 1, exc)
+            results = [
+                {
+                    "risk": "warn",
+                    "note": "Analysis failed for this clause; please review manually.",
+                    "obligation": None,
+                }
+                for _ in batch
+            ]
+
+        for item, result in zip(batch, results):
+            verification = citation_verifier.verify_citations(result["note"], item["chunks"])
+            analyzed.append(
+                ClauseAnalysis(
+                    clause_number=item["clause_number"],
+                    text=item["text"],
+                    # An unverified citation outranks whatever risk the model claimed.
+                    risk="flag" if verification["unverified"] else result["risk"],
+                    note=result["note"],
+                    citations_verified=verification["all_verified"],
+                )
+            )
+            if result["obligation"]:
+                try:
+                    obligations.append(ObligationItem(**result["obligation"]))
+                except Exception as exc:
+                    # The model's JSON doesn't always match the expected shape
+                    # (missing/extra keys, wrong types). One malformed
+                    # obligation must not discard every clause analyzed so far.
+                    logger.warning(
+                        "Skipping malformed obligation for clause %s: %s",
+                        item["clause_number"],
+                        exc,
+                    )
+
+    flagged_notes = [clause.note for clause in analyzed if clause.risk == "flag"]
+    try:
+        summary = summarize_document(mask_result.text, flagged_notes)
+    except Exception as exc:
+        # A failed summary must not discard the clause analysis that succeeded.
+        logger.warning("Document summary failed: %s", exc)
+        flagged_count = len(flagged_notes)
+        warn_count = sum(1 for clause in analyzed if clause.risk == "warn")
+        summary = (
+            f"Summary unavailable. {len(analyzed)} clauses analyzed, "
+            f"{flagged_count} flagged for review, {warn_count} warnings."
+        )
+    if truncated:
+        summary += f" Only the first {MAX_CLAUSES} clauses were analyzed due to document length."
+
+    return AnalyzeDocumentResponse(
+        summary=summary,
+        flagged_clauses=analyzed,
+        obligations=obligations,
+        masking_applied=mask_result.counts,
     )
 
 

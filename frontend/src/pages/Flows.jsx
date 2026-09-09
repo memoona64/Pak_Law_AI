@@ -8,7 +8,7 @@ import { FLOW_LANG_KEY, FLOW_LANGS, getSavedFlowLang } from '../lib/flowLang';
 // somewhere other than localhost.
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-// Guided Procedures ΓÇö a browsable grid of flows by situation.
+// Guided Procedures — a browsable grid of flows by situation.
 export default function FlowsScreen() {
   const [flows, setFlows] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
@@ -29,7 +29,7 @@ export default function FlowsScreen() {
         if (!res.ok) throw new Error(`Flows service returned ${res.status}`);
         setFlows(await res.json());
       })
-      .catch((err) => setError(err.message || "Couldn't reach the backend ΓÇö make sure it's running."))
+      .catch((err) => setError(err.message || "Couldn't reach the backend — make sure it's running."))
       .finally(() => setLoading(false));
   }, [lang]);
 
@@ -50,7 +50,7 @@ export default function FlowsScreen() {
               Flows for Pakistani <span className="italic text-[#6B7F5E]">practice.</span>
             </h1>
             <p className="mt-3 text-[16px] text-[#4A5540] max-w-[540px]">
-              Each flow walks you through what to do, step by step, in plain language ΓÇö and shows you exactly which law backs each step.
+              Each flow walks you through what to do, step by step, in plain language — and shows you exactly which law backs each step.
             </p>
           </div>
           <div className="inline-flex items-center bg-white border border-[#D8D9C8] rounded-md h-9 px-2.5 gap-2 text-[14px] self-start">
@@ -58,20 +58,20 @@ export default function FlowsScreen() {
             <input
               value={search}
               onChange={e => setSearch(e.target.value)}
-              placeholder="Search flows, statutesΓÇª"
+              placeholder="Search flows, statutes…"
               className="bg-transparent focus:outline-none w-40 sm:w-56 placeholder-[#7A7D68]"
             />
           </div>
         </div>
 
-        {/* Body ΓÇö flow grid */}
+        {/* Body — flow grid */}
         <div className="flex-1 overflow-auto pl-scroll px-4 sm:px-10 py-6 sm:py-8">
           <div className="mb-5">
             <FlowLangToggle lang={lang} setLang={changeLang} />
           </div>
 
           {loading ? (
-            <div className="text-center py-24 text-[16px] text-[#7A7D68]">LoadingΓÇª</div>
+            <div className="text-center py-24 text-[16px] text-[#7A7D68]">Loading…</div>
           ) : error ? (
             <ErrorState message={error} />
           ) : visible.length === 0 ? (

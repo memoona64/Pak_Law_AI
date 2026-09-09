@@ -18,7 +18,7 @@ RERANKER_MODEL = os.getenv("RERANKER_MODEL", "BAAI/bge-reranker-v2-m3")
 # which chunks a query happened to retrieve. The corpus median chunk is ~128
 # tokens and p90 is ~400, so 512 leaves over 90% of chunks untruncated, and
 # judging relevance rarely needs more than the opening of a section.
-RERANKER_MAX_LENGTH = int(os.getenv("RERANKER_MAX_LENGTH", "256"))
+RERANKER_MAX_LENGTH = int(os.getenv("RERANKER_MAX_LENGTH", "512"))
 
 _reranker = None
 

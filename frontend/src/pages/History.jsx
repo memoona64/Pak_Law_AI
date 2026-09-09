@@ -25,7 +25,7 @@ const formatDate = (iso) => {
   }
 };
 
-// History ΓÇö every past conversation, with the Acts each answer cited. Opens back into /chat.
+// History — every past conversation, with the Acts each answer cited. Opens back into /chat.
 export default function History() {
   const navigate = useNavigate();
   const [items, setItems] = React.useState([]);
@@ -47,7 +47,7 @@ export default function History() {
         if (res.status === 401) {
           localStorage.removeItem('paklaw_token');
           localStorage.removeItem('paklaw_user');
-          throw new Error('Your session expired ΓÇö please sign in again.');
+          throw new Error('Your session expired — please sign in again.');
         }
         if (!res.ok) throw new Error(`History service returned ${res.status}`);
         const data = await res.json();
@@ -58,7 +58,7 @@ export default function History() {
           acts: c.acts || [],
         })));
       })
-      .catch((err) => setError(err.message || "Couldn't reach the backend ΓÇö make sure it's running."))
+      .catch((err) => setError(err.message || "Couldn't reach the backend — make sure it's running."))
       .finally(() => setLoading(false));
   }, []);
 
@@ -82,7 +82,7 @@ export default function History() {
         <div className="flex-1 overflow-auto pl-scroll px-4 sm:px-10 py-6 sm:py-8">
           <div className="max-w-[760px] mx-auto">
             {loading ? (
-              <div className="text-center py-24 text-[16px] text-[#7A7D68]">LoadingΓÇª</div>
+              <div className="text-center py-24 text-[16px] text-[#7A7D68]">Loading…</div>
             ) : error ? (
               <ErrorState message={error} />
             ) : items.length === 0 ? (

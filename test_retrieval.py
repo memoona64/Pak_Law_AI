@@ -151,6 +151,31 @@ class RetrievalTests(unittest.TestCase):
         self.assertEqual(len(results), 2)
         self.assertEqual(timings.get("rerank_status"), "fallback_no_model")
 
+    def test_bm25_text_includes_identity_so_citation_queries_rank_it_first(self):
+        # A 2-document corpus can make BM25's IDF formula degenerate to exactly
+        # zero for any term present in exactly half the corpus, so this needs
+        # at least two distractors that never mention "302" or "PPC".
+        chunk = _chunk("ppc-302", "Whoever commits qatl-i-amd shall be punished with death.", section="302")
+        chunk["metadata"]["short_code"] = "PPC"
+        chunk["metadata"]["section_title"] = "Punishment of qatl-i-amd"
+        distractor_1 = _chunk("other-1", "Some unrelated provision about property disputes.", section="99")
+        distractor_2 = _chunk("other-2", "A separate clause on tenancy and rent recovery.", section="12")
+
+        bm25 = search_service.build_bm25([chunk, distractor_1, distractor_2])
+        scores = bm25.get_scores(search_service._tokenize("Section 302 PPC"))
+        self.assertGreater(scores[0], scores[1])
+        self.assertGreater(scores[0], scores[2])
+
+    def test_bm25_text_falls_back_to_plain_title_key(self):
+        # MFLO and the Sindh Rented Premises Ordinance store the heading
+        # under "title" instead of section_title/article_title.
+        chunk = _chunk("mflo-7", "A talaq shall be pronounced in the prescribed form.", section="7")
+        chunk["metadata"]["short_code"] = "MFLO"
+        chunk["metadata"]["title"] = "Talaq"
+
+        text = search_service._bm25_text(chunk)
+        self.assertIn("Talaq", text)
+
     def test_search_falls_back_to_bm25_when_embedding_model_is_unavailable(self):
         def failing_vector_search(query, province, k=20):
             raise ModelUnavailableError("embedding model cache missing")

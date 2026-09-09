@@ -1,0 +1,83 @@
+[
+  {
+    "query": "What is the punishment for theft?",
+    "gold_act": "PPC",
+    "gold_section": "379",
+    "language": "English",
+    "category": "natural_language",
+    "evaluable": true
+  },
+  {
+    "query": "What is the punishment under Section 302 PPC?",
+    "gold_act": "PPC",
+    "gold_section": "302",
+    "language": "English",
+    "category": "exact_citation",
+    "evaluable": true
+  },
+  {
+    "query": "chori ki saza kya hai?",
+    "gold_act": "PPC",
+    "gold_section": "379",
+    "language": "Roman Urdu",
+    "category": "roman_urdu",
+    "evaluable": true
+  },
+  {
+    "query": "qatl ki saza kya hai?",
+    "gold_act": "PPC",
+    "gold_section": "302",
+    "language": "Roman Urdu",
+    "category": "roman_urdu",
+    "evaluable": true
+  },
+  {
+    "query": "What is the punishment for cheating?",
+    "gold_act": "PPC",
+    "gold_section": "417",
+    "language": "English",
+    "category": "natural_language",
+    "evaluable": true
+  },
+  {
+    "query": "police FIR darj nahi kar rahi",
+    "gold_act": "CrPC",
+    "gold_section": "154",
+    "language": "Roman Urdu",
+    "category": "roman_urdu",
+    "evaluable": false,
+    "note": "CrPC cleaned text exists but indexed/chunked corpus is missing."
+  },
+  {
+    "query": "Who won the cricket match yesterday?",
+    "gold_act": null,
+    "gold_section": null,
+    "language": "English",
+    "category": "out_of_scope",
+    "evaluable": false
+  },
+  {
+    "query": "Mujhe biryani ki recipe batao",
+    "gold_act": null,
+    "gold_section": null,
+    "language": "Roman Urdu",
+    "category": "out_of_scope",
+    "evaluable": false
+  },
+  {
+    "query": "What is the weather today?",
+    "gold_act": null,
+    "gold_section": null,
+    "language": "English",
+    "category": "out_of_scope",
+    "evaluable": false
+  },
+  {
+    "query": "Write me a poem",
+    "gold_act": null,
+    "gold_section": null,
+    "language": "English",
+    "category": "out_of_scope",
+    "evaluable": false
+  }
+]

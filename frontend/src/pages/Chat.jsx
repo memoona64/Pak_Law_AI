@@ -4,16 +4,16 @@ import { Icon, Chip, Btn, Eyebrow, Disclaimer } from '../components/primitives';
 import { PLSeal } from '../components/seal';
 import AppSidebar from '../components/AppSidebar';
 
-// The Express backend ΓÇö it calls FastAPI's retrieval + generation pipeline
+// The Express backend — it calls FastAPI's retrieval + generation pipeline
 // internally and returns a finished answer with citations. Override via a
 // .env file (VITE_API_URL) if it runs somewhere other than localhost.
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 // Arabic-script Unicode block (covers Urdu). Used only to decide RTL/Nastaliq
-// rendering for what someone actually typed ΓÇö the backend already detects
+// rendering for what someone actually typed — the backend already detects
 // language itself for normalization, so there's no manual language picker
 // here; this is purely typography, not a language selection.
-const URDU_SCRIPT_RE = /[╪Ç-█┐]/;
+const URDU_SCRIPT_RE = /[؀-ۿ]/;
 const isUrduScript = (text) => URDU_SCRIPT_RE.test(text);
 
 const formatTime = (iso) => {
@@ -41,7 +41,7 @@ const expandStoredMessages = (storedMessages) => {
   return expanded;
 };
 
-// Chat interface ΓÇö the hero. Sidebar + central messages with expandable citation pills.
+// Chat interface — the hero. Sidebar + central messages with expandable citation pills.
 export default function ChatScreen() {
   const { id: routeConversationId } = useParams();
   const navigate = useNavigate();
@@ -80,7 +80,7 @@ export default function ChatScreen() {
         if (res.status === 401) {
           localStorage.removeItem('paklaw_token');
           localStorage.removeItem('paklaw_user');
-          throw new Error('Your session expired ΓÇö please sign in again.');
+          throw new Error('Your session expired — please sign in again.');
         }
         if (!res.ok) throw new Error(`Chat service returned ${res.status}`);
         const data = await res.json();
@@ -125,7 +125,7 @@ export default function ChatScreen() {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        // No language field ΓÇö the backend detects and normalizes the
+        // No language field — the backend detects and normalizes the
         // query's language itself (Roman Urdu / Urdu script / English).
         // conversationId appends to the open conversation once one exists,
         // instead of starting a new one on every message.
@@ -138,7 +138,7 @@ export default function ChatScreen() {
         setMessages(prev => [...prev, {
           id: `note-${Date.now()}`,
           role: 'note',
-          text: 'Your session expired ΓÇö please sign in again.',
+          text: 'Your session expired — please sign in again.',
         }]);
         return;
       }
@@ -166,7 +166,7 @@ export default function ChatScreen() {
       setMessages(prev => [...prev, {
         id: `note-${Date.now()}`,
         role: 'note',
-        text: "Couldn't reach the chat service ΓÇö make sure the backend is running, then try again.",
+        text: "Couldn't reach the chat service — make sure the backend is running, then try again.",
       }]);
     } finally {
       setSending(false);
@@ -191,7 +191,7 @@ export default function ChatScreen() {
             <Disclaimer />
 
             {loadingConversation ? (
-              <div className="text-center py-16 text-[16px] text-[#7A7D68]">Loading conversationΓÇª</div>
+              <div className="text-center py-16 text-[16px] text-[#7A7D68]">Loading conversation…</div>
             ) : messages.length === 0 && !sending && (
               <div className="flex flex-col items-center justify-center text-center py-16">
                 <div className="w-14 h-14 rounded-full bg-[#2A2F22] flex items-center justify-center">
@@ -199,7 +199,7 @@ export default function ChatScreen() {
                 </div>
                 <div className="mt-5 font-serif text-[22px] leading-tight">Ask your first question.</div>
                 <p className="mt-2 text-[16px] text-[#4A5540] max-w-[420px]">
-                  In English, Urdu, or Roman Urdu ΓÇö answers cite the actual law, not a guess.
+                  In English, Urdu, or Roman Urdu — answers cite the actual law, not a guess.
                 </p>
               </div>
             )}
@@ -210,7 +210,7 @@ export default function ChatScreen() {
                 : <AssistantMessage key={m.id} m={m} expanded={expanded} setExpanded={setExpanded} />
             ))}
 
-            {/* Assistant is typing indicator ΓÇö only while a send is in flight */}
+            {/* Assistant is typing indicator — only while a send is in flight */}
             {sending && (
               <div className="flex items-center gap-3 text-[14px] text-[#7A7D68]">
                 <div className="w-8 h-8 rounded-full bg-[#2A2F22] flex items-center justify-center">
@@ -220,7 +220,7 @@ export default function ChatScreen() {
                   <span className="w-1.5 h-1.5 rounded-full bg-[#6B7F5E] animate-pulse" />
                   <span className="w-1.5 h-1.5 rounded-full bg-[#6B7F5E] animate-pulse" style={{ animationDelay: '150ms' }}/>
                   <span className="w-1.5 h-1.5 rounded-full bg-[#6B7F5E] animate-pulse" style={{ animationDelay: '300ms' }}/>
-                  <span className="ml-2 italic">Looking through the law ΓÇª</span>
+                  <span className="ml-2 italic">Looking through the law …</span>
                 </div>
               </div>
             )}
@@ -242,16 +242,16 @@ export default function ChatScreen() {
                   }
                 }}
                 rows={2}
-                placeholder='Ask about a statute, judgment, or draft ΓÇö in English, Urdu, or Roman Urdu.'
+                placeholder='Ask about a statute, judgment, or draft — in English, Urdu, or Roman Urdu.'
                 className={`w-full resize-none bg-transparent p-4 text-[16px] text-[#2A2F22] placeholder-[#7A7D68] focus:outline-none ${isUrduScript(input) ? 'text-right font-nastaliq text-[17px]' : ''}`}
                 dir={isUrduScript(input) ? 'rtl' : 'ltr'}
               />
               <div className="flex items-center justify-between px-3 pb-3">
                 <div className="flex items-center gap-1">
-                  <ComposerIcon name="paperclip" tip="Attach a document ΓÇö coming soon" disabled />
+                  <ComposerIcon name="paperclip" tip="Attach a document — coming soon" disabled />
                   <button
                     disabled
-                    title="Voice input ΓÇö coming soon"
+                    title="Voice input — coming soon"
                     className="h-8 px-2.5 rounded-md flex items-center gap-1.5 text-[14px] font-medium text-[#A6A896] cursor-not-allowed"
                   >
                     <Icon name="mic" size={13} stroke={2}/>
@@ -259,7 +259,7 @@ export default function ChatScreen() {
                   </button>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-[14px] text-[#7A7D68] font-mono-jb">Ctrl + Γå╡</span>
+                  <span className="text-[14px] text-[#7A7D68] font-mono-jb">Ctrl + ↵</span>
                   <Btn variant="primary" size="sm" iconRight="arrow-up" onClick={handleSend} disabled={!input.trim() || sending}>Ask</Btn>
                 </div>
               </div>
@@ -293,7 +293,7 @@ function UserMessage({ m }) {
     <div className="flex justify-end">
       <div className="max-w-[80%]">
         <div className="flex items-center justify-end gap-2 mb-1.5">
-          <span className="text-[14px] text-[#7A7D68]">You ┬╖ {m.time}</span>
+          <span className="text-[14px] text-[#7A7D68]">You · {m.time}</span>
         </div>
         <div className={`bg-[#2A2F22] text-[#F7F6F0] px-5 py-3.5 rounded-2xl rounded-tr-md text-[16px] leading-[1.6] ${urdu ? 'font-nastaliq text-[18px] text-right' : ''}`}
              dir={urdu ? 'rtl' : 'ltr'}>
@@ -314,10 +314,10 @@ function AssistantMessage({ m, expanded, setExpanded }) {
         <div className="flex items-center gap-2 mb-1.5 flex-wrap">
           <div className="font-serif text-[14px]">PakLaw AI</div>
           <Chip tone="ok" icon="shield-check" title="This answer is backed by real, quoted sources, not made up.">Backed by {m.citations.length} sources</Chip>
-          <span className="text-[14px] text-[#7A7D68]">{m.time}{m.latencyLabel ? ` ┬╖ ${m.latencyLabel}` : ''}</span>
+          <span className="text-[14px] text-[#7A7D68]">{m.time}{m.latencyLabel ? ` · ${m.latencyLabel}` : ''}</span>
         </div>
 
-        {/* Answer body ΓÇö editorial serif quotes, editorial spacing */}
+        {/* Answer body — editorial serif quotes, editorial spacing */}
         <div className="bg-[#F7F6F0] border border-[#DFE0CE] rounded-2xl rounded-tl-md px-5 py-4 text-[16px] leading-[1.7] text-[#2A2F22]">
           <div className="prose prose-sm max-w-none [&_em]:text-[#4A5540] [&_em]:not-italic [&_em]:font-serif [&_strong]:text-[#2A2F22]">
             {m.body}

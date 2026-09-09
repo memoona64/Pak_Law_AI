@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Icon } from './primitives';
 import { PLWordmark } from './seal';
 
-// Primary nav ΓÇö wired to real routes. "History" replaces the old "The law"
+// Primary nav — wired to real routes. "History" replaces the old "The law"
 // entry, which never had a page behind it; every item here does.
 const NAV_ITEMS = [
   { icon: 'messages-square', label: 'Chats', to: '/chat' },
@@ -13,14 +13,14 @@ const NAV_ITEMS = [
   { icon: 'clock', label: 'History', to: '/history' },
 ];
 
-// Shared app sidebar ΓÇö extracted from Chat.jsx. Brand and primary nav (active
+// Shared app sidebar — extracted from Chat.jsx. Brand and primary nav (active
 // route highlighted; "History" is where past questions live, so they aren't
 // duplicated here). Self-contained: owns its own mobile open/closed state, so
 // every page just renders <AppSidebar /> with no wiring of its own. Not used
 // on /login (its own full-screen layout) or /safety (must have nothing to
 // click away to).
 // Reads the logged-in user's name from the same localStorage entry Login.jsx
-// writes on sign-in. No fallback name is invented ΓÇö a signed-out visitor
+// writes on sign-in. No fallback name is invented — a signed-out visitor
 // just sees "Guest" rather than someone else's identity.
 function useCurrentUser() {
   const [user] = React.useState(() => {
@@ -52,7 +52,7 @@ export default function AppSidebar({ dark = true }) {
 
   return (
     <>
-      {/* Mobile menu button ΓÇö the sidebar collapses behind this below md */}
+      {/* Mobile menu button — the sidebar collapses behind this below md */}
       {!open && (
         <button
           onClick={() => setOpen(true)}
@@ -101,7 +101,7 @@ export default function AppSidebar({ dark = true }) {
           <div className="flex-1 min-w-0 leading-tight">
             <div className="text-[14px] font-medium truncate">{user?.name || 'Guest'}</div>
           </div>
-          <button disabled title="Settings ΓÇö coming soon" className="w-7 h-7 rounded-md flex items-center justify-center opacity-40 cursor-not-allowed">
+          <button disabled title="Settings — coming soon" className="w-7 h-7 rounded-md flex items-center justify-center opacity-40 cursor-not-allowed">
             <Icon name="settings" size={14} />
           </button>
         </div>

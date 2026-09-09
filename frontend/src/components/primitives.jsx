@@ -324,7 +324,7 @@ function Gauge({ value = 0.72, size = 120, color = '#6B7F5E', label = '', sub = 
   );
 }
 
-// --- Disclaimer strip ΓÇö shown wherever the app gives legal guidance, so
+// --- Disclaimer strip — shown wherever the app gives legal guidance, so
 // nobody mistakes it for a lawyer's advice.
 function Disclaimer({ className = '' }) {
   return (

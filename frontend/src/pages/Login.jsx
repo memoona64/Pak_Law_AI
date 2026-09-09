@@ -7,7 +7,7 @@ import { PLSeal, PLWordmark } from '../components/seal';
 // (VITE_API_URL) if it runs somewhere other than localhost.
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-// Sign in / create account ΓÇö split brand + form layout. Stacks vertically
+// Sign in / create account — split brand + form layout. Stacks vertically
 // on narrow screens instead of forcing the 55/45 side-by-side split.
 export default function Login() {
   const navigate = useNavigate();
@@ -44,7 +44,7 @@ export default function Login() {
       localStorage.setItem('paklaw_user', JSON.stringify(data.user));
       navigate('/chat');
     } catch (err) {
-      setError(err.message || "Couldn't reach the server ΓÇö make sure the backend is running.");
+      setError(err.message || "Couldn't reach the server — make sure the backend is running.");
     } finally {
       setLoading(false);
     }
@@ -52,14 +52,14 @@ export default function Login() {
 
   return (
     <div className="min-h-screen w-full bg-[#F7F6F0] flex flex-col lg:flex-row lg:h-screen overflow-y-auto lg:overflow-hidden font-sans text-[#2A2F22]">
-      {/* LEFT ΓÇö brand composition */}
+      {/* LEFT — brand composition */}
       <div className="relative w-full lg:w-[55%] lg:h-full bg-[#2A2F22] text-[#F7F6F0] overflow-hidden">
         {/* Warm noise + gradient */}
         <div className="absolute inset-0 opacity-90"
              style={{ background: 'radial-gradient(120% 80% at 20% 20%, #3A3D2E 0%, #2A2F22 55%, #1E2118 100%)' }} />
         <div className="absolute inset-0 paper-grain opacity-40 mix-blend-overlay" />
 
-        {/* Concentric guilloch├⌐ rings */}
+        {/* Concentric guilloché rings */}
         <svg className="absolute -right-40 -top-40 hidden sm:block" width="900" height="900" viewBox="0 0 900 900">
           {Array.from({ length: 26 }).map((_, i) => (
             <circle key={i} cx="450" cy="450" r={80 + i * 14}
@@ -77,7 +77,7 @@ export default function Login() {
           <PLWordmark size={40} />
         </div>
 
-        {/* Center composition ΓÇö abstract seal */}
+        {/* Center composition — abstract seal */}
         <div className="relative mt-8 lg:mt-14 flex flex-col items-center px-6 pb-10 lg:px-14 lg:pb-0">
           <div className="relative">
             <PLSeal size={140} />
@@ -102,11 +102,11 @@ export default function Login() {
         </div>
       </div>
 
-      {/* RIGHT ΓÇö form */}
+      {/* RIGHT — form */}
       <div className="relative w-full lg:w-[45%] lg:h-full bg-[#F7F6F0] flex flex-col">
         <div className="flex items-center justify-between gap-3 px-6 pt-6 lg:px-10 lg:pt-8 text-[14px] text-[#3A3D2E]">
           <button onClick={() => navigate('/chat')} className="text-[#6B7F5E] font-semibold hover:underline underline-offset-2">
-            Skip for now ΓÇö just ask a question ΓåÆ
+            Skip for now — just ask a question →
           </button>
           <span className="hidden sm:inline">
             {mode === 'signin'
@@ -126,7 +126,7 @@ export default function Login() {
             <p className="mt-3 text-[16px] text-[#4A5540]">
               {mode === 'signin'
                 ? 'Sign in to see your past questions, or skip this and ask something right away.'
-                : 'An account just saves your questions for later ΓÇö you can also skip this and ask something right away.'}
+                : 'An account just saves your questions for later — you can also skip this and ask something right away.'}
             </p>
 
             <form onSubmit={handleSubmit} className="mt-8 space-y-4">
@@ -169,7 +169,7 @@ export default function Login() {
               )}
 
               <Btn type="submit" variant="primary" size="lg" iconRight="arrow-right" className="w-full mt-2" disabled={loading}>
-                {loading ? 'Please waitΓÇª' : mode === 'signin' ? 'Sign in' : 'Create account'}
+                {loading ? 'Please wait…' : mode === 'signin' ? 'Sign in' : 'Create account'}
               </Btn>
 
               <div className="sm:hidden text-center text-[14px] pt-1">
@@ -189,7 +189,7 @@ export default function Login() {
         </div>
 
         <div className="px-6 py-6 lg:px-10 lg:pb-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-[14px] text-[#7A7D68]">
-          <div>┬⌐ 2026 PakLaw AI ΓÇö Karachi ┬╖ Islamabad</div>
+          <div>© 2026 PakLaw AI — Karachi · Islamabad</div>
           <div className="flex items-center gap-4">
             <a className="hover:text-[#3A3D2E]">Terms</a>
             <a className="hover:text-[#3A3D2E]">Privacy</a>
