@@ -8,6 +8,7 @@ Gracefully degrades to offline dictionary or original query if no API key is set
 import json
 import logging
 import os
+import re
 import time
 import urllib.error
 import urllib.request
@@ -37,6 +38,32 @@ FALLBACK_DICT = {
     "zaminaat": "bail Section 496 497 CrPC",
 }
 
+# Terms a user might reasonably ask about that the corpus itself never uses
+# verbatim, so translating/rewriting the query alone doesn't help retrieval -
+# "khula" is a real, correct legal term (kept intact by PROMPT_TEMPLATE on
+# purpose, since the user-facing answer should still say "khula"), but MFLO's
+# actual text just says "dissolve the marriage otherwise than by talaq" and
+# never uses the word "khula" anywhere, so BM25/vector search has nothing to
+# match it against. Appended (not substituted) to whatever the query
+# normalizes to, on every path (LLM success, offline fallback, or neither),
+# so the corpus's real wording rides along regardless of how the rest of the
+# query got normalized.
+KEYWORD_BRIDGES = {
+    "khula": "wife delegated right to divorce dissolve marriage otherwise than by talaq Muslim Family Laws Ordinance section 8",
+}
+
+
+def _bridge_known_corpus_gaps(original_query: str, normalized_query: str) -> str:
+    lower_original = original_query.lower()
+    extras = [
+        bridge
+        for term, bridge in KEYWORD_BRIDGES.items()
+        if re.search(rf"\b{re.escape(term)}\b", lower_original)
+    ]
+    if not extras:
+        return normalized_query
+    return f"{normalized_query} {' '.join(extras)}"
+
 
 def normalize_query(query: str) -> tuple[str, bool]:
     """
@@ -56,19 +83,22 @@ def normalize_query(query: str) -> tuple[str, bool]:
     # unnoticed while every Roman Urdu query quietly degraded.
     if gemini_key:
         try:
-            return _call_gemini(clean_query, gemini_key), True
+            normalized = _call_gemini(clean_query, gemini_key)
+            return _bridge_known_corpus_gaps(clean_query, normalized), True
         except Exception as exc:
             logger.warning("Query normalization via Gemini failed: %s", exc)
 
     if groq_key:
         try:
-            return _call_groq(clean_query, groq_key), True
+            normalized = _call_groq(clean_query, groq_key)
+            return _bridge_known_corpus_gaps(clean_query, normalized), True
         except Exception as exc:
             logger.warning("Query normalization via Groq failed: %s", exc)
 
     if openai_key:
         try:
-            return _call_openai(clean_query, openai_key), True
+            normalized = _call_openai(clean_query, openai_key)
+            return _bridge_known_corpus_gaps(clean_query, normalized), True
         except Exception as exc:
             logger.warning("Query normalization via OpenAI failed: %s", exc)
 
@@ -76,9 +106,9 @@ def normalize_query(query: str) -> tuple[str, bool]:
     lower_q = clean_query.lower()
     for pattern, replacement in FALLBACK_DICT.items():
         if pattern in lower_q:
-            return replacement, False
+            return _bridge_known_corpus_gaps(clean_query, replacement), False
 
-    return clean_query, False
+    return _bridge_known_corpus_gaps(clean_query, clean_query), False
 
 
 def _call_gemini(query: str, api_key: str) -> str:
