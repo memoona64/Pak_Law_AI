@@ -5,6 +5,7 @@
 const express = require('express');
 const { body, param } = require('express-validator');
 const rateLimit = require('express-rate-limit');
+const { ipKeyGenerator } = rateLimit;
 const router = express.Router();
 const chatController = require('../controllers/chatController');
 const protect = require('../middleware/auth');
@@ -22,7 +23,7 @@ const chatRateLimiter = rateLimit({
   max: 30, // Limit each authenticated user to 30 requests per window
   standardHeaders: true,
   legacyHeaders: false,
-  keyGenerator: (req) => req.user?.id || req.ip,
+  keyGenerator: (req, res) => req.user?.id || ipKeyGenerator(req.ip),
   message: {
     error: 'Too many queries submitted from this account. Please wait 15 minutes before asking more questions.'
   }

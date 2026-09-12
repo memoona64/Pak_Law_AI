@@ -12,6 +12,7 @@ dotenv.config();
 const connectDB = require('./config/db.js');
 const errorHandler = require('./middleware/errorHandler.js');
 const ragService = require('./services/ragService.js'); // NEW — for the FastAPI health check
+const ensureAdminAccount = require('./bootstrapAdmin.js');
 
 const app = express();
 
@@ -73,6 +74,7 @@ const PORT = process.env.PORT || 5000;
 const startServer = async () => {
   try {
     await connectDB();
+    await ensureAdminAccount();
     app.listen(PORT, async () => {
       console.log(`[PakLaw Server] Running on port ${PORT} | Env: ${process.env.NODE_ENV || 'development'}`);
 
