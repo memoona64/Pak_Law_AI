@@ -6,6 +6,7 @@ import threading
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
+from .language import language_directive
 from .prompts import CLAUSE_ANALYSIS_PROMPT, DOCUMENT_SUMMARY_PROMPT, SYSTEM_PROMPT
 
 load_dotenv()
@@ -104,7 +105,14 @@ def generate_answer(query: str, chunks) -> str:
         )
 
     context = format_context(chunks)
-    prompt = f"USER QUESTION:\n{query}\n\nRETRIEVED LEGAL CONTEXT:\n{context}"
+    # The system prompt's general "answer in the same language" rule wasn't
+    # reliable on its own for Roman Urdu specifically (the model would
+    # sometimes switch to Urdu script or English instead) — detecting the
+    # language here and stating it explicitly per-request removes that
+    # ambiguity instead of leaving it to the model's own judgment of a
+    # possibly short/ambiguous query.
+    directive = language_directive(query)
+    prompt = f"{directive}\n\nUSER QUESTION:\n{query}\n\nRETRIEVED LEGAL CONTEXT:\n{context}"
 
     try:
         return _generate(prompt, _generation_config)
