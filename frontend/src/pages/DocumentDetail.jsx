@@ -1,8 +1,10 @@
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Icon, Eyebrow } from '../components/primitives';
 import AppSidebar from '../components/AppSidebar';
+import StatusState from '../components/StatusState';
 import { AnalysisView } from './Documents';
+import { getToken, clearToken } from '../lib/auth';
 
 // The Express backend. Override via a .env file (VITE_API_URL) if it runs
 // somewhere other than localhost.
@@ -11,14 +13,16 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 // Analysis result for one previously-uploaded document, fetched by :id.
 export default function DocumentDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [data, setData] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState('');
 
   React.useEffect(() => {
+    let cancelled = false;
     setLoading(true);
     setError('');
-    const token = localStorage.getItem('paklaw_token');
+    const token = getToken();
     if (!token) {
       setError('Please sign in to view this document.');
       setLoading(false);
@@ -31,16 +35,25 @@ export default function DocumentDetail() {
       .then(async (res) => {
         if (res.status === 404) throw new Error('This document was not found.');
         if (res.status === 401) {
-          localStorage.removeItem('paklaw_token');
-          localStorage.removeItem('paklaw_user');
+          clearToken();
+          if (!cancelled) navigate('/login');
           throw new Error('Your session expired — please sign in again.');
         }
         if (!res.ok) throw new Error(`Documents service returned ${res.status}`);
-        setData(await res.json());
+        const json = await res.json();
+        if (!cancelled) setData(json);
       })
-      .catch((err) => setError(err.message || "Couldn't reach the backend — make sure it's running."))
-      .finally(() => setLoading(false));
-  }, [id]);
+      .catch((err) => {
+        if (!cancelled) setError(err.message || "Couldn't reach the backend — make sure it's running.");
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [id, navigate]);
 
   return (
     <div className="flex h-screen w-full bg-[#F7F6F0] overflow-hidden">
@@ -57,23 +70,11 @@ export default function DocumentDetail() {
         {loading ? (
           <div className="text-center py-24 text-[16px] text-[#7A7D68]">Loading…</div>
         ) : error ? (
-          <ErrorState message={error} />
+          <StatusState tone="error" title="Couldn't load this document." message={error} />
         ) : (
           <AnalysisView data={data} />
         )}
       </div>
-    </div>
-  );
-}
-
-function ErrorState({ message }) {
-  return (
-    <div className="flex flex-col items-center justify-center text-center py-24">
-      <div className="w-16 h-16 rounded-full bg-[#F3DDD5] border border-[#D9A797] flex items-center justify-center">
-        <Icon name="alert-triangle" size={26} color="#8A3B24" />
-      </div>
-      <div className="mt-5 font-serif text-[22px] leading-tight">Couldn't load this document.</div>
-      <p className="mt-2 text-[16px] text-[#4A5540] max-w-[360px]">{message}</p>
     </div>
   );
 }

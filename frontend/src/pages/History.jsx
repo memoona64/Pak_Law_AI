@@ -2,6 +2,8 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Icon, Chip, Btn, Eyebrow, Card } from '../components/primitives';
 import AppSidebar from '../components/AppSidebar';
+import StatusState from '../components/StatusState';
+import { getToken, clearToken } from '../lib/auth';
 
 // The Express backend. Override via a .env file (VITE_API_URL) if it runs
 // somewhere other than localhost.
@@ -33,7 +35,8 @@ export default function History() {
   const [error, setError] = React.useState('');
 
   React.useEffect(() => {
-    const token = localStorage.getItem('paklaw_token');
+    let cancelled = false;
+    const token = getToken();
     if (!token) {
       setError('Please sign in to see your history.');
       setLoading(false);
@@ -45,12 +48,13 @@ export default function History() {
     })
       .then(async (res) => {
         if (res.status === 401) {
-          localStorage.removeItem('paklaw_token');
-          localStorage.removeItem('paklaw_user');
+          clearToken();
+          if (!cancelled) navigate('/login');
           throw new Error('Your session expired — please sign in again.');
         }
         if (!res.ok) throw new Error(`History service returned ${res.status}`);
         const data = await res.json();
+        if (cancelled) return;
         setItems((data.conversations || []).map((c) => ({
           id: c.id,
           question: c.question,
@@ -58,9 +62,17 @@ export default function History() {
           acts: c.acts || [],
         })));
       })
-      .catch((err) => setError(err.message || "Couldn't reach the backend — make sure it's running."))
-      .finally(() => setLoading(false));
-  }, []);
+      .catch((err) => {
+        if (!cancelled) setError(err.message || "Couldn't reach the backend — make sure it's running.");
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [navigate]);
 
   return (
     <div className="flex h-screen w-full bg-[#F7F6F0] overflow-hidden">
@@ -84,9 +96,14 @@ export default function History() {
             {loading ? (
               <div className="text-center py-24 text-[16px] text-[#7A7D68]">Loading…</div>
             ) : error ? (
-              <ErrorState message={error} />
+              <StatusState tone="error" title="Couldn't load your history." message={error} />
             ) : items.length === 0 ? (
-              <EmptyState />
+              <StatusState
+                tone="empty"
+                title="No conversations yet."
+                message="Ask your first question and it will show up here."
+                action={<Link to="/chat"><Btn variant="primary" iconRight="arrow-right">Ask a question</Btn></Link>}
+              />
             ) : (
               <Card padding="p-0">
                 <div className="px-5 pt-5 pb-3">
@@ -102,18 +119,6 @@ export default function History() {
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-function ErrorState({ message }) {
-  return (
-    <div className="flex flex-col items-center justify-center text-center py-24 rounded-xl border border-dashed border-[#D8D9C8]">
-      <div className="w-16 h-16 rounded-full bg-[#F3DDD5] border border-[#D9A797] flex items-center justify-center">
-        <Icon name="alert-triangle" size={26} color="#8A3B24" />
-      </div>
-      <div className="mt-5 font-serif text-[22px] leading-tight">Couldn't load your history.</div>
-      <p className="mt-2 text-[16px] text-[#4A5540] max-w-[360px]">{message}</p>
     </div>
   );
 }
@@ -136,17 +141,3 @@ function HistoryRow({ h, onClick }) {
   );
 }
 
-function EmptyState() {
-  return (
-    <div className="flex flex-col items-center justify-center text-center py-24 rounded-xl border border-dashed border-[#D8D9C8]">
-      <div className="w-16 h-16 rounded-full bg-[#EDE9D5] border border-[#B9C2A0] flex items-center justify-center">
-        <Icon name="messages-square" size={26} color="#4A5540" />
-      </div>
-      <div className="mt-5 font-serif text-[22px] leading-tight">No conversations yet.</div>
-      <p className="mt-2 text-[16px] text-[#4A5540] max-w-[360px]">Ask your first question and it will show up here.</p>
-      <Link to="/chat" className="mt-5 inline-block">
-        <Btn variant="primary" iconRight="arrow-right">Ask a question</Btn>
-      </Link>
-    </div>
-  );
-}

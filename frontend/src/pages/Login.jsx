@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Btn, Field, Icon, Eyebrow } from '../components/primitives';
 import { PLSeal, PLWordmark } from '../components/seal';
+import { setToken } from '../lib/auth';
 
 // The Express backend (auth, chat, history). Override via a .env file
 // (VITE_API_URL) if it runs somewhere other than localhost.
@@ -18,6 +19,10 @@ export default function Login() {
   const [name, setName] = React.useState('');
   const [error, setError] = React.useState('');
   const [loading, setLoading] = React.useState(false);
+  // "Keep me signed in" — checked saves the token to localStorage (survives
+  // closing the browser), unchecked saves it to sessionStorage (cleared when
+  // the tab/browser closes). Defaults to off, the more private option.
+  const [keepSignedIn, setKeepSignedIn] = React.useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,8 +45,7 @@ export default function Login() {
         throw new Error(data.error || data.errors?.[0]?.msg || 'Something went wrong. Please try again.');
       }
 
-      localStorage.setItem('paklaw_token', data.token);
-      localStorage.setItem('paklaw_user', JSON.stringify(data.user));
+      setToken(data.token, data.user, keepSignedIn);
       navigate('/chat');
     } catch (err) {
       setError(err.message || "Couldn't reach the server — make sure the backend is running.");
@@ -151,13 +155,26 @@ export default function Login() {
 
               {mode === 'signin' && (
                 <div className="flex items-center justify-between text-[14px]">
-                  <label className="inline-flex items-center gap-2 text-[#3A3D2E]">
-                    <span className="w-4 h-4 rounded-sm border border-[#6B7F5E] bg-[#6B7F5E] inline-flex items-center justify-center">
-                      <Icon name="check" size={11} color="#F7F6F0" stroke={3} />
+                  <label className="inline-flex items-center gap-2 text-[#3A3D2E] cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      checked={keepSignedIn}
+                      onChange={e => setKeepSignedIn(e.target.checked)}
+                      className="peer sr-only"
+                    />
+                    <span className={`w-4 h-4 rounded-sm border border-[#6B7F5E] inline-flex items-center justify-center transition-colors ${keepSignedIn ? 'bg-[#6B7F5E]' : 'bg-transparent'}`}>
+                      <Icon name="check" size={11} color="#F7F6F0" stroke={3} className={keepSignedIn ? '' : 'opacity-0'} />
                     </span>
                     Keep me signed in
                   </label>
-                  <a className="text-[#6B7F5E] font-semibold hover:underline">Forgot password?</a>
+                  <button
+                    type="button"
+                    disabled
+                    title="Coming soon"
+                    className="text-[#A6A896] font-semibold cursor-not-allowed"
+                  >
+                    Forgot password?
+                  </button>
                 </div>
               )}
 
@@ -191,9 +208,9 @@ export default function Login() {
         <div className="px-6 py-6 lg:px-10 lg:pb-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-[14px] text-[#7A7D68]">
           <div>© 2026 PakLaw AI — Karachi · Islamabad</div>
           <div className="flex items-center gap-4">
-            <a className="hover:text-[#3A3D2E]">Terms</a>
-            <a className="hover:text-[#3A3D2E]">Privacy</a>
-            <a className="hover:text-[#3A3D2E]">Corpus</a>
+            <button type="button" disabled title="Coming soon" className="text-[#A6A896] cursor-not-allowed">Terms</button>
+            <button type="button" disabled title="Coming soon" className="text-[#A6A896] cursor-not-allowed">Privacy</button>
+            <button type="button" disabled title="Coming soon" className="text-[#A6A896] cursor-not-allowed">Corpus</button>
           </div>
         </div>
       </div>

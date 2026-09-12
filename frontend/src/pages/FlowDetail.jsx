@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Icon, Btn, Eyebrow, Card, Disclaimer } from '../components/primitives';
 import AppSidebar from '../components/AppSidebar';
+import StatusState from '../components/StatusState';
 import { getSavedFlowLang } from '../lib/flowLang';
 
 // The Express backend. Override via a .env file (VITE_API_URL) if it runs
@@ -23,6 +24,7 @@ export default function FlowDetail() {
   const [expanded, setExpanded] = React.useState({});
 
   React.useEffect(() => {
+    let cancelled = false;
     setLoading(true);
     setError('');
     fetch(`${API_URL}/api/flows/${encodeURIComponent(slug)}?lang=${lang}`)
@@ -30,12 +32,21 @@ export default function FlowDetail() {
         if (res.status === 404) throw new Error("This flow doesn't exist.");
         if (!res.ok) throw new Error(`Flows service returned ${res.status}`);
         const data = await res.json();
+        if (cancelled) return;
         setFlow(data);
         setCurrentStep(0);
         setExpanded({ 0: true });
       })
-      .catch((err) => setError(err.message || "Couldn't reach the backend — make sure it's running."))
-      .finally(() => setLoading(false));
+      .catch((err) => {
+        if (!cancelled) setError(err.message || "Couldn't reach the backend — make sure it's running.");
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [slug, lang]);
 
   const steps = flow?.steps || [];
@@ -80,7 +91,7 @@ export default function FlowDetail() {
           {loading ? (
             <div className="text-center py-24 text-[16px] text-[#7A7D68]">Loading…</div>
           ) : error ? (
-            <ErrorState message={error} />
+            <StatusState tone="error" title="Couldn't load this flow." message={error} />
           ) : (
             <Card tone="cream" padding="p-0" className="overflow-hidden">
               <div className="bg-[#2A2F22] text-[#F7F6F0] p-6">
@@ -131,18 +142,6 @@ export default function FlowDetail() {
         </div>
       </div>
       </div>
-    </div>
-  );
-}
-
-function ErrorState({ message }) {
-  return (
-    <div className="flex flex-col items-center justify-center text-center py-24 rounded-xl border border-dashed border-[#D8D9C8]">
-      <div className="w-16 h-16 rounded-full bg-[#F3DDD5] border border-[#D9A797] flex items-center justify-center">
-        <Icon name="alert-triangle" size={26} color="#8A3B24" />
-      </div>
-      <div className="mt-5 font-serif text-[22px] leading-tight">Couldn't load this flow.</div>
-      <p className="mt-2 text-[16px] text-[#4A5540] max-w-[360px]">{message}</p>
     </div>
   );
 }
