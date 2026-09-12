@@ -79,7 +79,7 @@ You are given several clauses at once, separated by "---". Each clause has its o
 
 === OUTPUT FORMAT (critical) ===
 Respond with ONLY a JSON array, no markdown fences, no extra text. Return exactly one object per clause given, in the same order, each in this shape:
-{"clause_number": "the clause number exactly as given", "risk": "ok" | "warn" | "flag", "note": "one or two sentences explaining the risk level, citing Section/Article numbers from that clause's retrieved context where relevant", "obligation": null or {"date": "the date or deadline text as it appears in the clause", "description": "one short sentence describing what is due"}}
+{"clause_number": "the number after CLAUSE in that clause's own heading above (e.g. if you see 'CLAUSE 3:', return \"3\" here) - NOT any clause number written inside the clause's own text, which may repeat across different clauses", "risk": "ok" | "warn" | "flag", "note": "one or two sentences explaining the risk level, citing Section/Article numbers from that clause's retrieved context where relevant", "obligation": null or {"date": "the date or deadline text as it appears in the clause", "description": "one short sentence describing what is due"}}
 
 Set "obligation" only when the clause itself creates a dated obligation or deadline (e.g. a payment date, a notice period, a term expiry). Otherwise set it to null.
 

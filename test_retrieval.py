@@ -31,6 +31,8 @@ class RetrievalTests(unittest.TestCase):
             "_corpus_fingerprint": search_service._corpus_fingerprint,
             "_vector_search": search_service._vector_search,
             "rerank": search_service.rerank,
+            "_id_to_index": search_service._id_to_index,
+            "_known_short_codes": search_service._known_short_codes,
         }
         search_service._chunks = [
             _chunk("federal", "federal tenancy law", None, "10"),
@@ -39,7 +41,23 @@ class RetrievalTests(unittest.TestCase):
         ]
         search_service._bm25 = search_service.build_bm25(search_service._chunks)
         search_service._collection = object()  # Avoid model/index initialization.
+        # initialize() would normally derive these two caches from _chunks -
+        # since tests swap _chunks directly without calling initialize(),
+        # rebuild them here so lookups see the same fake corpus.
+        self._rebuild_derived_caches()
         self.vector_provinces = []
+
+    # Mirrors the cache-building lines inside search_service.initialize(),
+    # so replacing search_service._chunks in a test keeps _id_to_index and
+    # _known_short_codes consistent with it.
+    def _rebuild_derived_caches(self):
+        search_service._id_to_index = {
+            chunk["id"]: index for index, chunk in enumerate(search_service._chunks)
+        }
+        search_service._known_short_codes = {
+            str(chunk["metadata"].get("short_code") or "").upper()
+            for chunk in search_service._chunks
+        } - {""}
 
         def fake_vector_search(query, province, k=20):
             self.vector_provinces.append(province)

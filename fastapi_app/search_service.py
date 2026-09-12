@@ -1,6 +1,7 @@
 """Hybrid legal retrieval: BM25 + metadata-filtered Chroma + RRF + reranking."""
 
 import hashlib
+import itertools
 import json
 import logging
 import re
@@ -36,6 +37,10 @@ _client: Optional[chromadb.PersistentClient] = None
 _collection: Optional[chromadb.Collection] = None
 _corpus_fingerprint: Optional[str] = None
 _index_lock = threading.Lock()
+# Built once in initialize() and reused per request instead of being rebuilt
+# on every search call.
+_id_to_index: dict[str, int] = {}
+_known_short_codes: set[str] = set()
 
 
 def load_chunks(chunks_dir: Path = CHUNKS_DIR) -> list[dict]:
@@ -162,6 +167,7 @@ def _collection_is_current(collection: chromadb.Collection) -> bool:
 def initialize(chunks_dir: Path = CHUNKS_DIR):
     """Load corpus and reuse a matching index; defer any rebuild until needed."""
     global _chunks, _bm25, _client, _collection, _corpus_fingerprint
+    global _id_to_index, _known_short_codes
     if _chunks:
         return
     # Serialize with _build_vector_index: concurrent requests must not race
@@ -172,6 +178,10 @@ def initialize(chunks_dir: Path = CHUNKS_DIR):
         _chunks = load_chunks(chunks_dir)
         _bm25 = build_bm25(_chunks)
         _corpus_fingerprint = _fingerprint(_chunks)
+        _id_to_index = {chunk["id"]: index for index, chunk in enumerate(_chunks)}
+        _known_short_codes = {
+            str(chunk["metadata"].get("short_code") or "").upper() for chunk in _chunks
+        } - {""}
         _client = chromadb.PersistentClient(path=str(CHROMA_DIR))
         collection = _client.get_or_create_collection(
             name=COLLECTION_NAME, metadata={"hnsw:space": "cosine"}
@@ -260,8 +270,7 @@ def _vector_search(query: str, province: Optional[str], k: int = 20) -> list[int
         where=_chroma_where(province),
         include=[],
     )
-    id_to_index = {chunk["id"]: index for index, chunk in enumerate(_chunks)}
-    return [id_to_index[chunk_id] for chunk_id in result["ids"][0]]
+    return [_id_to_index[chunk_id] for chunk_id in result["ids"][0]]
 
 
 def _rrf(bm25_indices: list[int], vector_indices: list[int]) -> list[int]:
@@ -273,17 +282,10 @@ def _rrf(bm25_indices: list[int], vector_indices: list[int]) -> list[int]:
     return sorted(scores, key=scores.get, reverse=True)
 
 
-def _known_short_codes() -> set[str]:
-    return {
-        str(chunk["metadata"].get("short_code") or "").upper() for chunk in _chunks
-    } - {""}
-
-
 def _extract_act_code(query: str) -> Optional[str]:
     """Return the act short_code (e.g. 'MFLO', 'PPC') named in the query, if any."""
-    known = _known_short_codes()
     for word in re.findall(r"[A-Za-z]+", query):
-        if word.upper() in known:
+        if word.upper() in _known_short_codes:
             return word.upper()
     return None
 
@@ -308,19 +310,43 @@ def _extract_section_ref(query: str) -> Optional[tuple[str, str, Optional[str]]]
 def _exact_lookup(
     ref_type: str, ref_number: str, act_code: Optional[str], province: Optional[str]
 ) -> list[dict]:
+    """Find every chunk whose section/article number matches exactly.
+
+    When the query doesn't name a specific act, several different acts can
+    share the same section number (e.g. many acts each have their own
+    "Section 3"). Each chunk's metadata already labels which act it's from
+    (short_code/act), so matches are grouped by act here and then
+    interleaved one-per-act — instead of appended in plain corpus order —
+    so a later `results[:k]` slice can't silently keep only the first act's
+    chunks and drop every other matching act.
+    """
     eligible = set(_eligible_indices(province))
-    results = []
+    by_act: dict[str, list[dict]] = {}
     for index, chunk in enumerate(_chunks):
         if index not in eligible:
             continue
         metadata = chunk["metadata"]
-        if act_code and str(metadata.get("short_code") or "").upper() != act_code:
+        chunk_act_code = str(metadata.get("short_code") or metadata.get("act") or "").upper()
+        if act_code and chunk_act_code != act_code:
             continue
         key = "section" if ref_type == "section" else "Article"
         fallback = "section_number" if ref_type == "section" else "Article_number"
         value = metadata.get(key) or metadata.get(fallback) or ""
         if str(value).upper() == ref_number:
-            results.append(chunk)
+            by_act.setdefault(chunk_act_code, []).append(chunk)
+
+    if len(by_act) > 1:
+        logger.info(
+            "Exact lookup for %s %s matched %d different acts (%s); no act named in query",
+            ref_type,
+            ref_number,
+            len(by_act),
+            sorted(by_act),
+        )
+
+    results = []
+    for chunks_for_act in itertools.zip_longest(*(by_act[code] for code in sorted(by_act))):
+        results.extend(chunk for chunk in chunks_for_act if chunk is not None)
     return results
 
 
