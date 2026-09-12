@@ -13,6 +13,13 @@ const mongoose = require('mongoose');
 // just this Mongo connection — any other outbound call this app ever makes
 // (a future third-party API, a webhook) will also resolve through 8.8.8.8/
 // 1.1.1.1 instead of whatever DNS the host is configured to use.
+//
+// This alone isn't always enough — some networks block SRV/TXT-type DNS
+// queries outright, to ANY resolver, while ordinary lookups still work
+// fine ("querySrv ETIMEOUT ..." even with the override above). If that
+// happens, the real fix is switching MONGO_URI in .env to Atlas's standard
+// (non-SRV) connection string, which only needs ordinary hostname lookups
+// for the three shard hosts — see the comment in .env.example.
 dns.setServers(['8.8.8.8', '1.1.1.1']);
 
 /**
