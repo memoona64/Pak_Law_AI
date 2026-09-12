@@ -15,6 +15,14 @@ const ragService = require('./services/ragService.js'); // NEW — for the FastA
 
 const app = express();
 
+// Only trust the X-Forwarded-For header when we actually run behind a real
+// reverse proxy (set TRUST_PROXY=true in that deployment's env). Trusting it
+// blindly would let any client set X-Forwarded-For itself, spoofing req.ip
+// and letting them dodge the per-IP rate limiters.
+if (process.env.TRUST_PROXY === 'true') {
+  app.set('trust proxy', 1);
+}
+
 // Apply Security Headers via Helmet
 app.use(helmet());
 

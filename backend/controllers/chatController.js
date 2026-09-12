@@ -5,7 +5,24 @@
 
 const { validationResult } = require('express-validator');
 const Conversation = require('../models/Conversation');
+const QueryEvent = require('../models/QueryEvent');
 const ragService = require('../services/ragService');
+const { detectLanguage } = require('../utils/detectLanguage');
+
+/**
+ * Records one live-usage analytics entry. Never lets a logging failure break
+ * the actual chat response — this is best-effort telemetry, not core logic.
+ * Skipped in mock mode: USE_MOCK answers/timings are fake, so counting them
+ * would make the live dashboard misrepresent real system behavior.
+ */
+async function _logQueryEvent(fields) {
+  if (process.env.USE_MOCK === 'true') return;
+  try {
+    await QueryEvent.create(fields);
+  } catch (error) {
+    console.error('[QueryEvent] Failed to log query event:', error.message);
+  }
+}
 
 /**
  * Processes chat query and updates or creates a conversation.
@@ -32,8 +49,34 @@ exports.askQuestion = async (req, res, next) => {
       }
     }
 
-    // Call internal RAG service (Mocked or Python service)
-    const ragResult = await ragService.query({ question, language, province });
+    // Call internal RAG service (Mocked or Python service). Timed and logged
+    // (success or failure) as a QueryEvent for the live-usage dashboard.
+    const detectedLanguage = detectLanguage(question);
+    const startedAt = Date.now();
+    let ragResult;
+    try {
+      ragResult = await ragService.query({ question, language, province });
+    } catch (error) {
+      // Not awaited on purpose: this is telemetry, not core logic, and
+      // _logQueryEvent already catches its own errors internally — awaiting
+      // it here would only add MongoDB write latency to the user's response
+      // for no user-facing benefit.
+      _logQueryEvent({
+        language: detectedLanguage,
+        province: province || null,
+        latencyMs: Date.now() - startedAt,
+        verifierBlocked: false,
+        error: true
+      });
+      throw error;
+    }
+    _logQueryEvent({
+      language: detectedLanguage,
+      province: province || null,
+      latencyMs: Date.now() - startedAt,
+      verifierBlocked: ragResult.verifierBlocked === true,
+      error: false
+    });
 
     const newMessage = {
       question,
@@ -64,6 +107,8 @@ exports.askQuestion = async (req, res, next) => {
       language,
       citations: ragResult.citations || [],
       verified: ragResult.verified,
+      verifierBlocked: ragResult.verifierBlocked,
+      unsupportedClaims: ragResult.unsupportedClaims,
       safetyTriggered: ragResult.safetyTriggered,
       timings: ragResult.timings
     });

@@ -9,6 +9,10 @@ const mongoose = require('mongoose');
 // Some home routers refuse the DNS "SRV" lookup that mongodb+srv:// URIs need,
 // even though normal lookups work fine. Point Node's DNS resolver at public
 // DNS servers so the Atlas connection string can be resolved.
+// Note: dns.setServers() changes Node's resolver for the ENTIRE process, not
+// just this Mongo connection — any other outbound call this app ever makes
+// (a future third-party API, a webhook) will also resolve through 8.8.8.8/
+// 1.1.1.1 instead of whatever DNS the host is configured to use.
 dns.setServers(['8.8.8.8', '1.1.1.1']);
 
 /**

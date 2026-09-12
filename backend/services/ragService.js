@@ -101,20 +101,22 @@ function _mapTimings(fastapiTimings = {}) {
  */
 exports.query = async ({ question, language, province }) => {
   if (process.env.USE_MOCK === 'true') {
+    const mockCitations = [{
+      id: "crpc-154-0001",
+      act: "Code of Criminal Procedure, 1898",
+      shortCode: "crpc",
+      section: "154",
+      title: "Information in cognisable cases",
+      verbatim: "Every information relating to the commission of a cognisable offence, if given orally to an officer in charge of a police-station, shall be reduced to writing.",
+      jurisdiction: "federal",
+      province: null,
+      amendedUpTo: "2026-06-10",
+      corpusVersion: "v1"
+    }];
     return {
       answer: "Under Section 154 of the Code of Criminal Procedure, the officer in charge of a police station is bound to record any information disclosing a cognisable offence.",
-      citations: [{
-        id: "crpc-154-0001",
-        act: "Code of Criminal Procedure, 1898",
-        shortCode: "crpc",
-        section: "154",
-        title: "Information in cognisable cases",
-        verbatim: "Every information relating to the commission of a cognisable offence, if given orally to an officer in charge of a police-station, shall be reduced to writing.",
-        jurisdiction: "federal",
-        province: null,
-        amendedUpTo: "2026-06-10",
-        corpusVersion: "v1"
-      }],
+      citations: mockCitations,
+      sources: mockCitations,
       verified: true,
       verifierBlocked: false,
       unsupportedClaims: [],
@@ -141,10 +143,15 @@ exports.query = async ({ question, language, province }) => {
     });
 
     const data = response.data;
+    const citations = (data.chunks || []).map(_mapChunkToCitation);
 
     return {
       answer: data.answer,
-      citations: (data.chunks || []).map(_mapChunkToCitation),
+      citations,
+      // "sources" and "citations" are the same underlying list — chatController
+      // reads ragResult.sources when saving a message, so alias it here rather
+      // than duplicating the mapping logic.
+      sources: citations,
       verified: data.citations_verified === true,
       // True when the answer was WITHHELD because it cited law we never retrieved.
       // The sources are still returned — the UI must still show them.
@@ -215,7 +222,11 @@ exports.analyzeDocument = async (fileBuffer, filename, province) => {
       throw err;
     }
     console.error(`[RAG Service Error] ${error.message}`);
-    throw new Error('Python FastAPI document analysis service is unreachable.');
+    // Preserve the original error code (e.g. ECONNREFUSED) so callers like
+    // documentsController can tell "service down" apart from other failures.
+    const err = new Error('Python FastAPI document analysis service is unreachable.');
+    err.code = error.code;
+    throw err;
   }
 };
 
