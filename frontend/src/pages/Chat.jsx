@@ -4,6 +4,7 @@ import { Icon, Chip, Btn, Eyebrow, Disclaimer } from '../components/primitives';
 import { PLSeal } from '../components/seal';
 import AppSidebar from '../components/AppSidebar';
 import { getToken, clearToken } from '../lib/auth';
+import { matchesSafetyKeyword } from '../lib/safetyKeywords';
 
 // The Express backend — it calls FastAPI's retrieval + generation pipeline
 // internally and returns a finished answer with citations. Override via a
@@ -16,41 +17,6 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 // here; this is purely typography, not a language selection.
 const URDU_SCRIPT_RE = /[؀-ۿ]/;
 const isUrduScript = (text) => URDU_SCRIPT_RE.test(text);
-
-// --- Safety keyword trigger (basic, Phase 1) --------------------------------
-// CONSERVATIVE AND NOT EXHAUSTIVE ON PURPOSE. This only catches obvious,
-// explicit phrasings of acute danger — suicide/self-harm intent, an assault
-// happening right now, an arrest in progress — in English, Urdu script, and
-// Roman Urdu. It is a safety net, not a clinical or legal detector; most real
-// crisis messages will not match. That's why Safety.jsx is also always
-// reachable from the sidebar ("In danger? Get help" in AppSidebar.jsx)
-// regardless of whether any of these match.
-const SAFETY_KEYWORDS = [
-  // English — suicide / self-harm intent
-  /\bkill myself\b/i,
-  /\bwant to die\b/i,
-  /\bend my life\b/i,
-  /\bsuicid(e|al)\b/i,
-  /\b(hurt|harm) myself\b/i,
-  // English — physical violence happening right now
-  /\b(he|she|they)('s| is| are)? (beating|hitting) me\b/i,
-  /\bbeing beaten\b/i,
-  // English — arrest in progress
-  /\bpolice (are|is) arresting me\b/i,
-  /\bbeing arrested right now\b/i,
-  // Roman Urdu
-  /\bkhud\s*kushi\b/i,
-  /\bmarna chahta\b/i,
-  /\bmujhe marna hai\b/i,
-  /\bmujhe maar raha hai\b/i,
-  /\bgiraftari ho rahi hai\b/i,
-  // Urdu script
-  /خودکشی/,
-  /میں مرنا چاہتا ہوں/,
-  /مجھے مار رہا ہے/,
-  /گرفتاری ہو رہی ہے/,
-];
-const matchesSafetyKeyword = (text) => SAFETY_KEYWORDS.some((re) => re.test(text));
 
 const formatTime = (iso) => {
   try {
@@ -153,7 +119,7 @@ export default function ChatScreen() {
     if (!text || sending) return;
 
     // Safety check runs before anything is sent to the backend. See
-    // SAFETY_KEYWORDS above — this is deliberately conservative.
+    // lib/safetyKeywords.js — this is deliberately conservative.
     if (matchesSafetyKeyword(text)) {
       setInput('');
       navigate('/safety');
