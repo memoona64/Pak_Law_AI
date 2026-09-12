@@ -56,7 +56,11 @@ def main():
         sys.exit(1)
 
     print(f"Reading {input_path.name} ...")
-    page_texts = extract_pages(input_path)
+    try:
+        page_texts = extract_pages(input_path)
+    except Exception as error:
+        print(f"Could not read {input_path.name}: {error}")
+        sys.exit(1)
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     save_pages(page_texts, output_path)

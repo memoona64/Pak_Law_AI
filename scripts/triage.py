@@ -7,7 +7,11 @@ or is just a scanned image (which would need OCR before we could use it).
 import pdfplumber
 from pathlib import Path
 
-RAW_DIR = Path("data/raw")
+# Anchored to the project root (one level up from scripts/) so this script
+# works no matter which folder it's run from, not just when the current
+# directory happens to be the project root.
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+RAW_DIR = PROJECT_ROOT / "data" / "raw"
 
 
 # Picks 5 page numbers spread through the document (around 10%, 30%, 50%,

@@ -824,23 +824,23 @@ THE CODE OF CRIMINAL PROCEDURE, 1898
 1ACT NO. V OF 1898
 [22nd March, 1898]
 An Act to consolidate and amend the law relating to the Criminal Procedure.
-WHEREAS it is expedient to consolidate and amend the law relating to Criminal Procedure;
+WHEREAS it is expedient to consolidate and amend the law relating to Criminal Procedure;
 It is hereby enacted as follows:__
 PART I
 PRELIMINARY
 CHAPTER I
 1. Short title. commencement.__ (1) This Act may be called the Code of Criminal
-Procedure, 1898 ; and it shall come into force on the first day of July, 1898.
-(2) Extent. It extends to 2[the whole of Pakistan] ; but, in the absence of any specific
+Procedure, 1898 ; and it shall come into force on the first day of July, 1898.
+(2) Extent. It extends to 2[the whole of Pakistan] ; but, in the absence of any specific
 provision to the contrary, nothing herein contained shall affect any special or local law now in force,
 or any special jurisdiction or power conferred, or any special form of procedure prescribed, by any
 other law for the time being in force, 3[* * *].
 3[* * * * * * *]
-1For Statement of Objects and Reasons, see Gazette of India, 1897, Pt. V, p. 363 ; for Report of the Select Committee, see ibid., 1898, Pt. V, p.19;
-and for Proceedings in Council, see ibid., 1897, Pt. VI, pp. 238 and 254; and ibid., 1898, pp. 22, 101 and 175.
+1For Statement of Objects and Reasons, see Gazette of India, 1897, Pt. V, p. 363 ; for Report of the Select Committee, see ibid., 1898, Pt. V, p.19;
+and for Proceedings in Council, see ibid., 1897, Pt. VI, pp. 238 and 254; and ibid., 1898, pp. 22, 101 and 175.
 It has been declared to be in force in__
 Baluchistan, by the British Baluchistan Laws Regulation, 1913 (2 of 1913), s.3 and Sch. I.
-It has been extended to the Leased Areas of Baluchistan, see the Leased Areas (Laws) Order, 1950 (G.G.O. 3 of 1950) ; and applied in
+It has been extended to the Leased Areas of Baluchistan, see the Leased Areas (Laws) Order, 1950 (G.G.O. 3 of 1950) ; and applied in
 the Federated Areas of Baluchistan, see Gazette of India, 1937, Pt. I. p. 1499.
 It has also been extended to the Excluded Area of Upper Tanawal other than Phulera by the N. W.F.P (Upper Tanawal) (Excluded Area)
 Laws Regulation, 1950, and declared to be in force in that area with effect from 1st June, 1951, see N. W.F.P. Gazette, Extraordinary, dated 1st June,
@@ -856,7 +856,7 @@ Frontier Regulation, 1892 (3 of 1892).
 It has been amended in its application to__
 (i) the Punjab, by the Punjab Criminal Procedure (Election Offences) Amendment Act, 1936 (Punjab Act 1 of 1936) and the Code
 of Criminal Procedure (Punjab Amdt.) Act, 1940 (Punjab Act 11 of 1940), Punjab Ordinance 9 of 1971, and the Punjab
-Ordinance 10 of 1972. ;
+Ordinance 10 of 1972. ;
 The Code of Criminal Procedure, 1898 (Act V of 1898) has been amended by the Law Reforms Ordinance, 1972, (XII of 1972). The date of
 enforcement of the provisions of the Law Reforms Ordinance, 1972 except those relating to separation of Judiciary in the different Provinces are as
 follows:__
@@ -865,9 +865,9 @@ follows:__
 3. In Sind 24 12 1975
 4. In Quetta Town, Cantonment Areas and Nasirabad Distt.of Baluchistan. 23 12 1975
 (ii) N. W.F.P., by the Criminal Procedure (Election Offences) (N. W.F.P. Amdt). Act, 1937 (N. W.F.P. Act 10 of 1937), the Code of Criminal
-Procedure (N. W.F.P Amdt.) Act, 1940 (N. W.F.P. Act 8 of 1940) ;
+Procedure (N. W.F.P Amdt.) Act, 1940 (N. W.F.P. Act 8 of 1940) ;
 (iii) The Province of West Pakistan by West Pakistan Act No. 11 of 1963, s.2 (with effect from the 12th July, 1963) West Pakistan Act No.
-XVII of 1964, s.2 (with effect from the 1st April, 1964) the West Pakistan Act VIII of 1968, and West Pakistan Ordinance XXXIII of 1969;
+XVII of 1964, s.2 (with effect from the 1st April, 1964) the West Pakistan Act VIII of 1968, and West Pakistan Ordinance XXXIII of 1969;
 and
 (iv) The Provisions of the Law Reforms Ordinance, 1972 (XII of 1972), relating to amendments in the Code of Criminal Procedure, 1898 (V
 of 1898), enforced w.e.f. 26 12 75 in Punjab and N. W.F.P. (except Tribal Areas), w.e.f. 24 12 75 in sind w.e.f. 23 12 75 in Quetta Town
@@ -897,7 +897,7 @@ where there is no Advocate General or Government Advocate, such officer as the
 3[Provincial Government] may, from time to time, appoint in this behalf:
 (b) “Bailable offence.” “Non bailable offence.” “bailable offence” means an offence
 shown as bailable in the second schedule, or which is made bailable by any other law
-for the time being in force; and “non bailable offence” means any other offence:
+for the time being in force; and “non bailable offence” means any other offence:
 (c) “Charge.” “charge” includes any head of charge when the charge contains more
 heads than one:
 (d) 4[* * * * * * *]
@@ -938,12 +938,12 @@ than a Magistrate) who is authorised by a Magistrate in this behalf :
 (m) “Judicial proceeding.” “judicial proceeding” includes any proceeding in the
 course of which evidence is or may be legally taken on oath:
 4[(ma) “Magistrate” means a Judicial Magistrate and includes a Special Judicial
-Magistrate appointed under sections 12 and 14;]
+Magistrate appointed under sections 12 and 14;]
 (n) “Non cognizable offence.” “Non cognizable case.” “non cognizable offence”
 means an offence for, and “non cognizable case” means a case in, which a
 police officer, 5[* * *], may not arrest without warrant:
 (o) “Offence.” “offence” means any act or omission made punishable by any law for
-the time being in force;
+the time being in force;
 it also includes any act in respect of which a complaint may be made under
 section 20 of the Cattle trespass Act, 1871 (I of 1871):
 (p) “Officer incharge of a police station.” “officer incharge of a police station”
@@ -966,9 +966,9 @@ been omitted by the Criminal Law (Extinction of Discriminatory Privileges) Act, 
 5The words “within or without a presidency town” omitted by the Adaptation of Central Acts and Ordinances Order, 1949 (Order No. 4 of 1949), Sch.
 6Subs. by A.O., 1937, for “L.G.”.
 7Ins. by the Code of Criminal Procedure (Further Amendment) Act, 1923 (XXXV of 1923), s.2.
-8See the Legal Practitioners Act, 1846 (I of 1846); the Legal Practitioners Act, 1853 (XX of 1853); the Legal Practitioners Act, 1879 (XVIII of 1879); the Legal
-Practitioners Act, 1884 (IX of 1884); the Legal Practitioners (Amendment) Act, 1908 (I of 1908) ; and Act XXXV of 1973.
-In Baluchistan, see s. 20 (1) (c) of the Sch. to the British Baluchistan Criminal Justice Regulation, 1896 (VIII of 1896); in the N. W.F.P., see s.9 of the N. W.F.P.
+8See the Legal Practitioners Act, 1846 (I of 1846); the Legal Practitioners Act, 1853 (XX of 1853); the Legal Practitioners Act, 1879 (XVIII of 1879); the Legal
+Practitioners Act, 1884 (IX of 1884); the Legal Practitioners (Amendment) Act, 1908 (I of 1908) ; and Act XXXV of 1973.
+In Baluchistan, see s. 20 (1) (c) of the Sch. to the British Baluchistan Criminal Justice Regulation, 1896 (VIII of 1896); in the N. W.F.P., see s.9 of the N. W.F.P.
 Law and Justice Regulation , 1901 (VII of 1901) and the rules issued under that section in Gazette of India, 1902, Pt. II, p.5.
 9The words “Mukhtar or” rep. by the Code of Criminal Procedure (Further Amendment) Act, 1923 (XXXV of 1923), s.2.
 Page 29 of 307
@@ -985,7 +985,7 @@ in any High Court in the exercise of its original criminal jurisdiction:
 (v) 3[* * * * * * *]
 (w) 3[* * * * * * *]
 (2) Words referring to acts. Words which refer to acts done, extend also to illegal
-omissions; and
+omissions; and
 Words to have same meaning as in Pakistan Penal Code. All words and expressions used
 herein and defined in the Pakistan Penal Code (XLV of 1860), and not hereinbefore defined, shall be
 deemed to have the meanings respectively attributed to them by that Code.
@@ -1005,7 +1005,7 @@ A.__ Classes of Criminal Courts
 4[6. Classes of Criminal Courts and Magistrates.__ (1) Besides the High Court and the
 Courts constituted under any law other than this Code for the time being in force, there shall be two
 classes of Criminal Courts in Pakistan, namely:__
-I. Courts of Session;
+I. Courts of Session;
 II. Courts of Magistrates.
 1
 Subs. by A.O., 1937, for “L.G.”.
@@ -1017,8 +1017,8 @@ Subs. by the Legal Reforms Act, 1997 (XXIII of 1997), s. 3.
 Page 30 of 307
 <<<PAGE>>>
 1[(2) There shall be the following classes of Magistrate, namely:__
-(i) Magistrate of the first class;
-(ii) Magistrate of the second class; and
+(i) Magistrate of the first class;
+(ii) Magistrate of the second class; and
 (iii) Magistrate of the third class.]]
 B.__ Territorial Divisions
 7. Sessions divisions and districts.__ (1) 2[Each Province 3[***]] shall consist of
@@ -1038,7 +1038,7 @@ C.__ Courts and Offices 9[* * *]
 9. Court of Session.__ (1) The 4[Provincial Government] shall establish a Court of
 Session for every sessions division, and appoint a judge of such Court.
 (2) The 4[Provincial Government] may, by general or special order in the official Gazette,
-direct at what place or places the Court of Session shall hold its sitting; but, until such order is made,
+direct at what place or places the Court of Session shall hold its sitting; but, until such order is made,
 the Courts of Session shall hold their sittings as heretofore.
 (3) The 4[Provincial Government] may also appoint Additional Sessions Judges, and
 Assistant Sessions Judges to exercise jurisdiction in one or more such Courts.
@@ -1061,7 +1061,7 @@ Sub section (4) rep. by the Federal Laws (Revision and Declaration) Act, 1951 (X
 For notifications, see the different local Rules and Orders.
 For notification directing that__
 (i) Phulera in the Area of the Upper Tanawal in the North West Frontier Province, shall form part of the Mansehra Sub Division in the
-Hazara District, see N.W.F.P. Govt. Gazette, 1952, Pt. I, p. 305; and
+Hazara District, see N.W.F.P. Govt. Gazette, 1952, Pt. I, p. 305; and
 (ii) the districts in the first column of the table therein shall be divided into the sub division, see Gazette of Sindh, 1954, Pt. I, pp. 499 and 525.
 9
 The words “outside the presidency towns” rep. by Act XXVI of 1951, s. 3 and Sch. II.
@@ -1126,9 +1126,9 @@ Code, be deemed to be a Magistrate of such class.
 Government] may, 2[* * * * * * *] from time to time, make rules5 consistent with this Code for the
 guidance of 4[all Magistrates and] Magistrates’ Benches in any district respecting the following
 subjects:__
-(a) the classes of cases to be tried;
-(b) the times and places of sitting;
-(c) the constitution of the Bench for conducting trials;
+(a) the classes of cases to be tried;
+(b) the times and places of sitting;
+(c) the constitution of the Bench for conducting trials;
 (d) the mode of settling differences of opinion which may arise between the
 Magistrates in session 4[;]
 4[(e) The mode and manner of conducting raids and trial on the spot.]
@@ -1180,7 +1180,7 @@ upon any member of the police force on duty to aid him__
 (a) in taking or preventing the escape of any person who has participated in the
 commission of any cognizable offence or against whom a reasonable
 complaint has been made or credible information has been received or a
-reasonable suspicion exists of his having so participated; and
+reasonable suspicion exists of his having so participated; and
 (b) in the prevention of crime in general and, in particular, in the prevention of a
 breach of the peace or a disturbance of the public tranquillity.
 (4) Where a member of the police force on duty has been called upon to render aid under
@@ -1204,8 +1204,8 @@ Page 34 of 307
 <<<PAGE>>>
 1[(6) An ex officio Justice of the Peace may issue appropriate directions to the police
 authorities concerned on a complaint regarding
-(i) non­registration of a criminal case;
-(ii) transfer of investigation from one police officer to another; and
+(i) non­registration of a criminal case;
+(ii) transfer of investigation from one police officer to another; and
 (iii) neglect, failure or excess committed by a police authority in relation to its
 functions and duties.]
 22B. Du ties of Justices of the Peace. Subject to such rules as may be made by the Provincial
@@ -1214,14 +1214,14 @@ Government, every Justice of the Peace for any local area shall__
 of the peace, or of the commission of any offence within such local area,
 forthwith make inquiries into the matter and report in writing the result of his
 inquiries to the nearest Magistrate and to the officer incharge of the nearest
-police station;
+police station;
 (b) if the offence referred to in clause (a) is a cognizable offence, also prevent the
 removal of anything from, or the interference in any way with, the place of
-occurrence of the offence;
+occurrence of the offence;
 (c) when so requested in writing by a police officer making an investigation under
 Chapter XIV in respect of any offence committed within such local area,__
 (i) render all assistance to the police officer in making such an
-investigation;
+investigation;
 (ii) record any statement made under expectation of death by a person in
 respect of whom a crime is believed to have been committed.]
 23 and 24. [Justices of the Peace for the Presidency towns. Present Justices of the Peace.]
@@ -1271,7 +1271,7 @@ Magistrate all offences not punishable with death.]
 B.__ Sentences which may be passed by Courts of various Classes.
 31. Sentences which High Courts and Sessions Judges may pass.__ (1) A High Court may
 pass any sentence authorized by law.
-(2) A Sessions Judge or Additional Sessions Judge may pass any sentence authorized by law;
+(2) A Sessions Judge or Additional Sessions Judge may pass any sentence authorized by law;
 but any sentence of death passed by any such Judge shall be subject to confirmation by the High Court.
 (3) An Assistant Sessions Judge may pass any sentence authorised by law, except a sentence
 of death or of 6[* * *] imprisonment for a term exceeding seven years.
@@ -1287,14 +1287,14 @@ Page 36 of 307
 following sentences, namely:__
 Imprisonment for a term not exceeding 2[Three
 (a) Courts 1 [* * *] of Magistrates of the first years] including such solitary confinement as is
-class: authorized by law; Fine not exceeding 3[Forty five
-thousand] rupees; 4[arsh; daman;] Whipping.
+class: authorized by law; Fine not exceeding 3[Forty five
+thousand] rupees; 4[arsh; daman;] Whipping.
 (b) Courts of Magistrates of the second Imprisonment for a term not exceeding 5[one year],
 class: including such solitary confinement as is authorized
-by law;
-Fine not exceeding 3[fifteen thousand] rupees; 6[* *
+by law;
+Fine not exceeding 3[fifteen thousand] rupees; 6[* *
 *]
-(c) Courts of Magistrates of the third class. Imprisonment for a term not exceeding one month;
+(c) Courts of Magistrates of the third class. Imprisonment for a term not exceeding one month;
 Fine not exceeding 3[three thousand] rupees.
 (2) The Court of any Magistrate may pass any lawful sentence, combining any of the
 sentences which it is authorized by law to pass.
@@ -1335,7 +1335,7 @@ Page 37 of 307
 35. Sentence in cases of conviction of several offences at one trial.__(1) 1[When a person is
 convicted at one trial of two or more offences, the Court may, subject to the provisions of section 71 of
 the Pakistan Penal Code(XLV of 1860)] sentence him, for such offences, to the several punishments
-prescribed therefor which such Court is competent to inflict; such punishments, when consisting of
+prescribed therefor which such Court is competent to inflict; such punishments, when consisting of
 imprisonment 2[* * *], to commence the one after the expiration of the other in such order as the Court
 may direct, unless the Court directs that such punishments shall run concurrently.
 (2) In the case of consecutive sentences, it shall not be necessary for the Court, by reason
@@ -1343,7 +1343,7 @@ only of the aggregate punishment for the several offences being in excess of the
 competent to inflict on conviction of a single offence, to send the offender for trial before a higher Court:
 Maximum terms of punishment. Provided as follows:__
 (a) in no case shall such person be sentenced to imprisonment for a longer period
-than fourteen years;
+than fourteen years;
 (b) if the case is tried by a Magistrate 3[* * * * * * *], the aggregate punishment shall
 not exceed twice the amount of punishment which he is, in the exercise of his
 ordinary jurisdiction, competent to inflict.
@@ -1390,7 +1390,7 @@ MAKING ARRESTS.
 42. Public when to assist Magistrate and Police. Every person is bound to assist a
 Magistrate 6[, Justice of the Peace] or police officer reasonably demanding his aid, 7[* * *],__
 (a) in the taking or preventing the escape of any other person whom such
-Magistrate or police officer is authorized to arrest;
+Magistrate or police officer is authorized to arrest;
 (b) in the prevention or suppression of a breach of the peace, or in the prevention
 of any injury attempted to be committed to any railway, canal, telegraph or
 public property.
@@ -1429,25 +1429,25 @@ information which he may 6[possess] respecting__
 (a) the permanent or temporary residence of any notorious receiver or vendor of
 stolen property in any village of which he is headman, accountant, watchman or
 police officer, or in which he owns or occupies land, or is agent, or collects
-revenue or rent;
+revenue or rent;
 (b) the resort to any place within, or the passage through, such village of any person
 whom he knows, or reasonably suspects to be a thug, robber, escaped convict or
-proclaimed offender;
+proclaimed offender;
 (c) the commission of, or intention to commit, in or near such village any
 non bailable offence or any offence punishable under section 143, 144, 145, 147
-or 148 of the Pakistan Penal Code (XLV of 1860) ;
+or 148 of the Pakistan Penal Code (XLV of 1860) ;
 (d) the occurrence in or near such village of any sudden or unnatural death or of any
-death under suspicious circumstances; 7[or the discovery in or near such village of
+death under suspicious circumstances; 7[or the discovery in or near such village of
 any corpse or part of a corpse, in circumstances which lead to a reasonable
 suspicion that such a death has occurred or the disappearance from such village of
 any person in circumstances which lead to a reasonable suspicion that a
-non bailable offence has been committed in respect of such person;]
+non bailable offence has been committed in respect of such person;]
 (e) the commission of, or intention to commit, at any place out of 1[Pakistan] near
 such village any act which, if committed in 1[Pakistan], would be an offence
 punishable under any of the following sections of the Pakistan Penal Code
 (XLV of 1860), namely, 2[231, 232, 233, 234, 235, 236, 237, 238,] 302, 304,
 382, 392, 393, 394, 395, 396, 397, 398, 399, 402, 435, 436, 449, 450, 457, 458,
-459 8[460, 489A, 489B, 489C and 489D];
+459 8[460, 489A, 489B, 489C and 489D];
 (f) any matter likely to affect the maintenance of order or the prevention of crime or
 the safety of person or property respecting which 9[any officer authorised by the
 Provincial Government], by general or special order made with the previous
@@ -1468,7 +1468,7 @@ Provinces and the Capital of the Federation” which had been subs. by the Adapt
 Page 40 of 307
 <<<PAGE>>>
 (2) In this section__
-(i) “village” includes village-lands; and
+(i) “village” includes village-lands; and
 (ii) the expression “proclaimed offender” includes any person proclaimed as an
 offender by any Court or authority established or continued by the 1[Federal
 Government] 2[* * *] in any part of 3[Pakistan], in respect of any act which if
@@ -1558,10 +1558,10 @@ Page 42 of 307
 (2) The registered medical practitioner conducting examination under sub section (1) shall,
 without delay, examine such person and prepare a report of his examination giving the following
 particulars, namely:__
-(a) name and address of the accused and of the person by whom he was brought;
-(b) age of the accused;
-(c) marks of injury, if any, on person of the accused;
-(d) description of material taken from person of the accused for DNA profiling; and
+(a) name and address of the accused and of the person by whom he was brought;
+(b) age of the accused;
+(c) marks of injury, if any, on person of the accused;
+(d) description of material taken from person of the accused for DNA profiling; and
 (e) other material particulars in reasonable detail.
 (3) The report under sub section (2) shall state precisely the reasons for each conclusion
 arrived at.
@@ -1574,16 +1574,16 @@ B.—Arrest without Warrant
 order from a Magistrate and without a warrant, arrest—
 first, any person who has been concerned in any cognizable offence or against whom a reasonable
 complaint has been made or credible information has been received, or a reasonable suspicion
-exists of his having been so concerned;
+exists of his having been so concerned;
 secondly, any person having in his possession without lawful excuse, the burden of proving
-which excuse shall lie on such person, any implement of house­breaking;
+which excuse shall lie on such person, any implement of house­breaking;
 thirdly, any person who has been proclaimed as an offender either under this Code or by order of
-the 1[Provincial Government] ;
+the 1[Provincial Government] ;
 fourthly, any person in whose possession anything is found which may reasonably be suspected to
 be stolen property 2[and] who may reasonably be suspected of having committed an offence
-with reference to such thing ;
+with reference to such thing ;
 fifthly, any person who obstructs a police officer while in the execution of his duty, or who has
-escaped, or attempts to escape, from lawful custody ;
+escaped, or attempts to escape, from lawful custody ;
 sixthly, any person reasonably suspected of being a deserter from 3[the armed forces of Pakistan]
 4[* * *] 5[* * *]
 1Subs. by A.O., 1937, for “L.G.”.
@@ -1599,11 +1599,11 @@ Page 43 of 307
 seventhly, any person who has been concerned in, or against whom a reasonable complaint has
 been made or credible information has been received or a reasonable suspicion exists of his
 having been concerned in, any act committed at any place out of 1[Pakistan] which, if
-committed in 1[Pakistan], would have been punishable as an offence; and for which he is,
+committed in 1[Pakistan], would have been punishable as an offence; and for which he is,
 under any law relating to extradition 2[* * *] or otherwise, liable to be apprehended or
-detained in custody in 1[Pakistan] 3[*];
+detained in custody in 1[Pakistan] 3[*];
 eighthly, any released convict committing a breach of any rule made under section 565,
-sub­section (3);
+sub­section (3);
 4[ninthly, any person for whose arrest a requisition has been received from another police officer,
 provided that the requisition specifies the person to be arrested and the offence or other cause
 for which the arrest is to be made and it appears therefrom that the person might lawfully be
@@ -1613,9 +1613,9 @@ arrested without a warrant by the officer who issued the requisition.]
 may, in like manner, arrest or cause to be arrested__
 (a) any person found taking precautions to conceal his presence within the limits of
 such station, under circumstances which afford reason to believe that he is taking
-such precautions with a view to committing a cognizable offence ; or
+such precautions with a view to committing a cognizable offence ; or
 (b) any person within the limits of such station who has not ostensible means of
-subsistence, or who cannot give a satisfactory account of himself; or
+subsistence, or who cannot give a satisfactory account of himself; or
 (c) any person who is by repute an habitual robber, house breaker or thief, or an
 habitual receiver of stolen property knowing it to be stolen, or who by repute
 habitually commits extortion or in order to the committing of extortion habitually
@@ -1751,12 +1751,12 @@ the summons is so left shall, 5[* * *] sign a receipt therefore on the back of t
 71. Procedure when service cannot be effected as before provided. If service in the
 manner mentioned in sections 69 and 70 cannot by the exercise of due diligence be effected, the
 serving officer shall affix one of the duplicates of the summons to some conspicuous part of the
-house or homestead in which the person summoned ordinarily resides; and thereupon the summons
+house or homestead in which the person summoned ordinarily resides; and thereupon the summons
 shall be deemed to have been duly served.
 72. 8[Service on servant of State, Statutory Body or Company.]__(1) Where the person
 summoned is in the active service of the 9[State] or of a 10[11[a]statutory body or a company], the
 Court issuing the summons shall ordinarily send it in duplicate to the head of the office in which
-such person is employed; and such head shall thereupon cause the summons to be served in manner
+such person is employed; and such head shall thereupon cause the summons to be served in manner
 provided by section 69, and shall return it to the Court under his signature with the endorsement
 required by that section.
 (2) Such signature shall be evidence of due service.
@@ -1792,7 +1792,7 @@ summons and returned to the Court.
 B.__ Warrant of Arrest
 75. Form of warrant of arrest.__(1) Every Warrant of arrest issued by a Court under this
 Code shall be in writing, signed by the presiding officer, or in the case of a Bench of Magistrates, by
-any member of such Bench; and shall bear the seal of the Court.
+any member of such Bench; and shall bear the seal of the Court.
 (2) Continuance of warrant of arrest. Every such warrant shall remain in force until it
 is cancelled by the Court which issued it, or until it is executed.
 76. Court may direct security to be taken.__(1) Any Court issuing a warrant for the
@@ -1801,16 +1801,16 @@ executes a bond with sufficient sureties for his attendance before the Court at 
 thereafter until otherwise directed by the Court, the officer to whom the warrant is directed shall take
 such security and shall release such person from custody.
 (2) The endorsement shall state__
-(a) the number of sureties;
+(a) the number of sureties;
 (b) the amount in which they and the person for whose arrest the warrant is
-issued, are to be respectively bound; and
+issued, are to be respectively bound; and
 (c) the time at which he is to attend before the Court.
 (3) Recognizance to be forwarded. Whenever security is taken under this section the
 officer to whom the warrant is directed shall forward the bond to the Court.
 77. Warrants to whom directed.__ (1) A warrant of arrest shall ordinarily be directed to
-one or more police officers, 2[* * *]; but 3[any Court] issuing such a warrant may, if its immediate
+one or more police officers, 2[* * *]; but 3[any Court] issuing such a warrant may, if its immediate
 execution is necessary and no police officer is immediately available, direct it to any other person or
-persons; and such person or persons shall execute the same.
+persons; and such person or persons shall execute the same.
 (2) Warrants to several persons. When a warrant is directed to more officers or persons
 than one, it may be executed by all, or by any one or more, of them.
 1Subs. by the Law Reforms Ordinance, 1972 (XII of 1972), s.2 and Sch., for “officer”.
@@ -1911,7 +1911,7 @@ Page 50 of 307
 <<<PAGE>>>
 directing the removal shall hear the case in the same manner and have the same jurisdiction and
 powers, as nearly as may be, including the power to order the production of evidence, as if the
-person arrested were charged with an offence committed within the jurisdiction of such Magistrate;
+person arrested were charged with an offence committed within the jurisdiction of such Magistrate;
 and such Magistrate shall direct the removal of the arrested person in custody if he is satisfied that
 the evidence produced before him raises a strong or probable presumption that the person arrested
 committed the offence mentioned in the warrant.]
@@ -1923,10 +1923,10 @@ proclamation requiring him to appear at a specified place and at a specified tim
 days from the date of publishing such proclamation.
 (2) The proclamation shall be published as follows:__
 (a) it shall be publicly read in some conspicuous place of the town or village in
-which such person ordinarily resides ;
+which such person ordinarily resides ;
 (b) it shall be affixed to some conspicuous part of the house or homestead in
 which such person ordinarily resides or to some conspicuous place of such
-town or village; and
+town or village; and
 (c) a copy thereof shall be affixed to some conspicuous part of the Court house.
 (3) A statement in writing by the Court issuing the proclamation to the effect that the
 proclamation was duly published on a specified day shall be conclusive evidence that the
@@ -1936,15 +1936,15 @@ such day.
 proclamation under section 87 may at any time order the attachment of any property, moveable or
 immovable, or both, belonging to the proclaimed person.
 (2) Such order shall authorize the attachment of any property belonging to such person
-within the district in which it is made; and it shall authorize the attachment of any property belonging
+within the district in which it is made; and it shall authorize the attachment of any property belonging
 to such person without such district when endorsed by the 2[Sessions Judge] 3[* * *] within whose
 district such property is situate.
 (3) If the property ordered to be attached is a debt or other moveable property, the
 attachment under this section shall be made—
-(a) by seizure; or
-(b) by the appointment of a receiver; or
+(a) by seizure; or
+(b) by the appointment of a receiver; or
 (c) by an order in writing prohibiting the delivery of such property to the
-proclaimed person or to any one on his behalf; or
+proclaimed person or to any one on his behalf; or
 1Subs. by the Law Reforms Ordinance, 1972 (XII of 1972), s. 2 and Sch., for “has reason to believe (whether after taking evidence or not)”.
 2Subs. by Ord. No. XXXVII of 2001, s. 24.
 3The words “or Chief Presidency Magistrate” omitted by Adaptation of Central Acts and Ordinances Order, 1949 (Order No. 4 of 1949), Art. 3 and
@@ -1955,10 +1955,10 @@ Page 51 of 307
 (4) If the property ordered to be attached is immoveable, the attachment under this
 section shall, in the case of land paying revenue to 1[the Provincial Government], be made through
 the 2[District Officer (Revenue)] in which the land is situate, and in all other cases__
-(e) by taking possession ; or
-(f) by the appointment of a receiver; or
+(e) by taking possession ; or
+(f) by the appointment of a receiver; or
 (g) by an order in writing prohibiting the payment of rent or delivery of property
-to the proclaimed person or to any one on his behalf; or
+to the proclaimed person or to any one on his behalf; or
 (h) by all or any two of such methods, as the Court thinks fit.
 (5) If the property ordered to be attached consists of live stock or is of a perishable
 nature, the Court may, if it thinks it expedient, order immediate sale thereof, and in such case the
@@ -1983,7 +1983,7 @@ which it is preferred or made 2[.]
 2[* * * * * * *]
 (6D) Any person whose claim or objection has been disallowed in whole or in part by an
 order under sub section (6A) may, within a period of one year from the date of such order, institute a
-suit to establish the right which he claims in respect of the property in dispute; but subject to the
+suit to establish the right which he claims in respect of the property in dispute; but subject to the
 result of such suit, if any, the order shall be conclusive.
 1Subs. by A.O., 1937 for “Govt.”.
 2Subs. Ins. and Omitted by Ord. No. XXXVII of 2001, s. 24.
@@ -2019,7 +2019,7 @@ which it is empowered by this Code to issue a summons for the appearance of any 
 issue, after recording its reasons in writing, a warrant for his arrest—
 (a) if, either before the issue of such summons, or after the issue of the same but
 before the time fixed for his appearance, the Court sees reasons to believe that
-he has absconded or will not obey the summons; or
+he has absconded or will not obey the summons; or
 (b) if at such time he fails to appear and the summons is proved to have been duly
 served in time to admit of his appearing in accordance therewith and no
 reasonable excuse is offered for such failure.
@@ -2093,7 +2093,7 @@ relates, to the bank account of any person except,__
 (a) for the purpose of investigating an offence under sections 403, 406, 408 and
 409 and sections 421 to 424 (both inclusive) and sections 465 to 477A (both
 inclusive) of the Pakistan Penal Code, with the prior permission in writing of a
-Sessions Judge ; and
+Sessions Judge ; and
 (b) in other cases, with the prior permission in writing of the High Court.]
 (2) Any person required under this section merely to produce a document or other thing
 shall be deemed to have complied with the requisition if he causes such document or thing to be
@@ -2119,7 +2119,7 @@ or where such document or thing is not known to the Court to be in the possessio
 person,
 or where the Court considers that the purposes of any inquiry, trial or other proceeding under
 this Code will be served by a general search or inspection,
-it may issue a search­warrant; and the person to whom such warrant is directed, may search
+it may issue a search­warrant; and the person to whom such warrant is directed, may search
 or inspect in accordance therewith and the provision hereinafter contained.
 (2) 2[* * * * * * *]
 1Proviso ad ded by Act No. III of 1968, s. 2 (w.e.f. 21 5 68).
@@ -2129,7 +2129,7 @@ or inspect in accordance therewith and the provision hereinafter contained.
 Page 55 of 307
 <<<PAGE>>>
 97. Power to restrict warrant. The Court may, if it thinks fit, specify in the warrant the
-particular place or part thereof to which only the search or inspection shall extend; and the person
+particular place or part thereof to which only the search or inspection shall extend; and the person
 charged with the execution of such warrant shall then search or inspect only the place or part so specified.
 98. Search of house suspected to contain stolen property, forged documents, etc.__ (1) If
 a 1[* * * 2[* *]1[*]] Magistrate of the first class, upon information and after such inquiry as he thinks
@@ -2142,7 +2142,7 @@ coins or instruments or materials for counterfeiting coin, stamps, bank notes or
 forging, are kept or deposited in any place,
 4[or 5[* * *] for the deposit, sale, manufacture or production of any obscene object such as is
 referred to in section 292 of the Pakistan Penal Code (XLV of 1860) or that any such obscene objects are
-kept or deposited in any place ;]
+kept or deposited in any place ;]
 he may by his warrant authorize any police officer above the rank of a constable__
 (a) to enter, with such assistance as may be required, such place, and
 (b) to search the same in manner specified in the warrant, and
@@ -2196,7 +2196,7 @@ same, any of the things for which search is made, are found, such things, togeth
 the same prepared under the provisions hereinafter contained, shall be immediately taken before the
 Court issuing the warrant, unless such place is nearer to the Magistrate having jurisdiction therein
 than to such Court, in which case the list and things shall be immediately taken before such
-Magistrate; and, unless there be good cause to the contrary, such Magistrate shall make an order
+Magistrate; and, unless there be good cause to the contrary, such Magistrate shall make an order
 authorizing them to be taken to such Court.
 6[99A. Power to declare certain publications forfeited and to issue search warrants for
 the same.__ (1) Where__
@@ -2242,7 +2242,7 @@ was made, did not contain any 12[treasonable or] 13[seditious or other matter of
 referred to in sub section (1) of section 99A].
 14[(2) Nothing in sub section (1) shall apply to a case where the order of forfeiture has been
 made__
-(a) in respect of a newspaper, book or other document printed outside Pakistan ;
+(a) in respect of a newspaper, book or other document printed outside Pakistan ;
 or
 (b) in respect of a newspaper, book or other document on the conviction, in
 respect of such newspaper, book or other document, of the author or editor
@@ -2289,7 +2289,7 @@ C.—Discovery of persons wrongfully confined
 100. Search for persons wrongfully confined. If any 6[* *], Magistrate of the first class
 7[* * *] has reason to believe that any person is confined under such circumstances that the
 confinement amounts to an offence, he may issue a search warrant, and the person to whom such
-warrant is directed may search for the person so confined; and such search shall be made in
+warrant is directed may search for the person so confined; and such search shall be made in
 accordance therewith, and the person, if found, shall be immediately taken before a Magistrate, who
 shall make such order as in the circumstances of the case seems proper.
 D.__ General Provisions relating to Searches
@@ -2321,7 +2321,7 @@ inhabitants of the locality in which the place to be searched is situate to atte
 search 1[and may issue an order in writing to them or any of them so to do].
 (2) The search shall be made in their presence, and a list of all things seized in the course
 of such search and of the places in which they are respectively found shall be prepared by such
-officer or other person and signed by such witnesses; but no person witnessing a search under this
+officer or other person and signed by such witnesses; but no person witnessing a search under this
 section shall be required to attend the Court as a witness of the search unless specially summoned by
 it.
 (3) Occupant of place searched may attend. The occupant of the place searched, or
@@ -2596,7 +2596,7 @@ the order requiring it.
 (2) Proceedings when to be laid before High Court or Court of Sessions. When such
 person has been ordered by a Magistrate to give security for a period exceeding one year, such
 Magistrate shall, if such person does not give such security as aforesaid, issue a warrant directing
-him to be detained in prison pending the orders of the Sessions Judge 2[* * *] ;and the proceedings
+him to be detained in prison pending the orders of the Sessions Judge 2[* * *] ;and the proceedings
 shall be laid, as soon as conveniently may be, before 3[such Judge].
 (3) 3[The Sessions Judge], after examining such proceedings and requiring from the
 Magistrate any further information or evidence which 4[he] thinks necessary, may pass such order on
@@ -2698,7 +2698,7 @@ UNLAWFUL ASSEMBLIES 8[AND MAINTENANCE OF PUBLIC PEACE AND
 SECURITY].
 127. Assembly to disperse on command of Magistrate or police officer.__ (1) Any 9[* *
 *] officer in charge of a police-station may command any unlawful assembly, or any assembly of
-five or more persons likely to cause a disturbance of the public peace, to disperse ; and it shall
+five or more persons likely to cause a disturbance of the public peace, to disperse ; and it shall
 thereupon be the duty of the members of such assembly to disperse accordingly.
 1Subs. by Ord. No. XXXVII of 2001, s. 34 36.
 2Omitted by the Adaptation of Central Acts and Ordinances Order, 1949 (Order No. 4 of 1949), s. 3 and Sch.
@@ -2744,7 +2744,7 @@ security is manifestly endangered by any such assembly, and when 8[a police offi
 rank not below an Assistant Superintendent, or Deputy Superintendent, of Police] can be
 communicated with, any commissioned officer of 11[the Pakistan] Army may disperse such assembly
 by military force, and may arrest and confine any persons forming part of it, in order to disperse such
-assembly or that they may be punished according to law; but if, while he is acting under this section,
+assembly or that they may be punished according to law; but if, while he is acting under this section,
 it becomes practicable for him to communicate with 8[a police officer not below the rank of Assistant
 Superintendent, or Deputy Superintendent, of Police], he shall do so, and shall thenceforward obey
 the instructions of 8[such Police officer] as to whether he shall or shall not continue such action.
@@ -2779,7 +2779,7 @@ doing so may use such force as the circumstances may require.
 every officer shall, as far as may be, follow the restrictions and conditions laid down in the Code.]
 132. Protection against prosecution for act done under the Chapter. No prosecution
 against any person for any act purporting to be done under this Chapter shall be instituted in any
-Criminal Court, except with the sanction of the 2[Provincial Government] ; and__
+Criminal Court, except with the sanction of the 2[Provincial Government] ; and__
 (a) no 3[* *] police officer acting under this Chapter in good faith,
 (b) no officer acting under section 131 in good faith,
 (c) no person doing any act in good faith, in compliance with a requisition under
@@ -2803,14 +2803,14 @@ Page 70 of 307
 1[132A. Definitions. In this Chapter,__
 (a) the expression “armed forces” means the military, naval and air forces,
 operating as land forces and includes 2[* * *] any other armed forces of
-Pakistan so operating ;
+Pakistan so operating ;
 3[(aa) the expression “civil armed forces” means the Pakistan Rangers, Frontier
 Corps, Frontier Constabulary, Baluchistan Constabulary, Pakistan Coast
 Gaurds or any other force as the Federal Government may notify.]
 (b) “officer”, in relation to the armed forces, means a person commissioned,
 gazetted or in pay as an officer of the armed forces and includes a junior
 commissioned officer, a warrant officer, a petty officer and a
-non­commissioned officer ; and
+non­commissioned officer ; and
 (c) “soldier” includes a member of the force constituted under the Act referred to
 in clause (a).]
 CHAPTER X
@@ -2844,18 +2844,18 @@ such Magistrate may make a conditional order requiring the person causing such o
 nuisance, or carrying on such trade or occupation, or keeping any such goods or merchandise, or
 owning, possessing or controlling such building, tent, structure, substance, tank, well or excavation,
 or owning or possessing such animal or tree, within a time to be fixed in the order,
-to remove such obstruction or nuisance ; or
+to remove such obstruction or nuisance ; or
 to desist from carrying on, or to remove or regulate in such manner as may be directed, such
-trade or occupation; or
+trade or occupation; or
 to remove such goods or merchandise, or to regulate the keeping thereof in such manner as
-may be directed ; or
+may be directed ; or
 to prevent or stop the erection of, or to remove, repair or support, such building, tent or
-structure ; or
-to remove or support such tree ; or
-to alter the disposal of such substance ; or
-to fence such tank, well or excavation, as the case may be ; or
+structure ; or
+to remove or support such tree ; or
+to alter the disposal of such substance ; or
+to fence such tank, well or excavation, as the case may be ; or
 to destroy, confine or dispose of such dangerous animal in the manner provided in the said
-order ;
+order ;
 or, if he objects so to do,
 to appear before himself or some other 1[Magistrate of the first class], at a time and place to
 be fixed by the order, and move to have the order set aside or modified in the manner hereinafter
@@ -2872,7 +2872,7 @@ such place or places as may be fittest for conveying the information to such per
 135. Person to whom order is addressed to obey or show cause or claim jury. The
 person against whom such order is made shall__
 (a) perform, within the time 3[and in the manner] specified in the order, the act
-directed thereby ; or
+directed thereby ; or
 (b) appear in accordance with such order and either show cause against the same,
 or apply to the Magistrate by whom it was made to appoint a jury to try
 whether the same is reasonable and proper.
@@ -2895,9 +2895,9 @@ proceedings shall be taken in the case.
 135 to appoint a jury, the Magistrate shall__
 (a) forthwith appoint a jury consisting of an uneven number of persons not less
 than five, of whom the foreman and one half of the remaining members shall
-be nominated by such Magistrate, and the other members by the applicant ;
+be nominated by such Magistrate, and the other members by the applicant ;
 (b) summon such foreman and members to attend at such place and time as the
-Magistrate thinks fit; and
+Magistrate thinks fit; and
 (c) fix a time within which they are to return their verdict.
 (2) The time so fixed may, for good cause shown, be extended by the Magistrate.
 139. Procedure where jury finds Magistrate's order to be reasonable.__ (1) If the jury
@@ -2913,7 +2913,7 @@ public right in respect of the way, river, channel or place, and if he does so, 
 before proceeding under section 137 or section 138, inquire into the matter.
 (2) If in such inquiry the Magistrate finds that there is any reliable evidence in support of
 such denial, he shall stay the proceedings until the matter of the existence of such right has been
-decided by a competent Civil Court ; and, if he finds that there is no such evidence, he shall proceed
+decided by a competent Civil Court ; and, if he finds that there is no such evidence, he shall proceed
 as laid down in section 137 or section 138, as the case may require.
 1Subs. by the Law Reforms Ordinance, 1972 (XII of 1972), s.2 and Sch.
 2Ins. by Act No. XVIII of 1923, s.26.
@@ -2982,10 +2982,10 @@ person aggrieved], rescind or alter any order made under this section by himself
 his predecessor in office.
 2[(5) Where such an application is received, the 1[Zila Nazim] shall afford to the applicant
 an early opportunity of appearing before him either in person or by pleader and showing cause
-against the order ; and, if the 1[Zila Nazim] rejects the application wholly or in part, he shall record
+against the order ; and, if the 1[Zila Nazim] rejects the application wholly or in part, he shall record
 in writing his reasons for so doing.]
 3[(6) No order under this section shall remain in force for more than two 1[consecutive days
-and not more than seven days in a month] from the making thereof ; unless, in cases of danger to
+and not more than seven days in a month] from the making thereof ; unless, in cases of danger to
 human life, health or safety, or a likelihood of a riot or an affray, the 4[Provincial Government], by
 notification in the official Gazette, otherwise directs.
 5[(7) In the application of sub sections (1) to (6) to the districts where the local
@@ -3028,7 +3028,7 @@ dispossessed as if he had been in possession at such date:
 Provided also, that if the Magistrate considers the case one of emergency, he may at any time
 attach the subject of dispute, pending his decision under this section.
 (5) Nothing in this section shall preclude any party so required to attend, or any other
-person interested, from showing that no such dispute as aforesaid exists or has existed ; and in such
+person interested, from showing that no such dispute as aforesaid exists or has existed ; and in such
 case the Magistrate shall cancel his said order, and all further proceedings thereon shall be stayed,
 but, subject to such cancellation, the order of the Magistrate under sub section (1) shall be final.
 (6) Party in possession to retain possession until legally evicted. If the Magistrate
@@ -3149,7 +3149,7 @@ _____
 CHAPTER XIV
 154. Information in cognizable cases. Every information relating to the commission of a
 cognizable offence if given orally to an officer in charge of a police station, shall be reduced to
-writing by him or under his direction, and be read over to the informant ; and every such information,
+writing by him or under his direction, and be read over to the informant ; and every such information,
 whether given in writing or reduced to writing as aforesaid, shall be signed by the person giving it,
 and the substance thereof shall be entered in a book to be kept by such officer in such form as the
 1[Provincial Government] may prescribe in this behalf 2[:]
@@ -3222,7 +3222,7 @@ Provided as follows :__
 commission of any such offence is given against any person by name and the
 case is not of a serious nature, the officer in charge of a police station need not
 proceed in person or depute a subordinate officer to make an investigation on
-the spot;
+the spot;
 (b) Where police officer in charge sees no sufficient ground for investigation.
 if it appears to the officer in charge of a police station that there is no
 sufficient ground for entering on an investigation, he shall not investigate the
@@ -3247,7 +3247,7 @@ case in manner provided in this Code.
 160. Police­officer’s power to require attendance of witnesses. Any police officer
 making an investigation under this Chapter may, by order in writing, require the attendance before
 himself of any person being within the limits of his own or any adjoining station who, from the
-information given or otherwise, appears to be acquainted with the circumstances of the case; and
+information given or otherwise, appears to be acquainted with the circumstances of the case; and
 such person shall attend as so required.
 161. Examination of witnesses by police.__ (1) Any police officer making an investigation
 under this Chapter 3[or any police officer not below such rank as the 2[Provincial Government] may,
@@ -3277,9 +3277,9 @@ under section 154 shall inform the victim, against whom such offences have been 
 attempted to be committed, of his right to legal representation.
 (2) If the victim under sub section (1) requires free legal aid the police officer shall
 provide him the list of lawyers maintained by the Provincial Bar Councils for this purpose.]
-162. Statements to police not to be signed; use of such statements in evidence.__ 3[(1)
+162. Statements to police not to be signed; use of such statements in evidence.__ 3[(1)
 No statement made by any person to a police officer in the course of an investigation under this
-Chapter shall, if reduced into writing, be signed by the person making it; nor shall any such
+Chapter shall, if reduced into writing, be signed by the person making it; nor shall any such
 statement or any record thereof, whether in a police diary or otherwise, or any part of such statement
 or record, be used for any purpose (save as hereinafter provided) at any inquiry or trial in respect of
 any offence under investigation at the time when such statement was made:
@@ -3326,7 +3326,7 @@ tried.
 (3) 5[A Magistrate shall, before recording any such confession, explain to the person
 making it that he is not bound to make a confession and that if he does so it may be used as evidence
 against him and no Magistrate] shall record any such confession unless, upon questioning the person
-making it, he has reason to believe that it was made voluntarily; and, when he records any
+making it, he has reason to believe that it was made voluntarily; and, when he records any
 confession, he shall make a memorandum at the foot of such record to the following effect:__
 6[I have explained to (name) that he is not bound to make a confession and that, if he does so,
 any confession he may make may be used as evidence against him and I believe] that this confession
@@ -3357,11 +3357,11 @@ examination.
 (2) The registered medical practitioner to whom such victim is sent under sub section (1)
 shall, without delay, examine the victim and prepare a report of examination giving the following
 particulars, namely:__
-(a) name and address of the victim and of the person by whom she was escorted;
-(b) age of the victim;
-(c) description of material taken from body of the victim for DNA profiling;
-(d) marks of injury, if any, on body of the victim;
-(e) general mental condition of the victim; and
+(a) name and address of the victim and of the person by whom she was escorted;
+(b) age of the victim;
+(c) description of material taken from body of the victim for DNA profiling;
+(d) marks of injury, if any, on body of the victim;
+(e) general mental condition of the victim; and
 (f) other material particulars in reasonable detail.
 (3) The report under sub section (2) shall state precisely the reasons for each conclusion
 arrived at.
@@ -3406,7 +3406,7 @@ person except,__
 (a) for the purpose of investigating an offence under sections 403, 406, 408 and
 409 and sections 421 to 424 (both inclusive) and sections 465 to 477A (both
 inclusive) of the Pakistan Penal Code, with the prior permission in writing of a
-Sessions Judge; and
+Sessions Judge; and
 (b) in other cases, with the prior permission in writing of the High Court.]
 (2) A police officer proceeding under sub section (1) shall, if practicable, conduct the
 search in person.]
@@ -3414,7 +3414,7 @@ search in person.]
 to make the search present at the time, he may 4[after recording in writing his reasons for so doing]
 require any officer subordinate to him to make the search, and he shall deliver to such subordinate
 officer an order in writing 5[specifying the place to be searched and, so far as possible, the thing for
-which search is to be made]; and such subordinate officer may thereupon search for such thing in
+which search is to be made]; and such subordinate officer may thereupon search for such thing in
 such place.
 1Subs. by Act No. XVIII of 1923, s. 36.
 2Subs. by Act No. III of 1968, s. 3. (w.e.f. 21.5.68).
@@ -3564,7 +3564,7 @@ through his investigation.
 (2) Any Criminal Court may send for the police diaries of a case under inquiry or trial in such
 Court, and may use such diaries, not as evidence in the case, but to aid it in such inquiry or trial.
 Neither the accused nor his agents shall be entitled to call for such diaries, nor shall he or they be
-entitled to see them merely because they are referred to by the Court; but, if they are used by the
+entitled to see them merely because they are referred to by the Court; but, if they are used by the
 police officer who made them, to refresh his memory, or if the Court, uses them for the purpose of
 contradicting such police officer, the provisions of the Evidence Act, 1872 (I of 1872), section 161
 or section 145, as the case may be, shall apply.
@@ -3824,7 +3824,7 @@ Political Agents to certify fitness of inquiry into charge. Provided that 8[notw
 anything in any of the preceding sections of this Chapter] no charge as to any such offence shall be
 inquired into in 3[Pakistan] unless the Political Agent, if there is one, for the territory in which the
 offence is alleged to have been committed, certifies that, in his opinion, the charge ought to be
-inquired into in 3[Pakistan]; and, where there is no Political Agent, the sanction of the 9[Federal
+inquired into in 3[Pakistan]; and, where there is no Political Agent, the sanction of the 9[Federal
 Government] shall be required:
 Provided, also, that any proceedings taken against any person under this section which would
 be a bar to subsequent proceedings against such person for the same offence if such offence had been
@@ -3856,8 +3856,8 @@ B.__ Conditions requisite for Initiation of Proceedings
 190. Cognizance of offences by Magistrates.__ 1[(1) All Magistrates of the first class, or any
 other Magistrate specially empowered by the Provincial Government on the recommendation of the High
 Court, may take cognizance of any offence__
-(a) upon receiving a complaint of facts which constitute such offence;
-(b) upon a report in writing of such facts made by any police officer;
+(a) upon receiving a complaint of facts which constitute such offence;
+(b) upon a report in writing of such facts made by any police officer;
 (c) upon information received from any person other than a police officer, or upon his
 own knowledge or suspicion
 that such offence has been committed which he may try or send to the Court of Sessions
@@ -3904,13 +3904,13 @@ Page 96 of 307
 (a) Prosecution for contempt of lawful authority of public servants. of any
 offence punishable under sections 172 to 1[187] of the Pakistan Penal Code
 (XLV of 1860), except on the complaint in writing of the public servant
-concerned, or of some other public servant to whom he is subordinate;
+concerned, or of some other public servant to whom he is subordinate;
 (b) Prosecution for certain offences against public justice. of any offence
 punishable under any of the following sections of the same Code, namely,
 sections 193, 194, 195, 196, 199, 200, 205, 206, 207, 208, 209, 210, 211 and
 228, when such offence is alleged to have been committed in, or in relation to,
 any proceeding in any Court, except on the complaint in writing of such Court
-or of some other Court to which such Court is subordinate; or
+or of some other Court to which such Court is subordinate; or
 (c) Prosecution for certain offences relating to documents given in evidence.
 of any offence described in section 463 or punishable under section 471,
 section 475 or section 476 of the same Code, when such offence is alleged to
@@ -3929,7 +3929,7 @@ situate:
 Provided that__
 (a) where appeals lie to more than one Court, the Appellate Court of inferior
 jurisdiction shall be the Court to which such Court shall be deemed to be
-subordinate; and
+subordinate; and
 (b) where appeals lie to a Civil and also to a Revenue Court, such Court shall be
 deemed to be subordinate to the Civil or Revenue Court according to the
 nature of the case or proceeding in connection with which the offence is
@@ -4007,7 +4007,7 @@ the sanction of 2[the 3[Federal Government] or a Provincial Government], is accu
 offence alleged to have been committed by him while acting or purporting to act in the discharge of
 his official duty, no Court shall take cognizance of such offence except with the 4[previous sanction__
 (a) in the case of a person employed in connection with the affairs of the
-5[Federation] of the 6[President] 7[* * *] ; and
+5[Federation] of the 6[President] 7[* * *] ; and
 (b) in the case of a person employed in connection with the affairs of a Province,
 of the Governor of that Province 7[* * *]].
 (2) Power of President or Governor as to prosecution. 8[The 6[President] or Governor, as
@@ -4062,10 +4062,10 @@ accused of the offence alleged to have been committed by him.
 (3) No complaint under sub section (1) shall be made by the Public Prosecutor except
 with the previous sanction,__
 (a) in the case of the President or the Prime Minister or a Governor, of any
-Secretary to the Government authorised by him in this behalf;
+Secretary to the Government authorised by him in this behalf;
 (b) in the case of a Federal Minister or Minister of State, Chief Minister or
 Provincial Minister, of any Secretary to the Government authorised in this
-behalf by the Government concerned;
+behalf by the Government concerned;
 (c) in the case of any public servant employed in connection with the affairs of the
 Federation or of a Province, of the Government concerned.
 (4) No Court of Session shall take cognizance of an offence under sub section (1), unless
@@ -4082,7 +4082,7 @@ cognizance of an offence under section 497 or section 498 of the Pakistan Penal 
 except__
 (a) upon a report in writing made by a police officer on the complaint of the
 husband of the woman, or in his absence, by some person who had care of
-such woman on his behalf at the time when such offence was committed; or
+such woman on his behalf at the time when such offence was committed; or
 (b) upon a complaint made by the husband of the woman or, in his absence, made
 with the leave of the Court by some person who had care of such woman on
 his behalf at the time when such offence was committed.]
@@ -4139,11 +4139,11 @@ Page 101 of 307
 Provided as follows:__
 (a) when the complaint is made in writing, nothing herein contained shall be deemed to
 require a Magistrate to examine the complainant before transferring the case under
-section 192 1[, or sending it to the Court of Session] ;
+section 192 1[, or sending it to the Court of Session] ;
 2[(aa) when the complaint is made in writing, nothing herein contained shall be deemed to
 require the examination of a complainant in any case in which the complaint has been
 made by a Court or by a public servant acting or purporting to act in the discharge of
-his official duties;]
+his official duties;]
 (b) 4[* * * * * * *]
 3[(b) Where a complainant is a Court or a public servant, the Court or a public servant,
 as the case may be, shall not be liable to adjournment costs under sub-section (2)]
@@ -4190,7 +4190,7 @@ Page 102 of 307
 203. Dismissal of complaint. The 1[Court] before whom a complaint is made or to whom
 it has been transferred 2[or sent] may dismiss the complaint, if, 3[after considering the statement on
 oath (if any) of the complainant and the result of 4[the investigation] or inquiry 5[(if any)] under
-section 202]; there is in his judgment no sufficient ground for proceeding. In such cases he shall
+section 202]; there is in his judgment no sufficient ground for proceeding. In such cases he shall
 briefly record his reasons for so doing.
 6[203A. Complaint in case of Zina.__ (1) No court shall take cognizance of an offence under
 section 5 of the Offence of Zina (Enforcement of Hudood) Ordinance, 1979 (VII of 1979), except on
@@ -4324,7 +4324,7 @@ Illustrations
 (a) A is charged with the murder of B. This is equivalent to a statement that A’s act fell
 within the definition of murder given in sections 299 and 300 of the Pakistan Penal
 Code (XLV of 1860); that it did not fall within any of the general exceptions of the
-same Code; and that it did not fall within any of the five exceptions to section 300, or
+same Code; and that it did not fall within any of the five exceptions to section 300, or
 that, if it did fall within Exception 1, one or other of the three provisos to that
 exception apply to it.
 (b) A is charged, under section 326 of the Pakistan Penal Code (XLV of 1860), with
@@ -4453,7 +4453,7 @@ A is convicted of an offence, under section 196 of the Pakistan Penal Code (XLV 
 upon a charge which omits to state that he knew the evidence, which he corruptly used or attempted
 to use as true or genuine, was false or fabricated. If the Court thinks it probable that A had such
 knowledge, and that he was misled in his defence by the omission from the charge of the statement
-that he had it, it shall direct a new trial upon an amended charge; but, if it appears probable from the
+that he had it, it shall direct a new trial upon an amended charge; but, if it appears probable from the
 proceedings that A had no such knowledge, it shall quash the conviction.
 Joinder of charges
 233. Separate charges for distinct offences. For every distinct offence of which any
@@ -4510,7 +4510,7 @@ use them for the purpose of committing several forgeries punishable under sectio
 466 of the Pakistan Penal Code. A may be separately charged with, and convicted of,
 the possession of each seal under section 473 of the Pakistan Penal Code.
 (e) With intent to cause injury to B, A institutes a criminal proceeding against him,
-knowing that there is no just or lawful ground for such proceeding; and also falsely
+knowing that there is no just or lawful ground for such proceeding; and also falsely
 accuses B of having committed an offence, knowing that there is no just or lawful
 ground for such charges. A may be separately charged with, and convicted of, two
 offences under section 211 of the Pakistan Penal Code.
@@ -4552,7 +4552,7 @@ of the Pakistan Penal Code.
 236. Where it is doubtful what offence has been committed. If a single act or series of
 acts is of such a nature that it is doubtful which of several offences the facts which can be proved
 will constitute, the accused may be charged with having committed all or any of such offences, and
-any number of such charges may be tried at once; or he may be charged in the alternative with
+any number of such charges may be tried at once; or he may be charged in the alternative with
 having committed some one of the said offences.
 Illustrations
 (a) A is accused of an act which may amount to theft, or receiving stolen property, or
@@ -4598,14 +4598,14 @@ may be convicted under section 335 of that Code.
 3[239. What persons may be charged jointly. The following persons may be charged and
 tried together, namely:__
 (a) persons accused of the same offence committed in the course of the same
-transaction;
+transaction;
 (b) persons accused of an offence and persons accused of abetment, or of an
-attempt to commit such offence;
+attempt to commit such offence;
 (c) persons accused of more than one offence of the same kind, within the
 meaning of section 234 committed by them jointly within the period of twelve
-months;
+months;
 (d) persons accused of different offences committed in the course of the same
-transaction;
+transaction;
 1Omitted by the Code of Criminal Procedure (Amendment) Act, 1923 (XVIII of 1923), s. 63.
 2Ins. by the Code of Criminal Procedure (Amdt.) Act, 1923 (XVIII of 1923), s. 64.
 3Subs. ibid., s. 65.
@@ -4616,14 +4616,14 @@ misappropriation, and persons accused of receiving or retaining, or assisting in
 the disposal or concealment of, property possession of which is alleged to
 have been transferred by any such offence committed by the first named
 persons, or of abetment of or attempting to commit any such last named
-offence;
+offence;
 (f) persons accused of offences under sections 411 and 414 of the Pakistan Penal
 Code (XLV of 1860) or either of those sections in respect of stolen property
-the possession of which has been transferred by one offence; and
+the possession of which has been transferred by one offence; and
 (g) persons accused of any offence under Chapter XII of the Pakistan Penal Code
 (XLV of 1860) relating to counterfeit coin, and persons accused of any other
 offence under the said Chapter relating to the same coin, or of abetment of or
-attempting to commit any such offence;
+attempting to commit any such offence;
 and the provisions contained in the former part of this Chapter shall, so far as may be, apply to all
 such charges.]
 240. Withdrawal of remaining charges on conviction on one of several charges. When
@@ -4656,7 +4656,7 @@ Page 113 of 307
 (2) In all cases instituted upon a complaint in writing, the complainant shall__
 (a) state in the petition of complaint the substance of the accusation, the names of
 his witnesses and the gist of the evidence which he is likely to adduce at the
-trial; and
+trial; and
 (b) within three days of the order of the Court under section 204 for issue of
 process to the accused, file in the Court for supply to the accused, as many
 copies of the complaint and any other document which he has filed with his
@@ -4669,7 +4669,7 @@ a formal charge shall be framed relating to the offence of which he is accused a
 whether he admits that he has committed the offence with which he is charged.]
 243. Conviction on admission of truth of accusation. If the accused admits that he has
 committed the offence 2[with which he is charged], his admission shall be recorded as nearly as
-possible in the words used by him; and, if he shows no sufficient cause why he should not be
+possible in the words used by him; and, if he shows no sufficient cause why he should not be
 convicted, the Magistrate 3[may convict] him accordingly.
 244. Procedure when no such admission is made.__ (1) 4[If the Magistrate does not
 convict the accused under the preceding section or] if the accused does not make such admission, the
@@ -4820,9 +4820,9 @@ class and especially empowered in this behalf by the 7[Provincial
 Government],
 may, if he or they think fit, try in a summary way all or any of the following offences:__
 (a) offences not punishable with death, transportation or imprisonment for a term
-exceeding six months;
+exceeding six months;
 (b) offences relating to weights and measures under sections 264, 265 and 266 of
-the Pakistan Penal Code (XLV of 1860);
+the Pakistan Penal Code (XLV of 1860);
 1Ins. by the Code of Criminal Procedure (Amdt.) Act, 1923 (XVIII of 1923), s.69.
 2Omitted ibid.
 3Ins. by Act No. XXV of 1992, s.3.
@@ -4832,26 +4832,26 @@ the Pakistan Penal Code (XLV of 1860);
 7Subs. by A.O., 1937, for ‘’L.G.”,
 Page 117 of 307
 <<<PAGE>>>
-(c) hurt, under section 1[clause (i) of section 337A] of the same Code;
+(c) hurt, under section 1[clause (i) of section 337A] of the same Code;
 (d) theft, under sections 379, 380 or 381 of the same Code, where the value of the
-property stolen does not exceed 1[ten thousand rupees] ;
+property stolen does not exceed 1[ten thousand rupees] ;
 (e) dishonest misappropriation of property under section 403 of the same Code,
 where the value of the property misappropriated does not exceed 1[ten
-thousand rupees] ;
+thousand rupees] ;
 (f) receiving or retaining stolen property under section 411 of the same code,
-where the value of such property does not exceed 1[ten thousand rupees] ;
+where the value of such property does not exceed 1[ten thousand rupees] ;
 (g) assisting in the concealment or disposal of stolen property, under section 414
 of the same Code, where the value of such property does not exceed 1[ten
-thousand rupees] ;
-(h) mischief, under section 427 of the same Code;
+thousand rupees] ;
+(h) mischief, under section 427 of the same Code;
 (i) house trespass, under section 448, and offences under sections 451, 2[453,
-454], 456 and 457 of the same Code ;
+454], 456 and 457 of the same Code ;
 (j) insult with intent to provoke a breach of the peace, under section 504, and
-criminal intimidation, under section 506, of the same Code;
-3[(jj) offence of personation at an election under section 171F of the same Code;]
-(k) abetment of any of the foregoing offences;
+criminal intimidation, under section 506, of the same Code;
+3[(jj) offence of personation at an election under section 171F of the same Code;]
+(k) abetment of any of the foregoing offences;
 (l) an attempt to commit any of the foregoing offences, when such attempt is an
-offence;
+offence;
 (m) offences under section 20 of the Cattle trespass Act, 1871 (I of 1871) :
 4[* * * * * * *]
 (2) When in the course of a summary trial it appears to the Magistrate or Bench that the
@@ -4872,11 +4872,11 @@ Page 118 of 307
 <<<PAGE>>>
 (a) offences against the Pakistan Penal Code (XLV of 1860), sections 277, 278,
 279, 285, 286, 289, 290, 292, 293, 294, 1[337A (i), 337L (2), 337H (2)], 341,
-352, 426, 2[447 and 504] ;
+352, 426, 2[447 and 504] ;
 (b) offences against Municipal Acts, and the conservancy clauses of Police Acts
 which are punishable only with fine or with imprisonment for a term not
-exceeding one month 3[with or without fine] ;
-(c) abetment of any of the foregoing offences ;
+exceeding one month 3[with or without fine] ;
+(c) abetment of any of the foregoing offences ;
 (d) an attempt to commit any of the foregoing offences, when such attempt is an
 offence.
 262. Procedure 4[prescribed in Chapter XX] applicable.__ 5[(1) In trials under this
@@ -4886,21 +4886,21 @@ mentioned.]
 months shall be passed in the case of any conviction under this Chapter.
 263. Record in cases where there is no appeal. In cases where no appeal lies, the
 Magistrate or Bench of Magistrates need not record the evidence of the witnesses or frame a formal
-charge; but he or they shall enter in such form as the 6[Provincial Government] may direct the
+charge; but he or they shall enter in such form as the 6[Provincial Government] may direct the
 following particulars :__
-(a) the serial number;
-(b) the date of the commission of the offence;
-(c) the date of the report or complaint;
-(d) the name of the complainant (if any) ;
-(e) the name, parentage and residence of the accused ;
+(a) the serial number;
+(b) the date of the commission of the offence;
+(c) the date of the report or complaint;
+(d) the name of the complainant (if any) ;
+(e) the name, parentage and residence of the accused ;
 (f) the offence complained of and the offence (if any) proved, and in cases
 coming under clause (d), clause (e), clause (f) or clause (g) of sub section (1)
 of section 260 the value of the property in respect of which the offence has
-been committed ;
-(g) the plea of the accused and his examination (if any);
+been committed ;
+(g) the plea of the accused and his examination (if any);
 (h) the finding, and, in the case of a conviction, a brief statement of the reasons
-therefor ;
-(i) the sentence or other final order; and
+therefor ;
+(i) the sentence or other final order; and
 (j) the date on which the proceedings terminated.
 1Subs. by Ord. No. LXXXV of 2002, s. 5.
 2Subs. by the Code of Criminal Procedure (Amdt.) Act, 1923 (XVIII of 1923), s.75.
@@ -4938,9 +4938,9 @@ by the said Courts.
 265C. Supply of statements and documents to the accused.__ (1) In all cases instituted
 upon police report, copies of the following documents shall be supplied free of cost to the accused
 not later than seven days before the commencement of the trial, namely:__
-(a) the first information report ;
-(b) the police report ;
-(c) the statements of all witnesses recorded under sections 161 and 164; and
+(a) the first information report ;
+(b) the police report ;
+(c) the statements of all witnesses recorded under sections 161 and 164; and
 (d) the inspection note recorded by an investigation officer on his first visit to the place of
 occurrence and the note recorded by him on recoveries made, if any:
 1Subs. by the Law Reforms Ordinance, 1972 (XII of 1972), s.2 and Sch.
@@ -4957,11 +4957,11 @@ statement shall be excluded from the copy of the statement furnished to the accu
 (a) the complainant shall__
 (i) state in the petition of complaint the substance of the accusation, the
 names of his witnesses and the gist of the evidence which he is likely
-to adduce at the trial; and
+to adduce at the trial; and
 (ii) within three days of the order of the Court under section 204 for issue
 of process to the accused, file in the Court for supply to the accused as
 many copies of the complaint and any other document which he has
-filed with his complaint as the number of the accused;
+filed with his complaint as the number of the accused;
 (b) copies of the complaint and any other documents which the complainant has
 filed therewith and the statements under section 200 or section 202 shall be
 supplied free of cost to the accused not later than seven days before the
@@ -5028,7 +5028,7 @@ prosecutor and the accused and for reasons to be recorded, it considers that the
 the accused being convicted of any offence.
 265L. Power of Advocate General to stay prosecution.__ At any stage of any trial before a
 High Court under this Code, before the sentence is passed, the Advocate General may, if he thinks
-fit, inform the Court on behalf of Government that he will not prosecute the accused upon the charge;
+fit, inform the Court on behalf of Government that he will not prosecute the accused upon the charge;
 and thereupon all proceedings against the accused shall be stayed, and he shall be discharged of and
 Page 122 of 307
 <<<PAGE>>>
@@ -5099,7 +5099,7 @@ essential or by giving false evidence, not complied with the condition on which 
 any other offence of which he appears to have been guilty in connection with the same matter:
 9[Provided that such person shall not be tried jointly with any of the other accused, and that
 he shall be entitled to plead at such trial that he has complied with the conditions upon which such
-tender was made; in which case it shall be for the prosecution to prove that such conditions have not
+tender was made; in which case it shall be for the prosecution to prove that such conditions have not
 been complied with.]
 (2) The statement made by a person who has accepted a tender of pardon may be given in
 evidence against him 11[at such trial].
@@ -5139,15 +5139,15 @@ question tending to show that he has committed or been convicted of any offence 
 offence with which he is charged or for which he is being tried, or is of bad character, unless__
 (i) the proof that he has committed or been convicted of such offence is
 admissible in evidence to show that he is guilty of the offence with which he is
-charged or for which he is being tried; or
+charged or for which he is being tried; or
 (ii) he has personally or by his pleader asked questions of any witness for the
 prosecution with a view to establishing his own good character, or has given
-evidence of his good character; or
+evidence of his good character; or
 (iii) he has given evidence against any other person charged with or tried for the
 same offence.]
 341. Procedure where accused does not understand proceedings. If the accused, though
 not insane, cannot be made to understand the proceedings, the Court may proceed with the 4[* * *]
-trial; and, in the case of a Court other than a High Court, 4[* * *] or if such trial results in a
+trial; and, in the case of a Court other than a High Court, 4[* * *] or if such trial results in a
 conviction, the proceedings shall be forwarded to the High Court with a report of the circumstances
 of the case, and the High Court shall pass thereon such order as it thinks fit.
 342. Power to examine the accused.__ (1) For the purpose of enabling the accused to
@@ -5162,7 +5162,7 @@ the witnesses for the prosecution have been examined and before he is called on 
 Page 125 of 307
 <<<PAGE>>>
 (2) The accused shall not render himself liable to punishment by refusing to answer such
-questions, or by giving false answers to them; but the Court 1[* * *] may draw such inference from
+questions, or by giving false answers to them; but the Court 1[* * *] may draw such inference from
 such refusal or answers as it thinks just.
 (3) The answers given by the accused may be taken into consideration in such inquiry or
 trial, and put in evidence for or against him in any other inquiry into, or trial for, any other offence
@@ -5411,7 +5411,7 @@ another.__ (1) Whenever any Sessions Judge or Magistrate, after having heard and
 whole or any part of the evidence in an inquiry or a trial, ceases to exercise jurisdiction therein, and
 is succeeded by another Sessions Judge or Magistrate who has and who exercises such jurisdiction,
 the Sessions Judge or Magistrate so succeeding may act on the evidence so recorded by his
-predecessor, or partly recorded by his predecessor and partly recorded by himself; or he may
+predecessor, or partly recorded by his predecessor and partly recorded by himself; or he may
 re examine the witnesses and recommence the inquiry or trial :
 1Renumbered by Act No. XVIII of 1923, s.92.
 2Ins. ibid.
@@ -5425,7 +5425,7 @@ re examine the witnesses and recommence the inquiry or trial :
 Page 131 of 307
 <<<PAGE>>>
 Provided that—
-(a) Where the conviction was held before a Sessions Judge, the High Court; and
+(a) Where the conviction was held before a Sessions Judge, the High Court; and
 (b) where the conviction was held before a Magistrate, the High Court or the
 Court of Session,
 may, whether there be an appeal or not, set aside any conviction passed on evidence
@@ -5519,7 +5519,7 @@ in the language of the Court or in English shall form part of the record.]
 (3) Memorandum when evidence not taken down by the Magistrate or Judge
 himself. In cases in which the evidence is not taken down in writing by the Magistrate or Sessions
 Judge, he shall, as the examination of each witness proceeds, make a memorandum of the substance
-of what such witness deposes; and such memorandum shall be written and signed by the Magistrate
+of what such witness deposes; and such memorandum shall be written and signed by the Magistrate
 or Sessions Judge with his own hand, and shall form part of the record.
 (4) If the Magistrate or Sessions Judge is prevented from making a memorandum as
 above required, he shall record the reason of his inability to make it.
@@ -5587,7 +5587,7 @@ the record contains a full and true account of the statement made by the accused
 (3) In cases in which the examination of the accused is not recorded by the Magistrate or
 Judge himself, he shall be bound, 4[* * *] as the examination proceeds, to make a memorandum
 thereof in the language of the Court, or in English, if he is sufficiently acquainted with the latter
-language; and such memorandum shall be written and signed by the Magistrate or Judge with his
+language; and such memorandum shall be written and signed by the Magistrate or Judge with his
 own hand, and shall be annexed to the record. If the Magistrate or Judge is unable to make a
 memorandum as above required, he shall record the reason of such inability.
 1Omitted by A.O., 1961, Art. 2 and Sch., (with effect from the 23rd March, 1956).
@@ -5628,7 +5628,7 @@ provisions of section 537.
 367. Language of judgment. Contents of judgment.__ (1) Every such judgment shall,
 except as otherwise expressly provided by this Code, be written by the presiding officer of the
 Court 8[or from the dictation of such presiding officer] in the language of the Court, or in
-English; and
+English; and
 1Omitted by A.O, 1949, Sch.
 2Omitted by A.O., 1961, Art. 2 and Sch., (with effect from the 23rd March, 1956).
 3Rep. by the Lower Burma Courts Act, 1900 (VI of 1900).
@@ -5807,7 +5807,7 @@ warrant shall be lodged with the jailor.
 fine, the Court passing the sentence may take action for the recovery of the fine in either or both of
 the following ways, that is to say, it may__
 (a) issue a warrant for the levy of the amount by attachment and sale of any
-movable property belonging to the offender;
+movable property belonging to the offender;
 (b) issue a warrant to the 2[District Officer (Revenue)] authorising him to realise
 the amount by execution according to civil process against the movable or
 immovable property, or both, of the defaulter:
@@ -5854,13 +5854,13 @@ as the case may be, of not more than thirty days, and
 offender, on the execution by the offender of a bond, with or without
 sureties, as the Court thinks fit, conditioned for his appearance before the
 Court on the date or dates on or before which payment of the fine or the
-instalments thereof, as the case may be, is to be made; and if the amount
+instalments thereof, as the case may be, is to be made; and if the amount
 of the fine or of any installment, as the case may be, is not realised on or
 before the latest date on which it is payable under the order, the Court may
 direct the sentence of imprisonment to be carried into execution at once.
 (2) The provisions of sub section (1) shall be applicable also in any case in which an
 order for the payment of money has been made on non recovery of which imprisonment may be
-awarded and the money is not paid forthwith; and, if the person against whom the order has been
+awarded and the money is not paid forthwith; and, if the person against whom the order has been
 made, on being required to enter into a bond such as is referred to in that sub section, fails to do so,
 the Court may at once pass sentence of imprisonment.]
 389. Who may issue warrant. Every warrant for the execution of any sentence may be
@@ -5887,7 +5887,7 @@ Page 142 of 307
 <<<PAGE>>>
 392. Mode of inflicting punishment.__(1) In the case of a person of or over sixteen years
 of age whipping shall be inflicted with a light rattan not less than half an inch in diameter, in such
-mode, and on such part of the person, as the 1[Provincial Government] directs; and, in the case of a
+mode, and on such part of the person, as the 1[Provincial Government] directs; and, in the case of a
 person under sixteen years of age, it shall be inflicted in such mode, and on such part of the person,
 and with such instruments, as the 1[Provincial Government ] directs.
 (2) Limit of number of stripes. In no case shall such punishment exceed thirty stripes
@@ -5895,9 +5895,9 @@ and with such instruments, as the 1[Provincial Government ] directs.
 393. Not to be executed by instalments, Exemptions.__ No sentence of whipping shall be
 executed by instalments: and none of the following persons shall be punishable with whipping,
 namely :__
-(a) females;
+(a) females;
 (b) males sentenced to death or to 3[imprisonment for life],4[* * *], or to
-imprisonment for more than five years;
+imprisonment for more than five years;
 (c) males whom the Court considers to be more than forty five years of age.
 394. Whipping not to be inflicted if offender not in fit state of health.__ (1) The
 punishment of whipping shall not be inflicted unless a medical officer, if present, certifies, or, if
@@ -5909,7 +5909,7 @@ of health to undergo the remainder of the sentence, the whipping shall be finall
 395. Procedure if punishment cannot be inflicted under section 394.__ (1) In any case in
 which, under section 394, a sentence of whipping is, wholly or partially, prevented from being
 executed, the offender shall be kept in custody till the Court which passed the sentence can revise
-it; and the said Court may, at its discretion, either remit such sentence, or sentence the offender in
+it; and the said Court may, at its discretion, either remit such sentence, or sentence the offender in
 lieu of whipping, or in lieu of so much of the sentence of whipping as was not executed, to
 imprisonment for any term not exceeding twelve months, 5[or to a fine not exceeding five hundred
 rupees], which may be in addition to any other punishment to which he may have been sentenced
@@ -5939,7 +5939,7 @@ Explanation.__ For the purposes of this section__
 (a) 3[* * * * * * *]
 (b) a sentence of imprisonment with solitary confinement shall be deemed severer
 than a sentence of the same description of imprisonment without solitary
-confinement; and
+confinement; and
 (c) a sentence of rigorous imprisonment shall be deemed severer than a sentence
 of simple imprisonment with or without solitary confinement.
 397. Sentence on offender already sentenced for another offence. When a person
@@ -6110,9 +6110,9 @@ with theft simply, or with criminal breach of trust.
 3Subs. by the Law Reforms Ordinance, 1972 (XII of 1972), s.2 and Sch.
 Page 147 of 307
 <<<PAGE>>>
-(b) A is tried upon a charge of murder and acquitted. There is no charge of robbery ; but
+(b) A is tried upon a charge of murder and acquitted. There is no charge of robbery ; but
 it appears from the facts that A committed robbery at the time when the murder was
-committed ; he may afterwards be charged with, and tried for, robbery.
+committed ; he may afterwards be charged with, and tried for, robbery.
 (c) A is tried for causing grievous hurt and convicted. The person injured afterwards dies.
 A may be tried again for culpable homicide.
 (d) A is charged before the Court of Session and convicted of the culpable homicide of B.
@@ -6161,7 +6161,7 @@ Provided as follows :__
 (a) 4[* * * * * * *]
 (b) When in any case an Assistant Sessions Judge 3[* * *] passes any sentence of
 imprisonment for a term exceeding four years, 5[* * *] the appeal 6[of all or any
-of the accused convicted at such trial] shall lie to the High Court ;
+of the accused convicted at such trial] shall lie to the High Court ;
 (c) when any person is convicted by a Magistrate of an offence under section 124A of
 the Pakistan Penal Code (XLV of 1860), the appeal shall lie to the High Court.
 1[409. Appeals to Court of Session how heard.__ Subject to the provisions of this section, an
@@ -6193,12 +6193,12 @@ Gazette Notification of Ordinance No. Law Reforms (Amdt.) Act, 1976 (XXI of 1976
 Page 149 of 307
 <<<PAGE>>>
 (a) against the conviction on any ground of appeal which involves a matter of law
-only ;
+only ;
 (b) with the leave of the Appellate Court, or upon the certificate of the judge who
 tried case that it is a fit case for appeal, against the conviction on any ground
 of appeal which involves a matter of fact only, or a matter of mixed law and
 fact, or any other ground which appears to the appellate Court to be a
-sufficient ground of appeal ; and
+sufficient ground of appeal ; and
 (c) with the leave of the Appellate Court, against the sentence passed unless the
 sentence is one fixed by law.
 (2) Notwithstanding anything contained in section 417, the Provincial Government may
@@ -6210,7 +6210,7 @@ sub section (1) of this section on an appeal against a conviction, lie on a matt
 matter of law.
 (3) Notwithstanding anything elsewhere contained in any Act or Regulation, an appeal
 under this section shall be heard by a Division Court of the High Court composed of not less than
-two judges, being judges other than the judge or judges by whom the original trial was held ; and if
+two judges, being judges other than the judge or judges by whom the original trial was held ; and if
 the constitution of such a Division Court is impracticable, the High Court shall report the
 circumstances to the Provincial Government which shall take action with a view to the transfer of the
 appeal under section 527 to another High Court.
@@ -6315,7 +6315,7 @@ the case, but shall not be bound to do so.
 422. Notice of appeal. If the Appellate Court does not dismiss the appeal summarily, it
 shall cause notice to be given to the appellant or his pleader, and to such officer as the 6[Provincial
 Government] may appoint in this behalf, of the time and place at which such appeal will be heard,
-and shall, on the application of such officer, furnish him with a copy of the grounds of appeal ;
+and shall, on the application of such officer, furnish him with a copy of the grounds of appeal ;
 and, in cases of appeals under 7[section 411A, sub section (2) or section 417], the Appellate
 Court shall cause a like notice to be given to the accused.
 1Added by Act No. XLIV of 2016, s.14.
@@ -6336,7 +6336,7 @@ the appeal, or may
 (a) in an appeal from an order of acquittal, reverse such order and direct that
 further inquiry be made, or that the accused be retried or 2[sent for trial to the
 Court of Session or the High Court] as the case may be, or find him guilty and
-pass sentence on him according to law ;
+pass sentence on him according to law ;
 (b) in an appeal from a conviction, (1) reverse the finding and sentence, and
 acquit or discharge the accused, or order him to be retried by a Court of
 competent jurisdiction subordinate to such Appellate Court or 3[sent] for trial,
@@ -6344,8 +6344,8 @@ or (2) alter the finding, maintaining the sentence, or, with or without altering
 the finding, reduce the sentence, or, (3) with or without such reduction and
 with or without altering the finding, alter the nature of the sentence, but,
 subject to the provisions of section 106, sub section (3), not so as to enhance
-the same ;
-(c) in an appeal from any other order, alter or reverse such order ;
+the same ;
+(c) in an appeal from any other order, alter or reverse such order ;
 (d) make any amendment or any consequential or incidental order that may be just
 or proper.
 (2) 4[* * * * * * *]
@@ -6360,7 +6360,7 @@ to the Court by which the finding, sentence or order appealed against was record
 finding, sentence or order was recorded or passed by a Magistrate other than the District Magistrate,
 the certificate shall be sent through the District Magistrate.
 (2) The Court to which the High Court certifies its judgment or order shall thereupon
-make such orders as are conformable to the judgment or order of the High Court ; and, if necessary,
+make such orders as are conformable to the judgment or order of the High Court ; and, if necessary,
 the record shall be amended in accordance therewith.
 426. Suspension of sentence pending appeal. Release of appellant on bail.__ (1) Pending
 any appeal by a convicted person, the Appellate Court may, for reasons to be recorded by it in
@@ -6376,10 +6376,10 @@ Page 153 of 307
 decision of appeal has been occasioned by an act or omission of the appellant or any other person
 acting on his behalf, order a convicted person to be released on bail who has been sentenced—
 (a) to imprisonment for a period not exceeding three years and whose appeal has
-not been decided within a period of six months of his conviction;
+not been decided within a period of six months of his conviction;
 (b) to imprisonment for a period exceeding three years but not exceeding seven
 years and whose appeal has not been decided within a period of one year of
-his conviction; or
+his conviction; or
 (c) to imprisonment for life or imprisonment exceeding seven years and whose
 appeal has not been decided within a period of two years of his conviction:
 Provided that the provisions of the foregoing paragraphs shall not apply to a previously
@@ -6480,7 +6480,7 @@ has been made under section 119:
 439. High Court’s powers of revision.__ (1) In the case of any proceeding the record of
 which has been called for by itself 6[* * *] or which otherwise comes to its knowledge, the High
 Court may, in its discretion, exercise any of the powers conferred on a Court of Appeal by sections
-7[*], 423, 426, 427 and 428 or on a Court by section 338, and may enhance the sentence; and,
+7[*], 423, 426, 427 and 428 or on a Court by section 338, and may enhance the sentence; and,
 when the Judges composing the Court of Revision are equally divided in opinion, the case shall be
 disposed of in manner provided by section 429.
 (2) No order under this section shall be made to the prejudice of the accused unless he has
@@ -6500,7 +6500,7 @@ Magistrate of the first class.
 Page 156 of 307
 <<<PAGE>>>
 1[(4) Nothing in this section shall be deemed to authorise a High Court—
-(a) to convert a finding of acquittal into one of conviction; or
+(a) to convert a finding of acquittal into one of conviction; or
 (b) to entertain any proceedings in revision with respect to an order made by the
 Sessions Judge under section 439A.]
 (5) Where under this Code an appeal lies and no appeal is brought, no proceedings by
@@ -6526,7 +6526,7 @@ High Court.] Omitted by A.O., 1949, Schedule.
 revised under this Chapter by the High Court, it shall, in manner hereinbefore provided by section
 425, certify its decision or order to the Court by which the finding, sentence or order revised was
 recorded or passed, and the Court or Magistrate to which the decision or order is so certified shall
-thereupon make such orders as are conformable to the decision so certified ; and, if necessary, the
+thereupon make such orders as are conformable to the decision so certified ; and, if necessary, the
 record shall be amended in accordance therewith.
 _______
 PART VIII
@@ -6645,14 +6645,14 @@ in a jail, the Inspector General of Prisons, or, in the case of a person detaine
 the visitors of such asylum or any two of them] shall certify that, in his or their opinion, such person
 is capable of making his defence, he shall be taken before the Magistrate or Court, as the case may
 be, at such time as the Magistrate or Court appoints, and the Magistrate or Court shall deal with such
-person under the provisions of section 468 ;and the certificate of such Inspector­General or visitors
+person under the provisions of section 468 ;and the certificate of such Inspector­General or visitors
 as aforesaid shall be receivable as evidence.
 474. Procedure where lunatic detained under section 466 or 471 is declared fit to be
 released.__ (1) If such person is 6[detained] under the provisions of section 466 or section 471, and
 such Inspector General or visitors shall certify that, in his or their judgment, he may be 7[released]
 without danger of his doing injury to himself or to any other person, the 2[Provincial Government]
 may thereupon order him to be 7[released] or to be detained in custody, or to be transferred to a
-public lunatic asylum if he has not been already sent to such an asylum ; and, in case it orders him to
+public lunatic asylum if he has not been already sent to such an asylum ; and, in case it orders him to
 be transferred to an asylum, may appoint a Commission, consisting of a judicial and two medical
 officers.
 (2) Such Commission shall make formal inquiry into the state of mind of such person,
@@ -6685,7 +6685,7 @@ Page 160 of 307
 by reason of his being of unsound mind and incapable of making his defence, and the inspecting
 officer referred to in sub section (1), clause (b), certifies at any time to the Magistrate or Court that
 such person is capable of making his defence, such Magistrate or Court shall call upon the relative or
-friend to whom such accused was delivered to produce him before the Magistrate or Court ; and,
+friend to whom such accused was delivered to produce him before the Magistrate or Court ; and,
 upon such production, the Magistrate or Court shall proceed in accordance with the provisions of
 section 468, and the certificate of the inspecting officer shall be receivable as evidence.]
 _______
@@ -6701,12 +6701,12 @@ may, notwithstanding anything contained in sub section (2) of section 262__
 (a) pass any sentence on the offender authorised by law for such offence, except a
 sentence of death, or imprisonment for life, or imprisonment exceeding five
 years, if such Court be a High Court, a Court of Session, a District Court or
-any Court exercising the power of a Court of Session or a District Court ;
+any Court exercising the power of a Court of Session or a District Court ;
 (b) sentence the offender to simple imprisonment for a term which may extend to
 three months, or to pay a fine not exceeding 2[one thousand rupees] or both, if
 such Court be a Court of a Magistrate of the first Class, a Civil Court other
 than a High Court, a District Court or a Court exercising the powers of a
-District Court, or a Revenue Court not inferior to the Court of Collector ;
+District Court, or a Revenue Court not inferior to the Court of Collector ;
 (c) sentence the offender to simple imprisonment for a term not exceeding one
 month, or to pay a fine not exceeding fifty rupees, or both, if such Court be a
 Criminal Court or a Revenue Court other than a Court referred to in clause (a)
@@ -6721,9 +6721,9 @@ hereinbefore contained, appeal__
 2Subs. by the Law Reforms (Amdt.) Act, 1976 (XXI of 1976), s.2 and Sch.. (w.e.f 18 4 76).
 Page 161 of 307
 <<<PAGE>>>
-(a) in the case of a sentence by the High Court, to the Supreme Court ;
+(a) in the case of a sentence by the High Court, to the Supreme Court ;
 (b) in the case of a sentence by a Court of Session, or District Court, or a Court exercising
-the powers of a Court of Session or a District Court, to the High Court ; and
+the powers of a Court of Session or a District Court, to the High Court ; and
 (c) in any other case, to the Sessions Judge.
 (5) The provisions of Chapter XXXI shall, so far as they are applicable, apply to appeals
 under this section and the Appellate Court may alter the finding or reduce or enhance the sentence
@@ -6832,15 +6832,15 @@ DIRECTIONS OF THE NATURE OF A Habeas Corpus
 491. Power to issue directions of the nature of a habeas corpus.__ (1) 9[Any
 High Court] may, whenever it thinks fit, direct__
 (a) that a person within the limits of its 10[appellate criminal jurisdiction] be
-brought up before the Court to be dealt with according to law;
+brought up before the Court to be dealt with according to law;
 (b) that a person illegally or improperly detained in public or private custody
-within such limits be set at liberty ;
+within such limits be set at liberty ;
 (c) that a prisoner detained in any jail situate within such limits be brought before
 the Court to be there examined as a witness in any matter pending or to be
-inquired into in such Court;
+inquired into in such Court;
 (d) that a prisoner detained as aforesaid be brought before a Court martial or any
 Commissioners 11[* * *] for trial or to be examined touching any matter
-pending before such Court­martial or Commissioners respectively ;
+pending before such Court­martial or Commissioners respectively ;
 1Subs. by the Central A cts and Ordinances Order, 1949 (Order No. 4 of 1949), Art. 3 and Sch.
 2Rep. by the Federal Laws (Revision and Declaration) Act, 1951 (XXVI of 1951), s. 3 and Sch. II.
 3Ins. by the Law Reforms Ordinance, 1972 (XII of 1972), s.2 and Sch.
@@ -6856,13 +6856,13 @@ pending before such Court­martial or Commissioners respectively ;
 Page 164 of 307
 <<<PAGE>>>
 (e) that a prisoner within such limits be removed from one custody to another for
-the purpose of trial; and
+the purpose of trial; and
 (f) that the body of a defendant within such limits be brought in on the Sheriff’s
 return of cepi corpus to a writ of attachment.
 1[(1A) The High Court may, by general or special order published in the official Gazette,
 direct that all or any of its powers specifed in clauses (a) and (b) of sub section (1) shall, subject to
 such conditions, if any, as may be specified in the order, be exercisable also by—
-(a) a Sessions Judge; or
+(a) a Sessions Judge; or
 (b) an Additional Sessions Judge,
 within the territorial limits of a Session Division.]
 (2) 2[The High Court] may, from time to time, frame rules to regulate the procedure in
@@ -6904,9 +6904,9 @@ instructed shall act therein, under his directions.
 494. Effect of withdrawal from prosecution. Any Public Prosecutor 1[* * *] may, with
 the consent of the Court, 2[* * *] before the judgment is pronounced, withdraw from the prosecution
 of any person 3[either generally or in respect of any one or more of the offences for which he is tried]
-; and upon such withdrawal,__
+; and upon such withdrawal,__
 (a) if it is made before a charge has been framed, the accused shall be discharged
-3[in respect of such offence or offences] ;
+3[in respect of such offence or offences] ;
 (b) if it is made after a charge has been framed, or when under this Code no
 charge is required, he shall be acquitted 3[in respect of such offence or
 offences].
@@ -6953,7 +6953,7 @@ acting on his behalf, direct that any person shall be released on bail—
 (a) Who, being accused of any offence not punishable with death, has been
 detained for such offence for a continuous period exceeding one year or in
 case of a woman exceeding six months and whose trial for such offence has
-not concluded; or
+not concluded; or
 (b) Who, being accused of an offence punishable with death, has been detained
 for such offence for a continuous period exceeding two years and in case of
 woman exceeding one year and whose trial for such offence has not
@@ -6992,7 +6992,7 @@ other Court may cause any person who has been released under this section to be 
 commit him to custody.]
 498. Power to direct admission to bail or reduction of bail. The amount of every bond
 executed under this Chapter shall be fixed with due regard to the circumstances of the case, and shall
-not be excessive ; and the High Court or Court of Session may, in any case, whether there be an
+not be excessive ; and the High Court or Court of Session may, in any case, whether there be an
 appeal on conviction or not, direct that any person be admitted to bail, or that the bail required by a
 police officer or Magistrate be reduced.
 2[498A. No bail to be granted to a person not in custody, in court or against whom no
@@ -7010,7 +7010,7 @@ case may be.
 (2) If the case so require, the bond shall also bind the person released on bail to appear
 when called upon at the High Court, Court of Session or other Court to answer the charge.
 500. Discharge from custody.__ (1) As soon as the bond has been executed, the person for
-whose appearance it has been executed shall be released ; and, when he is in jail, the Court
+whose appearance it has been executed shall be released ; and, when he is in jail, the Court
 admitting him to bail shall issue an order of release to the officer incharge of the Jail, and such
 officer on receipt of the order shall release him.
 (2) Nothing in this section, section 496 or section 497 shall be deemed to require the
@@ -7093,11 +7093,11 @@ course of an inquiry or a trial or any other proceeding under this Code before a
 whose evidence is necessary for the ends of justice, and that the attendance of such witness cannot
 be procured without an amount of delay, expense or inconvenience which, under the circumstances
 of the case, would be unreasonable, 12[such Magistrate 10[* * *] shall apply to the Sessions Judge 10[*
-* * * * *]], stating the reasons for the application ; 12[and the Sessions Judge 10[* * * * * *]] may
+* * * * *]], stating the reasons for the application ; 12[and the Sessions Judge 10[* * * * * *]] may
 either issue a commission in the manner hereinbefore provided or reject the application.
 507. Return of commission.__(1) After any commission issued under section 503 or
 section 506 has been duly executed, 13[* * *] it shall be returned, together with the deposition of the
-witness examined thereunder, to the Court out of which it issued ; and the commission, the return
+witness examined thereunder, to the Court out of which it issued ; and the commission, the return
 thereto and the deposition shall be open at all reasonable times to inspection of the parties, and may,
 subject to all just exceptions, be read in evidence in the case by either party, and shall form part of
 the record.
@@ -7165,11 +7165,11 @@ Page 171 of 307
 <<<PAGE>>>
 (a) by an extract certified under the hand of the officer having the custody of the
 records of the Court in which such conviction or acquittal was had to be a
-copy of the sentence or order ; or
+copy of the sentence or order ; or
 (b) in case of a conviction, either by a certificate signed by the officer in charge of
 the jail in which the punishment or any part thereof was inflicted, or by
 production of the warrant of commitment under which the punishment was
-suffered ;
+suffered ;
 together with, in each of such cases, evidence as to the identity of the accused person with the person
 so convicted or acquitted.
 512. Record of evidence in absence of accused.__ (1) If it is proved that an accused
@@ -7214,7 +7214,7 @@ Page 172 of 307
 recover the same by issuing a warrant for the attachment and sale of the moveable 1[or immovable]
 property belonging to such person or his estate if he be dead.
 (3) Such warrant may be executed within the local limits of the jurisdiction of the Court
-which issued it; and it shall authorize the 2[attachment] and sale of any moveable property belonging
+which issued it; and it shall authorize the 2[attachment] and sale of any moveable property belonging
 to such person without such limits, when endorsed by the 3[District Officer (Revenue)] 4[* * *]
 within the local limits of whose jurisdiction such property is found.
 (4) If such penalty is not paid and cannot be recovered by such attachment and sale, the
@@ -7397,7 +7397,7 @@ which appeals against sentences of the Court passing such order would lie.
 property is unknown or absent and the property is subject to speedy and natural decay, 5[or if the
 Magistrate] to whom its seizure is reported is of opinion that its sale would be for the benefit of the
 owner, 6[or that the value of such property is less than ten rupees] the Magistrate may at any time
-direct it to be sold; and the provisions of sections 523 and 524 shall, as nearly as may be practicable,
+direct it to be sold; and the provisions of sections 523 and 524 shall, as nearly as may be practicable,
 apply to the nett proceeds of such sale.
 ________
 CHAPTER XLIV
@@ -7412,13 +7412,13 @@ be required for the satisfactory inquiry into or trial of the same, or
 (d) that an order under this section will tend to the general convenience of the
 parties or witnesses, or
 (e) that such an order is expedient for the ends of justice, or is required by any
-provision of this Code; it may order__
+provision of this Code; it may order__
 (i) that any offence be inquired into or tried by any Court not empowered
 under sections 177 to 184 (both inclusive), but in other respects
-competent to inquire into or try such offence;
+competent to inquire into or try such offence;
 (ii) that any particular 7[*] case or appeal, or class of 8[*] cases or appeals,
 be transferred from a Criminal Court subordinate to its authority to any
-other such Criminal Court of equal or superior jurisdiction;
+other such Criminal Court of equal or superior jurisdiction;
 1Subs. by A.O., 1937, for “Govt.”.
 2Omitted by the Adaptation of Central Laws and Ordinances Order, 1949 (Order No. 4 of 1949), Art. 3 and Sch.
 3Subs. by Ord. No. XXXVII of 2001, s. 74. (w.e.f. 14-08-2001).
@@ -7430,7 +7430,7 @@ other such Criminal Court of equal or superior jurisdiction;
 Page 177 of 307
 <<<PAGE>>>
 (iii) that any particular 1[*] case or appeal be transferred to and tried before
-itself; or
+itself; or
 (iv) that an accused person be 2[sent] for trial to itself or to a Court of
 Session.
 (2) When the High Court withdraws for trial before itself any case from any Court 3[* *
@@ -7458,7 +7458,7 @@ the case].]
 (7) Nothing in this section shall be deemed to affect any order made under section 197.
 12[(8) In an inquiry under Chapter VIII or any trial, the fact that any party intimates to the
 Court at any stage that he intends to make an application under this section shall not require the
-Court to adjourn the case; but the Court shall not pronounce its final judgment or order until the
+Court to adjourn the case; but the Court shall not pronounce its final judgment or order until the
 application has been finally disposed of by the High Court and, if the application is accepted by the
 High Court, the proceedings taken by the Court subsequent to the intimation made to it shall, at the
 option of the accused, be held afresh.]
@@ -7536,13 +7536,13 @@ CHAPTER XLV
 OF IRREGULAR PROCEEDINGS
 529. Irregularities which do not vitiate proceedings. If any Magistrate not empowered by
 law to do any of the following things, namely:__
-(a) to issue a search warrant under section 98;
-(b) to order, under section 155, the police to investigate an offence;
-(c) to hold an inquest under section 176;
+(a) to issue a search warrant under section 98;
+(b) to order, under section 155, the police to investigate an offence;
+(c) to hold an inquest under section 176;
 (d) to issue process, under section 186, for the apprehension of a person within the
-local limits of his jurisdiction who has committed an offence outside such limits;
+local limits of his jurisdiction who has committed an offence outside such limits;
 (e) to take cognizance of an offence under section 190, sub section (1), clause (a) or
-clause (b) ;
+clause (b) ;
 1Subs. by the Law Reforms (Amdt.) Act, 1976 (XXI of 1976), s. 27 and Sch.
 2Omitted by the Legal Reforms Act, 1997 (Act No. XXIII of 1997), s. 2.
 3Sub section (4) ins. by the Code of Criminal Procedure (Amdt.) Act, 1923 (XVIII of 1923), s.147.
@@ -7554,38 +7554,38 @@ clause (b) ;
 *Sic should read as ”the”.
 Page 180 of 307
 <<<PAGE>>>
-(f) to transfer a case under section 192;
-(g) to tender a pardon under section 337 or section 338;
-(h) to sell property under section 524 or section 525; or
-(i) to withdraw a case and try it himself under section 528;
+(f) to transfer a case under section 192;
+(g) to tender a pardon under section 337 or section 338;
+(h) to sell property under section 524 or section 525; or
+(i) to withdraw a case and try it himself under section 528;
 erroneously in good faith does that thing, his proceedings shall not be set aside merely on the ground
 of his not being so empowered.
 530. Irregularities which vitiate proceedings. If any Magistrate, not being empowered by
 law in this behalf, does any of the following things, namely:__
-(a) attaches and sells property under section 88;
+(a) attaches and sells property under section 88;
 (b) issues a search warrant for a letter, parcel or other thing in the Post Office, or
-a telegram in the Telegraph Department;
-(c) demands security to keep the peace;
-(d) demands security for good behaviour;
-(e) discharges a person lawfully bound to be of good behaviour;
-(f) cancels a bond to keep the peace;
-(g) makes an order under section 133 as to a local nuisance;
+a telegram in the Telegraph Department;
+(c) demands security to keep the peace;
+(d) demands security for good behaviour;
+(e) discharges a person lawfully bound to be of good behaviour;
+(f) cancels a bond to keep the peace;
+(g) makes an order under section 133 as to a local nuisance;
 (h) prohibits, under section 143, the repetition or continuance of a public
-nuisance;
-(i) issues an order under section 144;
-(j) makes an order under Chapter XII;
-(k) takes cognizance, under section 190, sub section (1) clause (c), of an offence;
+nuisance;
+(i) issues an order under section 144;
+(j) makes an order under Chapter XII;
+(k) takes cognizance, under section 190, sub section (1) clause (c), of an offence;
 (l) passes a sentence, under section 349, on proceedings recorded by another
-Magistrate;
-(m) calls, under section 435, for proceedings;
+Magistrate;
+(m) calls, under section 435, for proceedings;
 (n) 1[* * * * * * *]
-(o) revises, under section 515, an order passed under section 514;
-(p) tries an offender;
-(q) tries an offender summarily; or
+(o) revises, under section 515, an order passed under section 514;
+(p) tries an offender;
+(q) tries an offender summarily; or
 1Clause (n) omitted by the Federal Law (Revision and Declaration) Ordinance, 1981 (XXVII of 1981), s. 3 and Second Sch.
 Page 181 of 307
 <<<PAGE>>>
-(r) decides an appeal;
+(r) decides an appeal;
 his proceedings shall be void.
 531. Proceedings in wrong place. No finding, sentence or order of any Criminal Court
 shall be set aside merely on the ground that the inquiry, trial or other proceeding in the course of
@@ -7597,7 +7597,7 @@ Ordinance, 1972 (XII of 1972), s.2 and Sch.
 which a confession or other statement of an accused person recorded or purporting to be recorded
 under section 164 or section 364 is tendered or has been received in evidence, finds that any of the
 provisions of either of such sections have not been complied with by the Magistrate recording the
-statement, it shall take evidence that such person duly made the statement recorded; and,
+statement, it shall take evidence that such person duly made the statement recorded; and,
 notwithstanding anything contained in the Evidence Act, 1872 (I of 1872), section 91, such
 statement shall be admitted if the error has not injured the accused as to his defence on the merits.
 (2) The provisions of this section apply to Courts of Appeal, Reference and Revision.
@@ -7679,7 +7679,7 @@ Page 183 of 307
 540. Power to summon material witness or examine person present. Any Court may, at
 any stage of any inquiry, trial or other proceeding under this Code, summon any person as a witness,
 or examine any person in attendance, though not summoned as a witness, or recall and re-examine
-any person already examined; and the Court shall summon and examine or recall and re-examine any
+any person already examined; and the Court shall summon and examine or recall and re-examine any
 such person if his evidence appears to it essential to the just decision of the case.
 2[540A. Provision for inquiries and trial being held in the absence of accused in certain
 cases.__ (1) At any stage of an inquiry or trial under this Code, where two or more accused are before
@@ -7750,18 +7750,18 @@ when exercising its powers of revision.]
 any law in force for the time being a Criminal Court imposes a fine or confirms in appeal, revision or
 otherwise a sentence of fine, or a sentence of which fine forms a part, the Court may, when passing
 judgment, order the whole or any part of the fine recovered to be applied__
-(a) in defraying expenses properly incurred in the prosecution;
+(a) in defraying expenses properly incurred in the prosecution;
 8[(b) in the payment to any person of compensation for any loss 9[, injury or mental
 anguish or psychological damage] caused by the offence, when substantial
 compensation is, in the opinion of the Court, recoverable by such person in a
-Civil Court;]
+Civil Court;]
 10[(c) when any person is convicted of any offence which includes theft, criminal
 misappropriation, criminal breach of trust, or cheating, or of having
 dishonestly received or retained, or of having voluntarily assisted in
 disposing of, stolen
 1For rules, see the different local Rules and Orders.
 2Subs. by A.O., 1937, for “L.G.”.
-3The words “with the previous sanction of the G.G; in C”. rep. by the Devolution Act, 1920 (XXXVIII of 1920), s. 2 and Sch. I.
+3The words “with the previous sanction of the G.G; in C”. rep. by the Devolution Act, 1920 (XXXVIII of 1920), s. 2 and Sch. I.
 4Ins. by Ordinance XII of 1972, s.2 and Sch.
 5Subs. by the Code of Criminal Procedure (Amdt.) Ordinance, 1980 (VI of 1980), s.3, for subsection (1).
 6Subs. by the Code of Criminal Procedure (Amdt.) Ordinance, 1980 (VI of 1980), s.3, for “if it were a fine imposed by the Court”.
@@ -7866,11 +7866,11 @@ Page 187 of 307
 <<<PAGE>>>
 (a) make rules for keeping all books, entries and accounts to be kept in all
 Criminal Courts subordinate to it, and for the preparation and transmission of
-any returns or statements to be prepared and submitted by such Courts ;
+any returns or statements to be prepared and submitted by such Courts ;
 (b) frame forms for every proceeding in the said Courts for which it thinks that a
-form should be provided ;
+form should be provided ;
 (c) make rules for regulating its own practice and proceedings and the practice
-and proceedings of all Criminal Courts subordinate to it; and
+and proceedings of all Criminal Courts subordinate to it; and
 (d) make rules for regulating the execution of warrants issued under this Code for
 the levy of fines:
 Provided that the rules and forms made and framed under this section shall not be
@@ -7949,7 +7949,7 @@ Government of India Act, 1935”, which had been subs. by A.O., 1937, for “the
 7The words “outside such towns” omitted by A.O., 1949, Sch.
 8S. 561A ins. by the Code of Criminal Procedure (Amdt.) Act 1923 (XVIII of 1923), s. 156.
 9Ss. 380, 562, 563 and 564 have been rep. by the Probation of Offenders Ordinance, 1960 (45 of 1960), s. 16, only in its application to__
-(i) the Provinces of West Pakistan with effect from the 1st July, 1961; see Gaz. of P., 1961, Ext., p.957, and
+(i) the Provinces of West Pakistan with effect from the 1st July, 1961; see Gaz. of P., 1961, Ext., p.957, and
 10Subs. by Act No. XVIII of 1923, s.157, for the original s. 562.
 11Subs. by the Federal Laws (Revision and Declaration) Ordinance, 1981 (XXVII of 1981), s.3 and 2nd Sch., for “transportation”.
 Page 189 of 307
@@ -8100,7 +8100,7 @@ but not
 otherwise.
 111 Abetment of any offence, Ditto .. Ditto .. Ditto .. Ditto .. The same Ditto.
 when one act is abetted and a punishment
-different act is done; subject as for the
+different act is done; subject as for the
 to the proviso. offence
 intended to
 be abetted.
@@ -8797,7 +8797,7 @@ rupees, or both.
 public servant by a subject to the
 person legally provisions f
 bound to produce Chapter
-or deliver such XXXV; or, if
+or deliver such XXXV; or, if
 document. not committed
 in a Court, a
 2
@@ -8862,7 +8862,7 @@ required to take is committed,
 rupees, or both.
 oath by a public subject to the
 servant. provisions of
-Chapter XXXV;
+Chapter XXXV;
 or, if not
 committed in a
 2
@@ -8875,7 +8875,7 @@ bound to state .. which the offence
 truth, and refusing is committed,
 to answer subject to the
 questions. provisions of
-Chapter XXXV;
+Chapter XXXV;
 or, if not
 committed in a
 2
@@ -8891,7 +8891,7 @@ Page 208 of 307
 180 Refusing to Shall Summons Bailable Not Simple The Court in which the
 sign a statement not .. .. Compound- Imprisonment for 3 offence is committed,
 made to a public arrest able. months, or fine of subject to the provisions of
-servant when without 1 [1500] rupees, or Chapter XXXV; or, if
+servant when without 1 [1500] rupees, or Chapter XXXV; or, if
 legally required to warrant both. not committed in a Court, a
 do so. 2 [* * *] Magistrate of the
 first or second class.
@@ -8909,13 +8909,13 @@ order to cause him which false
 to use his lawful information is given
 Court of Sessions
 power to the injury is punishable with
-or annoyance of any death;.
+or annoyance of any death;.
 person. (b) five years in case
 the offence in which
 false information is
 given is punishable
 with imprisonment Court of Sessions
-for life; or
+for life; or
 (c) one fourth of the
 longest term of
 imprisonment or with
@@ -8965,7 +8965,7 @@ rupees, or both.
 [186(2)
 carry out the either description
 investigation properly for three years, or
-etc; fine, or both.
+etc; fine, or both.
 187 Omission to assist Ditto .. Ditto .. Ditto .. Ditto .. Simple Ditto ..
 public servant when imprisonment for
 bound by law to give 1 month, or fine
@@ -9561,7 +9561,7 @@ pro vided for-
 [* * *]
 intentional omission not either description
 Magistrate of the
-or sufferance; arrest for 3 years, fine
+or sufferance; arrest for 3 years, fine
 first class.
 without or both.
 warrant
@@ -10881,7 +10881,7 @@ victim
 6Ins. by Act No. XLIV of 2016, s.15.
 Page 247 of 307
 <<<PAGE>>>
-Of Unnatural Offence;
+Of Unnatural Offence;
 377 Unnatural May Warrant. Not Not 1 [Imprisonment for Court of Session,
 offences. arrest bailable compoundable. life], or imprisonment 2 [* *] or
 without of either description for Magistrate of the
@@ -11809,7 +11809,7 @@ counterfeit.
 474 Having possession of a Ditto .. Ditto .. Ditto .. Ditto .. Ditto .. Ditto .
 document, knowing it to be
 forged, with intent to use it
-as genuine; if the document
+as genuine; if the document
 is one of the description
 mentioned in section 466 of
 the Pakistan Penal Code.
@@ -12055,7 +12055,7 @@ lawfully married
 to him and to
 cohabit with him
 in that belief.
-1 Cohabitation May Warrant Not Not Rigorous Ditto;]
+1 Cohabitation May Warrant Not Not Rigorous Ditto;]
 [493A
 caused by a man imprisonment
 arrest bailable compound
@@ -12522,7 +12522,7 @@ III.__ BOND AND BAIL BOND AFTER ARREST UNDER A WARRANT
 I, (name), of being brought before the 1[*] Magistrate of (or as the
 case may be) under a warant issued to compel my appearance to answer to the charge of , do
 hereby bind myself to attend in the Court of on the day of next, to
-answer to the said charge, and to continue so to attend until otherwise directed by the Court; and, in case
+answer to the said charge, and to continue so to attend until otherwise directed by the Court; and, in case
 of my making default herein, I bind myself to forfeit, to 2[Government] 3[* * *] the sum of rupees.
 Dated this day of ,18.
 (Signature)
@@ -12545,7 +12545,7 @@ WHEREAS complaint has been made before me that (name, description and address) h
 (or is suspected to have committed) the offence of , punishable under section of
 the Pakistan Penal Code, and it has been returned to a warrant of arrest thereupon issued that the said (name)
 cannot be found, and whereas it has been shown to my satisfaction that the said (name) has absconded (or is
-concealing himself to avoid the service of the said warrant);
+concealing himself to avoid the service of the said warrant);
 Proclamation is hereby made that the said of is required to appear at
 (place) before this Court (or before me) to answer the said complaint 3[on the day of
 ].
@@ -12557,9 +12557,9 @@ V.__ PROCLAMATION REQUIRING THE ATTENDANCE OF A WITNESS
 WHEREAS complaint has been made before me that (name, description and address) has committed
 (or is suspected to have committed) the offence of (mention the offence concisely) and a warrant has been
 issued to compel the attendance of (name, description and address of the witness), before this Court to be
-examined touching the matter of the said complaint; and whereas it has been returned to the said warrant that
+examined touching the matter of the said complaint; and whereas it has been returned to the said warrant that
 the said (name of witness) cannot be served, and it has been shown to my satisfaction that he has
-absconded (or is concealing himself to avoid the service of the said warrant);
+absconded (or is concealing himself to avoid the service of the said warrant);
 Proclamation is hereby made that the said (name) is required to appear at (place) before the Court of
 on the day of next at o’clock to be examined touching ,
 the offence complained of.
@@ -12576,10 +12576,10 @@ VI.__ ORDER OF ATTACHMENT TO COMPEL THE ATTENDANCE OF A WITNESS
 To the Police officer in charge of the Police station at
 WHEREAS a warrant has been duly issued to compel the attendance of (name, description
 and address) to testify concerning a complaint pending before this Court, and it has been returned to
-the said warrant that it cannot be served; and whereas it has been shown to my satisfaction that he
-has absconded (or is concealing himself to avoid the service of the said warrant) ; and thereupon a
+the said warrant that it cannot be served; and whereas it has been shown to my satisfaction that he
+has absconded (or is concealing himself to avoid the service of the said warrant) ; and thereupon a
 1[proclamation has been or is being duly issued] and published requiring the said
-to appear and give evidence at the time and place mentioned therein, 2[* * *] ;
+to appear and give evidence at the time and place mentioned therein, 2[* * *] ;
 This is to authorize and require you to attach by seizure the movable property belonging to
 the said to the value of rupees which you may find within the District
 of and to hold the said property under attachment pending the further order of this Court, and to
@@ -12593,13 +12593,13 @@ To (name and designation of the person or persons who is or are to execute the w
 WHEREAS complaint has been made before me that (name description and address) has
 committed (or is suspected to have committed) the offence of punishable under section
 of the Pakistan Penal Code, and it has been returned to a warrant of arrest thereupon issued that the
-said (name) cannot be found; and whereas it has been shown to my satisfaction that the said
+said (name) cannot be found; and whereas it has been shown to my satisfaction that the said
 (name) has absconded (or is concealing himself to avoid the service of the said warrant), and
 thereupon, a 1[Proclamation has been or is being duly issued] and published requiring the said
-to appear to answer the said charge within days; and whereas the
+to appear to answer the said charge within days; and whereas the
 said is possessed of the following property other than land paying
 revenue to Government in the village (or town) of , in the District of ,viz.,
-, and an order has been made for the attachment thereof;
+, and an order has been made for the attachment thereof;
 You are hereby required to attach the said property by seizure, and to hold the same under
 attachment pending the further order of this Court, and to return this warrant with an endorsement
 certifying the manner of its execution.
@@ -12618,14 +12618,14 @@ To the [District Officer (Revenue)] of the District of
 WHEREAS complaint has been made before me that (name, description and address) has
 committed (or is suspected to have committed) the offence of , punishable under section
 of the Pakistan Penal Code, and it has been returned to a warrant of arrest thereupon
-issued that the said (name) cannot be found; and whereas it has been shown to my satisfaction that
+issued that the said (name) cannot be found; and whereas it has been shown to my satisfaction that
 the said (name) has absconded (or is concealing himself to avoid the service of the said warrant)
 2
 and thereupon a [Proclamation has been or is being duly issued] and published requiring the said
 3
-to appear to answer the said charge within days [* * *]; and whereas the said
+to appear to answer the said charge within days [* * *]; and whereas the said
 is possessed of certain land paying revenue to Government in the village (or town) of
-in the District of ;
+in the District of ;
 You are hereby authorised and requested to cause the said land to be attached, and to be held
 under attachment pending the further order of this Court and to certify without delay what you may
 have done in pursuance of this order.
@@ -12638,9 +12638,9 @@ To (name and designation of the Police Officer or other person or persons who is
 the warrant).
 WHEREAS complaint has been made before me that of has (or is
 suspected to have) committed the offence of (mention the offence concisely), and it appears likely
-that (name and description of witness) can give evidence concerning the said complaint; and whereas
+that (name and description of witness) can give evidence concerning the said complaint; and whereas
 I have good and sufficient reason to believe that he will not attend as a witness on the hearing of the
-said complaint unless compelled to do so;
+said complaint unless compelled to do so;
 This is to authorise and require you to arrest the said (name), and on the day of
 to bring him before this Court, to be examined touching the offence complained of.
 Given under my hand and the seal of the Court, this day of ,18 .
@@ -12658,7 +12658,7 @@ the warrant).
 WHEREAS information has been laid (or complaint has been made) before me of the
 commission (or suspected commission) of the offence of (mention the offence concisely), and it has
 been made to appear to me that the production of (specify the thing clearly) is essential to the inquiry
-now being made (or about to be made) into the said offence (or suspected offence);
+now being made (or about to be made) into the said offence (or suspected offence);
 This is to authorize and require you to search for the said (the thing specified) in the (describe
 the house or place or part thereof to which the search is to be confined) and, if found, to produce the
 same forthwith before this Court, returning this warrant, with an endorsement certifying what you
@@ -12672,7 +12672,7 @@ To (name and designation of a Police officer above the rank of a Constable).
 WHEREAS information has been laid before me, and on due inquiry thereupon had I have
 been led to believe that the (describe the house or other place) is used as a place for the deposit (or
 sale) of stolen property (or if for either of the other purposes expressed in the section, state the
-purpose in the words of the section) ;
+purpose in the words of the section) ;
 This is to authorise and require you to enter the said house (or other place) with such
 assistance as shall be required, and to use, if necessary, reasonable force for that purpose, and to
 search every part of the said house (or other place, or if the search is to be confined to a part, specify
@@ -12705,13 +12705,13 @@ WHEREAS I (name), inhabitant of (place), have been called upon to enter into a b
 of good behaviour to 4[Government and to all the citizens of Pakistan] for the term of (state the
 period) 5[or until the completion of the inquiry in the matter of now pending in the Court
 of ,] I hereby bind myself to be of good behaviour to 2[Government and to all the citizens of
-Pakistan] during the said term 5[or until the completion of the said inquiry] ; and , in case of my
+Pakistan] during the said term 5[or until the completion of the said inquiry] ; and , in case of my
 making default therein, I bind myself to forfeit to 6[Government] the sum of rupees
 Dated this day of ,18 .
 (Signature)
 (Where a bond with sureties is to be executed, add)__ We do hereby declare ourselves sureties
 for the above named that he will be of good behaviour to 4[Government and to all
-the citizens of Pakistan] during the said term 1[or until the completion of the said inquiry]; and, in
+the citizens of Pakistan] during the said term 1[or until the completion of the said inquiry]; and, in
 case of his making default therein, we bind ourselves, jointly and severally, to forfeit to
 5[Government] the sum of rupees
 Dated this day of ,18 .
@@ -12748,9 +12748,9 @@ WHEREAS (name and address) appeared before me in person (or by his authorised ag
 on the day of in obedience to a summons calling upon him to show cause
 why he should not enter into a bond for rupees with one surety (or a bond with
 two sureties each in rupees ), that he, the said (name), would keep the peace for the period of
-months; and whereas an order was then made requiring the said (name) to enter into and find
+months; and whereas an order was then made requiring the said (name) to enter into and find
 such security (state the security ordered when it differs from that mentioned in the summons), and he
-has failed to comply with the said order ;
+has failed to comply with the said order ;
 This is to authorise and require you, the said Superintendent (or Keeper), to receive the said
 (name), into your custody, together with this warrant, and him safely to keep in the said Jail for the
 said period of (term of imprisonment) unless he shall in the meantime 1[be lawfully ordered to be
@@ -12768,17 +12768,17 @@ BEHAVIOUR.
 To the Superintendent (or Keeper) of the Jail at .
 WHEREAS it has been made to appear to me that (name and description) has been and is
 lurking within the district of having no ostensible means of subsistence (or, and that he is
-unable to give any satisfactory account of himself);
+unable to give any satisfactory account of himself);
 or
 WHEREAS evidence of the general character of (name and description) has been adduced
 before me and recorded, from which it appears that he is an habitual robber (or house breaker, etc.,
-as the case may be) ;
+as the case may be) ;
 And Whereas an order has been recorded stating the same and requiring the said (name) to
 furnish security for his good behaviour for the term of (state the period) by entering into a bond with
 one surety (or two or more sureties, as the case may be), himself for rupees , and the
 said surety (or each of the said sureties) for rupees , and the said (name) has failed to
 comply with the said order and for such default has been adjudged imprisonment for (state the term)
-unless the said security be sonner furnished;
+unless the said security be sonner furnished;
 This is to authorise and require you, the said Superintendent (or Keeper), to receive the said
 (name) into your custody, together with this warrant, and him safely to keep in the said Jail for the
 said period of (term of imprisonment) unless he shall in the meantime 1[be lawfully ordered to be
@@ -12793,14 +12793,14 @@ To the Superintendent (or Keeper) of the Jail at (or other officer in whose
 custody the person is).
 WHEREAS (name and description of prisoner) was committed to your custody under
 warrant of the Court, dated the day of and has since duly given security under
-section of the Code of Criminal Procedure ;
+section of the Code of Criminal Procedure ;
 or
 1Subs. by the Amending Act, 1903 (I of 1903), Sch. II, Part II, for “comply with the said order by himself and his surety (or sureties), entering into the
 said bond, in which case the same shall be received and the said (name) released”.
 Page 286 of 307
 <<<PAGE>>>
 and there have appeared to me sufficient grounds for the opinion that he can be released without
-hazard to the community;
+hazard to the community;
 This is to authorise and require you forthwith to discharge the said (name) from your custody
 unless he is liable to be detained for some other cause.
 Given under my hand and the seal of the Court, this day of ,18 .
@@ -12812,31 +12812,31 @@ To (name, description and address).
 WHEREAS it has been made to appear to me that you have caused an obstruction (or
 nuisance) to persons using the public roadway (or other public place) which, etc., (describe the road
 or public place), by, etc., (state what it is that causes the obstruction or nuisance), and that such
-obstruction (or nuisance) still exists;
+obstruction (or nuisance) still exists;
 or
 WHEREAS it has been made to appear to me that you are carrying on as owner, or manager,
 the trade or occupation of (state the particular trade or occupation and the place where it is carried
 on), and that the same is injurious to the public health (or comfort) by reason (state briefly in what
-manner the injurious effects are caused), and should be suppressed or removed to a different place;
+manner the injurious effects are caused), and should be suppressed or removed to a different place;
 or
 WHEREAS it has been made to appear to me that you are the owner (or are in possession of
 or have the control over) a certain tank (or well or excavation) adjacent to the public way (describe
 the thoroughfare), and that the safety of the public is endangered by reason of the said tank (or well
-or excavation) being without a fence (or insecurely fenced) ;
+or excavation) being without a fence (or insecurely fenced) ;
 or
-WHEREAS etc., etc. (as the case may be) ;
+WHEREAS etc., etc. (as the case may be) ;
 I do hereby direct and require you within (state the time allowed) to (state what is required to
 be done to abate the nuisance) or to appear at in the Court of on the day of
-next, and to show cause why this order should not be enforced ;
+next, and to show cause why this order should not be enforced ;
 or
 I do hereby direct and require you within (state the time allowed) to cease carrying on the
 said trade or occupation at the said place, and not again to carry on the same, or to remove the said
-trade from the place where it is now carried on, or to appear, etc. ;
+trade from the place where it is now carried on, or to appear, etc. ;
 or
 I do hereby direct and require you within (state the time allowed) to put up a sufficient fence
 Page 287 of 307
 <<<PAGE>>>
-(state the kind of fence and the part to be fenced) ; or to appear, etc.;
+(state the kind of fence and the part to be fenced) ; or to appear, etc.;
 or
 I do hereby direct and require you, etc., etc. (as the case may be).
 Given under my hand and the seal of the Court, this day of ,18 .
@@ -12847,7 +12847,7 @@ XVII.— MAGISTRATE’S ORDER CONSTITUTING A JURY
 WHEREAS on the day of 18 , an order was issued to (name)
 requiring him (state the effect of the order), and whereas the said (name) has applied to me, by a
 petition bearing date the day of ,for an order appointing a Jury to try whether the said
-recited order is reasonable and proper; I do hereby appoint (the names, etc., of the five or more
+recited order is reasonable and proper; I do hereby appoint (the names, etc., of the five or more
 Jurors) to be the Jury to try and decide the said question, and do require the said Jury to report their
 decision within days from the date of this order at my office at .
 Given under my hand and the seal of the Court, this day of ,18 .
@@ -12887,7 +12887,7 @@ NUISANCE
 (See section 143)
 To (name, description and address).
 WHEREAS it has been made to appear to me that, etc., (state the proper recital, guided by
-Form No. XVI or Form No. XXI, (as the case may be) ;
+Form No. XVI or Form No. XXI, (as the case may be) ;
 I do hereby strictly order and enjoin you not to repeat the said nuisance by again placing or
 causing or permitting to be placed, etc. (as the case may be).
 Given under my hand and the seal of the Court, this day of ,18 .
@@ -12899,18 +12899,18 @@ To (name, description and address).
 WHEREAS it has been made to appear to me that you are in possession (or have the
 management) of (describe clearly the property), and that, in digging a drain on the said land, you are
 about to throw or place a portion of the earth and stones dug up upon the adjoining public road, so as
-to occasion risk of obstruction to persons using the road;
+to occasion risk of obstruction to persons using the road;
 or
 Page 289 of 307
 <<<PAGE>>>
 WHEREAS it has been made to appear to me that you and a number of other persons
 (mention the class of persons) are about to meet and proceed in a religious procession along the
 public street, etc., (as the case may be), and that such procession is likely to lead to a riot or an affray
-;
+;
 or
-WHEREAS etc., etc. (as the case may be);
+WHEREAS etc., etc. (as the case may be);
 I do hereby order you not to place or permit to be placed any of the earth or stones dug from
-land on any part of the said road;
+land on any part of the said road;
 or
 I do hereby prohibit the procession passing along the said street, and strictly warn and enjoin
 you not to take any part in such procession (or as the case recited may require).
@@ -12927,7 +12927,7 @@ situate within the local limits of my jurisdiction, all the said parties were ca
 written statement of their respective claims as to the fact of actual possession of the said (the subject
 of dispute), and being satisfied by due inquiry had thereupon, without reference to the merits of the
 claim of either of the said parties to the legal right or possession, that the claim of actual
-possession by the said (name or names or description) is true ;
+possession by the said (name or names or description) is true ;
 I do decide and declare that he is (or they are) in possession of the said (the subject of
 dispute) and entitled to retain such possession until ousted by due course of law, and do strictly
 forbid any disturbance of his (or their) possession in the meantime.
@@ -12946,7 +12946,7 @@ situate within the limits of my jurisdiction, and the said parties were thereupo
 state in writing their respective claims as to the fact of actual possession of the said (the subject of
 dispute), and whereas, upon due inquiry into the said claims, I have decided that neither of the said
 parties was in possession of the said (the subject of dispute) [or I am unable to satisfy myself as to
-which of the said parties was in possession as aforesaid];
+which of the said parties was in possession as aforesaid];
 This is to authorise and require you to attach the said (the subject of dispute) by taking and
 keeping possession thereof, and to hold the same under attachment until the decree or order of a
 competent Court determining the rights of the parties, or the claim to possession, shall have been
@@ -13157,7 +13157,7 @@ WHEREAS on the day of 18, (name of prisoner), the (1st, 2nd, 3rd, as the
 case may be) prisoner in case No. of the Calendar for 18 , was convicted before me
 (name and official designation) of the offence of (mention the offence or offences concisely) under
 section (or sections) of the Pakistan Penal Code (or of Act ), and was sentenced to
-(state the punishment fully and distinctly);
+(state the punishment fully and distinctly);
 1The word and figure “and 258” omitted by the Federal Laws (Revision and Declaration) Ordinance, 1981 (XXVII of 1981), s.3 and Second Sch.
 Page 296 of 307
 <<<PAGE>>>
@@ -13174,9 +13174,9 @@ To the Superintendent (or Keeper) of the Jail at
 WHEREAS (name and description) has brought against (name and description of the
 accused person) the complaint that (mention it concisely) and the same has been dismissed as 2[false
 and] frivolous (or vexatious), and the order of dismissal awards payment by the said (name of
-complainant) of the sum of rupees as amends; and whereas the said sum has not
+complainant) of the sum of rupees as amends; and whereas the said sum has not
 been paid 3[* * *] and an order has been made for his simple imprisonment in Jail for the period of
-days, unless the aforesaid sum be sooner paid;
+days, unless the aforesaid sum be sooner paid;
 This is to authorize and require you, the said Superintendent (or Keeper), to receive the said
 (name) into your custody, together with this warrant, and him safely to keep in the said Jail for the
 said period of (term of imprisonment), subject to the provisions of Section 69 of the Pakistan Penal
@@ -13190,7 +13190,7 @@ XXXI.—SUMMONS TO WITNESS
 To of
 WHEREAS complaint has been made before me that of has (or is
 suspected to have) committed the offence of (state the offence concisely with time and place), and it
-appears to me that you are likely to give material evidence for the prosecution;
+appears to me that you are likely to give material evidence for the prosecution;
 1Subs. by the Code of Criminal Procedure (Amdt.) Act, 1923 (XVIII of 1923), s. 162, for “Distress”.
 2Ins. ibid.
 3The words “and cannot be recovered by distress of the moveable property of the said (name of complainant)” omitted ibid.
@@ -13198,7 +13198,7 @@ Page 297 of 307
 <<<PAGE>>>
 You are hereby summoned to appear before this Court on the day of
 next at ten o’clock in the forenoon, to testify what you know concerning the matter of the said
-complaint, and not to depart thence without leave of the Court; and you are hereby warned that, if
+complaint, and not to depart thence without leave of the Court; and you are hereby warned that, if
 you shall without just excuse neglect or refuse to appear on the said date, a warrant will be issued to
 compel your attendance.
 Given under my hand and the seal of the Court, this day of ,18 .
@@ -13213,7 +13213,7 @@ WHEREAS at the Session held before me on the day of 18, (name of
 prisoner), the (1st, 2nd, 3rd as the case may be) prisoner in case No. of the Calendar at
 the said Session, was duly convicted of the offence of culpable homicide amounting to murder under
 section of the Pakistan Penal Code, and sentenced to suffer death, subject to the
-confirmation of the said sentence by the Court of ;
+confirmation of the said sentence by the Court of ;
 This is to authorize and require you, the said Superintendent (or Keeper), to receive the said
 (prisoner’s name) into your custody in the said Jail, together with this warrant, and him there safely
 to keep until you shall receive the further warrant or order of this Court, carrying into effect the order
@@ -13230,8 +13230,8 @@ To the Superintendent (or Keeper) of the Jail at
 WHEREAS (name of prisoner), the (1st, 2nd, 3rd, as the case may be) prisoner in case No.
 of the Calendar at the Session held before me on the day of 18 , has
 been by a warrant of this Court, dated the day of, committed to your
-custody under sentence of death; and whereas the order of the Court of
-confirming the said sentence has been received by this Court;
+custody under sentence of death; and whereas the order of the Court of
+confirming the said sentence has been received by this Court;
 This is to authorise and require you, the said Superintendent (or Keeper), to carry the said
 sentence into execution by causing the said to be hanged by the neck until he be
 dead, at (time and place of execution), and to return this warrant to the Court with an endorsement
@@ -13246,9 +13246,9 @@ WHEREAS at a Session held on the day of 18 , (name of prisoner),
 the (1st, 2nd, 3rd, as the case may be) prisoner in case No. of the Calendar at the said
 Session, was convicted of the offence of punishable under section of the
 Pakistan Penal Code, and sentenced to ,and was thereupon committed to your
-custody; and whereas by the order of the Court of (a duplicate of which is hereunto
+custody; and whereas by the order of the Court of (a duplicate of which is hereunto
 annexed) (the punishment adjudged by the said sentence has been commuted to the punishment of
-transportation for life (or as the case may be) ;
+transportation for life (or as the case may be) ;
 This is to authorize and require you, the said Superintendent (or Keeper), safely to keep the
 said (prisoner’s name) in your custody in the said Jail, as by law is required, until he shall be
 delivered over by you to the proper authority and custody for the purpose of his undergoing the
@@ -13267,10 +13267,10 @@ To (name and designation of the Policeofficer or other person or persons who is 
 warrant).
 WHEREAS (name and description of the offender) was on the day of 18 ,
 convicted before me of the offence of (mention the offence concisely), and sentenced to pay a fine of
-rupees ; and whereas the said (name), although required to pay the said fine, has not paid the
-same or any part thereof;
+rupees ; and whereas the said (name), although required to pay the said fine, has not paid the
+same or any part thereof;
 This is to authorize and require you to 3[attach any] moveable property belonging to the said
-(name) which may be found within the district of ; and, if within (state the number
+(name) which may be found within the district of ; and, if within (state the number
 of days or hours allowed) next after 4[such attachment] the said sum shall not be paid (or
 forthwith), to sell the movable 5[property attached], or so much thereof as shall be sufficient to
 satisfy the said fine, returning this warrant, with an endorsement certifying what you have done
@@ -13282,9 +13282,9 @@ __________
 REALISATION OF FINE
 (See section 388)
 WHEREAS I, (name), inhabitant of (place), have been sentenced to pay a fine of rupees
-and in default of payment thereof to undergo imprisonment for ; and whereas the Court
+and in default of payment thereof to undergo imprisonment for ; and whereas the Court
 has been pleased to order my release 7[* * *] on condition of my executing a bond for my appearance
-8[on the following date (or dates) namely:__ ] ;
+8[on the following date (or dates) namely:__ ] ;
 I hereby bind myself to appear before the Court of at o’clock 9[on the
 following date (or dates) namely:__ ], and, in case of making default herein, I bind myself to
 forfeit to 10[Government], 11[* * *] the sum of Rupees.
@@ -13315,13 +13315,13 @@ A FINE IS IMPOSED.
 (See section 480)
 To the Superintendent (or Keeper) of the Jail at
 WHEREAS at a Court holden before me on this day (name and description of the offender) in
-the presence (or view) of the Court committed wilful contempt;
+the presence (or view) of the Court committed wilful contempt;
 And whereas for such contempt the said (name of offender) has been adjudged by the Court
 to pay a fine of rupees , or in default to suffer simple imprisonment for the space of (state the
-number of months or days);
+number of months or days);
 This is to authorize and require you, the Superintendent (or Keeper) of the said Jail, to
 receive the said (name of offender) into your custody, together with this warrant, and him safely to
-keep in the said Jail for the said period of (term of imprisonment), unless the said fine be sooner paid;
+keep in the said Jail for the said period of (term of imprisonment), unless the said fine be sooner paid;
 and, on the receipt thereof, forthwith to set him at liberty, returning this warrant with an endorsement
 certifying the manner of its execution.
 Given under my hand and the seal of the Court, this day of ,18.
@@ -13335,7 +13335,7 @@ WHEREAS (name and description), being summoned (or brought before this Court) as
 witness and this day required to give evidence on an inquiry into an alleged offence, refused to
 answer a certain question (or certain questions) put to him touching the said alleged offence, and
 duly recorded, without alleging any just excuse for such refusal, and for his contempt has been
-adjudged detention in custody for (term of detention adjudged);
+adjudged detention in custody for (term of detention adjudged);
 1Subs. Act No. XXXVIII of 1923, s.5, for “on the said day of next”.
 2Subs. by A.O., 1961, Art. 2 and Sch., for “this Majesty the king” (with effect from the 23rd march, 1956).
 3The words “Emperor of India” omitted by A.O., 1949, Sch.
@@ -13358,7 +13358,7 @@ To the Superintendent (or Keeper) of the Jail at
 (or other officer in whose custody the person is).
 WHEREAS (name and description of prisoner) was committed to your custody under
 warrant of this Court, dated the day of , and has since with his surety (or
-sureties) duly executed a bond under section 499 of the Code of Criminal Procedure;
+sureties) duly executed a bond under section 499 of the Code of Criminal Procedure;
 This is to authorize and require you forthwith to discharge the said (name) from your custody,
 unless he is liable to be detained for some other matter.
 Given under my hand and the seal of the Court, this day of ,18 .
@@ -13369,7 +13369,7 @@ XLIV.—WARRANT OF ATTACHMENT TO ENFORCE A BOND
 To the Police-officer in charge of the Police-station at .
 WHEREAS (name, description and address of person) has failed to appear on (mention the
 occasion) pursuant to his recognizance, and has by such default forfeited to 3[Government], 4[* * *],
-the sum of rupees (the penalty in the bond); and whereas the said (name of person), has, on due
+the sum of rupees (the penalty in the bond); and whereas the said (name of person), has, on due
 notice
 1Forms XL and XLI omitted by the Federal laws (Revision and Declaration) Ordinance, 1981 (XXVII of 1981) . s.3 and Second Sch.
 2Form XLII omitted by the Law Reforms Ordinance, 1972 (XII of 1972), s.2 and Sch.
@@ -13378,7 +13378,7 @@ notice
 Page 302 of 307
 <<<PAGE>>>
 to him, failed to pay the said sum or show any sufficient cause why payment should not be enforced
-against him;
+against him;
 This is to authorize and require you to attach any moveable property of the said (name) that
 you may find within the district of , by seizure and detention, and, if the said amount be
 not paid within three days, to sell the property so attached or so much of it as may be sufficient to
@@ -13392,9 +13392,9 @@ XLV.__ NOTICE TO SURETY ON BREACH OF A BOND
 To of .
 WHEREAS on the day of 18 , you became surety for (name) of
 (place) that he should appear before this Court on the day of and bound
-yourself in default thereof to forfeit the sum of rupees to 1[Government], 2[* * *]; and whereas
+yourself in default thereof to forfeit the sum of rupees to 1[Government], 2[* * *]; and whereas
 the said (name) has failed to appear before this Court and by reason of such default you have
-forfeited the aforesaid sum of rupees;
+forfeited the aforesaid sum of rupees;
 You are hereby required to pay the said penalty or show cause, within days from
 this date, why payment of the said sum should not be enforced against you.
 Given under my hand and the seal of the Court, this day of ,18.
@@ -13407,7 +13407,7 @@ WHEREAS on the day of 18, you became surety by a bond for
 (name) of (place) that he would be of good behaviour for the period of and bound
 yourself in default thereof to forfeit the sum of rupees to 1[Government], 2[* * *], and
 whereas the said (name) has been convicted of the offence of (mention the offence concisely)
-committed since you became such surety, whereby your security bond has become forfeited;
+committed since you became such surety, whereby your security bond has become forfeited;
 1Subs. by A.O., 1961, Art. 2 and Sch., for “Her Majesty the Queen” (with effect from the 23rd March, 1956).
 2The words “Empress of India” omitted by A.O., 1949, Sch.
 Page 303 of 307
@@ -13422,9 +13422,9 @@ XLVII.—WARRANT OF ATTACHMENT AGAINST A SURETY
 To of .
 WHEREAS (name, description and address) has bound himself as surety for the appearance
 of (mention the condition of the bond), and the said (name) has made default, and thereby forfeited to
-1[Government] ,2[* * *], the sum of rupees (the penalty in the bond);
+1[Government] ,2[* * *], the sum of rupees (the penalty in the bond);
 This is to authorize and require you to attach any moveable property of the said (name) which
-you may find within the district of , by seizure and detention; and, if the said amount be
+you may find within the district of , by seizure and detention; and, if the said amount be
 not paid within three days, to sell the property so attached, or so much of it as may be sufficient to
 realize the amount aforesaid, and make return of what you have done under this warrant immediately
 upon its execution.
@@ -13441,7 +13441,7 @@ the penalty mentioned in the said bond has been forfeited to 1[Government], 2[* 
 the said (name of surety) has, on due notice to him, failed to pay the said sum or show any sufficient
 cause why payment should not be enforced against him, and the same cannot be recovered by
 attachment and sale of movable property of his, and an order has been made for his imprisonment in
-the Civil Jail for (specify the period);
+the Civil Jail for (specify the period);
 1Subs. by A.O., 1961, Art 2 and Sch., for “Her Majesty the Queen” (With effect from the 23rd March, 1956),
 2The words “Empress of India” omitted by A.O., 1949, Sch.
 Page 304 of 307
@@ -13458,7 +13458,7 @@ PEACE.
 (See Section 514)
 To (name, description and address).
 WHEREAS on the day of 18 , you entered into a bond not to commit, etc.,
-(as in the bond), and proof of the forfeiture of the same has been given before me and duly recorded ;
+(as in the bond), and proof of the forfeiture of the same has been given before me and duly recorded ;
 You are hereby called upon to pay the said penalty of rupees , or to show cause before
 me within days why payment of the same should not be enforced against you.
 Dated this day of ,18 .
@@ -13470,13 +13470,13 @@ BOND TO KEEP THE PEACE.
 To (name and designation of Policeofficer), at the Policestation of .
 WHEREAS (name and description) did, on the day of 18 , enter into a bond for
 the sum of rupees binding himself not to commit a breach of the peace, etc. (as in the bond), and
-proof of the forfeiture of the said bond has been given before me and duly recorded ; and whereas
+proof of the forfeiture of the said bond has been given before me and duly recorded ; and whereas
 notice has been given to the said (name) calling upon him to show cause why the said sum should
-not be paid, and he has failed to do so or to pay the said sum ;
+not be paid, and he has failed to do so or to pay the said sum ;
 This is to authorize and require you to attach by seizure moveable property belonging to the
 said (name) to the value of rupees which you may find within the district of ,
 and, if the said sum be not paid within , to sell the property so attached, or so much of it
-as may be sufficient to realise the same ; and to make return of what you have done under this
+as may be sufficient to realise the same ; and to make return of what you have done under this
 warrant immediately upon its execution.
 Given under my hand and the seal of the Court, this day of ,18 .
 (Seal) (Signature)
@@ -13487,11 +13487,11 @@ LI.__ WARRANT OF IMPRISONMENT ON BRAECH OF A BOND TO KEEP THE PEACE.
 To the Superintendent (or Keeper) of the Civil Jail at .
 WHEREAS proof has been given before me and duly recorded that (name and description)
 has committed a breach of the bond entered into by him to keep the peace, whereby he has forfeited
-to 1[Government], 2[* * *], the sum of rupees ; and whereas the said (name) has failed
+to 1[Government], 2[* * *], the sum of rupees ; and whereas the said (name) has failed
 to pay the said sum or to show cause why the said sum should not be paid, although duly called upon
 to do so, and payment thereof cannot be enforced by attachment of his moveable property, and an
 order has been made for the imprisonment of the said (name) in the Civil Jail for the period of (term
-of imprisonment);
+of imprisonment);
 This is to authorize and require you, the said Superintendent (or Keeper) of the said Civil Jail,
 to receive the said (name) into your custody, together with this warrant, and him safely to keep in the
 said Jail for the said period of (term of imprisonment), and to return that warrant with an
@@ -13506,9 +13506,9 @@ To the Police-officer in charge of the Policestation at .
 WHEREAS (name description and address) did, on the day of 18 , give
 security by bond in the sum of rupees for the good behaviour of (name, etc., of the
 principal) and proof has been given before me and duly recorded of the commission by the said
-(name) of the offence of whereby the said bond has been forfeited; and whereas notice
+(name) of the offence of whereby the said bond has been forfeited; and whereas notice
 has been given to the said (name) calling upon him to show cause why the said sum should not be
-paid, and he has failed to do so or to pay the said sum ;
+paid, and he has failed to do so or to pay the said sum ;
 This is to authorize and require you to attach by seizure moveable property belonging to the
 said (name) to the value of rupees which you may find within the district of
 , and, if the said sum be not paid within , to sell the property so attached, or so
@@ -13531,7 +13531,7 @@ whereby the said (name) has forfeited to 1[Government], 2[* * *] the sum of rupe
 and whereas he has failed to pay the said sum or to show cause why the said sum should not be paid
 although duly called upon to do so, and payment thereof cannot be enforced by attachment of his
 moveable property, and an order has been made for the imprisonment of the said (name) in the Civil
-Jail for the period of (term of imprisonment) ;
+Jail for the period of (term of imprisonment) ;
 This is to authorize and require you, the Superintendent (or Keeper), to receive the said
 (name) into your custody, together with this warrant, and him safely to keep in the said Jail for the
 said period of (term of imprisonment), returning this warrant with an endorsement certifying the
