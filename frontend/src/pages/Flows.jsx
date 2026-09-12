@@ -1,15 +1,42 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { Icon, Chip, Btn, Eyebrow } from '../components/primitives';
+import { Icon, Eyebrow } from '../components/primitives';
 import AppSidebar from '../components/AppSidebar';
+import { FLOW_LANG_KEY, FLOW_LANGS, getSavedFlowLang } from '../lib/flowLang';
+
+// The Express backend. Override via a .env file (VITE_API_URL) if it runs
+// somewhere other than localhost.
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 // Guided Procedures — a browsable grid of flows by situation.
 export default function FlowsScreen() {
-  const flows = [
-    { id: 'fir',    icon: 'siren',        cat: 'Criminal',   title: 'Police Refusing to Register an FIR', sub: 'Your rights under §154 & §22-A CrPC', steps: 7, mins: '12–18', pop: 'Most used' },
-    { id: 'rent',   icon: 'home',         cat: 'Civil',      title: 'Landlord Eviction or Deposit Dispute (Sindh)', sub: 'Eviction notices, security deposits, and tenant rights', steps: 6, mins: '8–12' },
-    { id: 'khula',  icon: 'heart-crack',  cat: 'Family',     title: 'Khula / Divorce Procedure', sub: 'Family Courts Act, 1964', steps: 9, mins: '15–22' },
-    { id: 'salary', icon: 'briefcase',    cat: 'Employment', title: 'Unpaid Salary or Wrongful Termination', sub: 'Recovering dues and challenging unlawful dismissal', steps: 6, mins: '10–14' },
-  ];
+  const [flows, setFlows] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState('');
+  const [search, setSearch] = React.useState('');
+  const [lang, setLang] = React.useState(getSavedFlowLang);
+
+  const changeLang = (id) => {
+    setLang(id);
+    try { localStorage.setItem(FLOW_LANG_KEY, id); } catch { /* best-effort only */ }
+  };
+
+  React.useEffect(() => {
+    setLoading(true);
+    setError('');
+    fetch(`${API_URL}/api/flows?lang=${lang}`)
+      .then(async (res) => {
+        if (!res.ok) throw new Error(`Flows service returned ${res.status}`);
+        setFlows(await res.json());
+      })
+      .catch((err) => setError(err.message || "Couldn't reach the backend — make sure it's running."))
+      .finally(() => setLoading(false));
+  }, [lang]);
+
+  const query = search.trim().toLowerCase();
+  const visible = query
+    ? flows.filter(f => f.title.toLowerCase().includes(query) || f.situation.toLowerCase().includes(query))
+    : flows;
 
   return (
     <div className="flex h-screen w-full bg-[#F7F6F0] overflow-hidden">
@@ -28,61 +55,81 @@ export default function FlowsScreen() {
           </div>
           <div className="inline-flex items-center bg-white border border-[#D8D9C8] rounded-md h-9 px-2.5 gap-2 text-[14px] self-start">
             <Icon name="search" size={13} color="#7A7D68" />
-            <input placeholder="Search flows, statutes…" className="bg-transparent focus:outline-none w-40 sm:w-56 placeholder-[#7A7D68]"/>
+            <input
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              placeholder="Search flows, statutes…"
+              className="bg-transparent focus:outline-none w-40 sm:w-56 placeholder-[#7A7D68]"
+            />
           </div>
         </div>
 
         {/* Body — flow grid */}
         <div className="flex-1 overflow-auto pl-scroll px-4 sm:px-10 py-6 sm:py-8">
-          {/* Category tabs */}
-          <div className="flex items-center gap-1 mb-5 border-b rule-hair pb-3 overflow-x-auto pl-scroll">
-            {['All', 'Criminal', 'Civil', 'Family', 'Employment'].map((t, i) => (
-              <button key={t} className={`h-8 px-3 rounded-md text-[14px] font-medium shrink-0 ${i === 0 ? 'bg-[#2A2F22] text-[#F7F6F0]' : 'text-[#3A3D2E] hover:bg-[#F0EFE3]'}`}>
-                {t}
-              </button>
-            ))}
+          <div className="mb-5">
+            <FlowLangToggle lang={lang} setLang={changeLang} />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
-            {flows.map((f) => (
-              <FlowCard key={f.id} f={f} />
-            ))}
-          </div>
-
-          {/* Discovery band */}
-          <div className="mt-6 rounded-lg border border-dashed border-[#6B7F5E]/40 bg-[#ECEBD9]/40 px-5 py-3.5 flex flex-wrap items-center justify-between gap-3">
-            <span className="text-[14px] text-[#4A5540]">Don't see your situation? Describe it in your own words and we'll build a flow.</span>
-            <Btn variant="bronze" size="sm" iconRight="arrow-right">Compose flow</Btn>
-          </div>
+          {loading ? (
+            <div className="text-center py-24 text-[16px] text-[#7A7D68]">Loading…</div>
+          ) : error ? (
+            <ErrorState message={error} />
+          ) : visible.length === 0 ? (
+            <div className="text-center py-24 text-[16px] text-[#7A7D68]">
+              {query ? 'No flows match your search.' : 'No guided flows are available yet.'}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+              {visible.map((f) => (
+                <FlowCard key={f.slug} f={f} rtl={lang === 'ur'} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
 }
 
-function FlowCard({ f }) {
+function FlowLangToggle({ lang, setLang }) {
   return (
-    <Link to={`/flows/${f.id}`} className="block rounded-xl border p-5 relative transition-colors bg-[#F7F6F0] border-[#DFE0CE] hover:border-[#6B7F5E]/40 hover:bg-white">
-      {f.pop && (
-        <div className="absolute -top-2 right-4">
-          <Chip tone={f.pop === 'New' ? 'ok' : 'bronze'} icon={f.pop === 'New' ? 'sparkle' : 'flame'}>{f.pop}</Chip>
-        </div>
-      )}
+    <div className="inline-flex items-center bg-white/70 border border-[#D8D9C8] rounded-full p-1 h-9">
+      <span className="pl-2 pr-1 text-[#7A7D68]"><Icon name="languages" size={13} /></span>
+      {FLOW_LANGS.map(o => (
+        <button key={o.id} onClick={() => setLang(o.id)}
+                className={`h-7 px-3 rounded-full text-[14px] font-medium transition-colors ${lang === o.id ? 'bg-[#2A2F22] text-[#F7F6F0]' : 'text-[#3A3D2E] hover:text-[#2A2F22]'}`}>
+          {o.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function ErrorState({ message }) {
+  return (
+    <div className="flex flex-col items-center justify-center text-center py-24 rounded-xl border border-dashed border-[#D8D9C8]">
+      <div className="w-16 h-16 rounded-full bg-[#F3DDD5] border border-[#D9A797] flex items-center justify-center">
+        <Icon name="alert-triangle" size={26} color="#8A3B24" />
+      </div>
+      <div className="mt-5 font-serif text-[22px] leading-tight">Couldn't load flows.</div>
+      <p className="mt-2 text-[16px] text-[#4A5540] max-w-[360px]">{message}</p>
+    </div>
+  );
+}
+
+function FlowCard({ f, rtl }) {
+  return (
+    <Link to={`/flows/${f.slug}`} className="block rounded-xl border p-5 relative transition-colors bg-[#F7F6F0] border-[#DFE0CE] hover:border-[#6B7F5E]/40 hover:bg-white">
       <div className="flex items-start gap-4">
         <div className="w-11 h-11 rounded-lg bg-[#EDE9D5] border border-[#B9C2A0] flex items-center justify-center shrink-0">
-          <Icon name={f.icon} size={19} color="#4A5540" />
+          <Icon name="scroll-text" size={19} color="#4A5540" />
         </div>
-        <div className="flex-1 min-w-0">
-          <div className="smallcaps text-[14px] text-[#6B7F5E]">{f.cat}</div>
-          <div className="font-serif text-[19px] leading-tight mt-1">{f.title}</div>
-          <div className="text-[14px] text-[#4A5540] mt-1.5 leading-snug">{f.sub}</div>
+        <div className="flex-1 min-w-0" dir={rtl ? 'rtl' : 'ltr'}>
+          <div className={`font-serif text-[19px] leading-tight ${rtl ? 'font-nastaliq text-[20px]' : ''}`}>{f.title}</div>
+          <div className={`text-[14px] text-[#4A5540] mt-1.5 leading-snug line-clamp-2 ${rtl ? 'font-nastaliq text-[15px]' : ''}`}>{f.situation}</div>
         </div>
       </div>
-      <div className="mt-4 pt-4 border-t rule-hair flex items-center justify-between text-[14px] text-[#4A5540]">
-        <div className="flex items-center gap-3">
-          <span className="inline-flex items-center gap-1"><Icon name="list-checks" size={12} /> {f.steps} steps</span>
-          <span className="inline-flex items-center gap-1"><Icon name="clock" size={12} /> {f.mins} min</span>
-        </div>
+      <div className="mt-4 pt-4 border-t rule-hair flex items-center justify-end text-[14px] text-[#4A5540]">
         <span className="inline-flex items-center gap-1 text-[#6B7F5E] font-semibold hover:underline">
           Begin <Icon name="arrow-right" size={12} />
         </span>
@@ -90,4 +137,3 @@ function FlowCard({ f }) {
     </Link>
   );
 }
-

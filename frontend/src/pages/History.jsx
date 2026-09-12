@@ -3,26 +3,64 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Icon, Chip, Btn, Eyebrow, Card } from '../components/primitives';
 import AppSidebar from '../components/AppSidebar';
 
-// Sample data — every question here is invented for layout purposes only.
-// Full names for the short codes shown in the Acts chips below, so hovering
-// an abbreviation like "CrPC" explains what it actually stands for.
+// The Express backend. Override via a .env file (VITE_API_URL) if it runs
+// somewhere other than localhost.
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
+// Full names for the short codes the backend returns (uppercased), so
+// hovering an abbreviation like "CRPC" explains what it actually stands for.
 const ACT_FULL_NAMES = {
-  CrPC: 'Code of Criminal Procedure, 1898',
-  PPC: 'Pakistan Penal Code, 1860',
+  CRPC: 'Code of Criminal Procedure, 1898',
+  PPC: 'Pakistan Penal Code',
+  MFLO: 'The Muslim Family Laws Ordinance, 1961',
+  SRPO: 'The Sind Rented Premises Ordinance, 1979',
+  CONSTITUTION: 'The Constitution of the Islamic Republic of Pakistan',
 };
 
-const SAMPLE_HISTORY = [
-  { id: 'h1', question: 'Can the police refuse to register my FIR?', date: '29 Aug 2026', acts: ['CrPC', 'PPC'] },
-  { id: 'h2', question: 'Is a 15% annual rent increase legal in my lease?', date: '28 Aug 2026', acts: ['Sindh Rented Premises Ordinance, 1979'] },
-  { id: 'h3', question: "What's the procedure for khula in Pakistan?", date: '27 Aug 2026', acts: ['Family Courts Act, 1964'] },
-  { id: 'h4', question: 'Can my landlord re-enter the property without going to court?', date: '24 Aug 2026', acts: ['Transfer of Property Act, 1882'] },
-];
+const formatDate = (iso) => {
+  try {
+    return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  } catch {
+    return '';
+  }
+};
 
 // History — every past conversation, with the Acts each answer cited. Opens back into /chat.
 export default function History() {
-  const [showEmpty, setShowEmpty] = React.useState(false);
   const navigate = useNavigate();
-  const items = showEmpty ? [] : SAMPLE_HISTORY;
+  const [items, setItems] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState('');
+
+  React.useEffect(() => {
+    const token = localStorage.getItem('paklaw_token');
+    if (!token) {
+      setError('Please sign in to see your history.');
+      setLoading(false);
+      return;
+    }
+
+    fetch(`${API_URL}/api/chat/history`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(async (res) => {
+        if (res.status === 401) {
+          localStorage.removeItem('paklaw_token');
+          localStorage.removeItem('paklaw_user');
+          throw new Error('Your session expired — please sign in again.');
+        }
+        if (!res.ok) throw new Error(`History service returned ${res.status}`);
+        const data = await res.json();
+        setItems((data.conversations || []).map((c) => ({
+          id: c.id,
+          question: c.question,
+          date: formatDate(c.date),
+          acts: c.acts || [],
+        })));
+      })
+      .catch((err) => setError(err.message || "Couldn't reach the backend — make sure it's running."))
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <div className="flex h-screen w-full bg-[#F7F6F0] overflow-hidden">
@@ -39,17 +77,15 @@ export default function History() {
               Every conversation you've had, and which Acts each answer cited. Pick one up where you left off.
             </p>
           </div>
-          <div className="flex flex-wrap items-center gap-3">
-            <Chip tone="flag" icon="alert-triangle">Sample data</Chip>
-            <button onClick={() => setShowEmpty(v => !v)} className="text-[14px] text-[#6B7F5E] font-medium hover:underline">
-              {showEmpty ? 'Show sample history' : 'Preview empty state'}
-            </button>
-          </div>
         </div>
 
         <div className="flex-1 overflow-auto pl-scroll px-4 sm:px-10 py-6 sm:py-8">
           <div className="max-w-[760px] mx-auto">
-            {items.length === 0 ? (
+            {loading ? (
+              <div className="text-center py-24 text-[16px] text-[#7A7D68]">Loading…</div>
+            ) : error ? (
+              <ErrorState message={error} />
+            ) : items.length === 0 ? (
               <EmptyState />
             ) : (
               <Card padding="p-0">
@@ -58,7 +94,7 @@ export default function History() {
                 </div>
                 <div>
                   {items.map(h => (
-                    <HistoryRow key={h.id} h={h} onClick={() => navigate('/chat')} />
+                    <HistoryRow key={h.id} h={h} onClick={() => navigate(`/chat/${h.id}`)} />
                   ))}
                 </div>
               </Card>
@@ -66,6 +102,18 @@ export default function History() {
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function ErrorState({ message }) {
+  return (
+    <div className="flex flex-col items-center justify-center text-center py-24 rounded-xl border border-dashed border-[#D8D9C8]">
+      <div className="w-16 h-16 rounded-full bg-[#F3DDD5] border border-[#D9A797] flex items-center justify-center">
+        <Icon name="alert-triangle" size={26} color="#8A3B24" />
+      </div>
+      <div className="mt-5 font-serif text-[22px] leading-tight">Couldn't load your history.</div>
+      <p className="mt-2 text-[16px] text-[#4A5540] max-w-[360px]">{message}</p>
     </div>
   );
 }

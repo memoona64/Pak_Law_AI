@@ -20,8 +20,10 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
-lib64/
+# Root-anchored: an unanchored "lib/" also matched frontend/src/lib/,
+# silently blocking any file placed there from ever being committed.
+/lib/
+/lib64/
 parts/
 sdist/
 var/
@@ -233,3 +235,12 @@ node_modules/
 /share/
 chroma_db/
 docs/team-briefing-script.md
+
+# Windows treats Scripts/ and scripts/ as the same path, so the !/scripts/
+# rule above accidentally un-ignores the venv Scripts/ folder. Re-ignore the
+# venv executables specifically (this comes last, so it wins).
+/Scripts/*.exe
+
+backend/node_modules/
+
+frontend/node_modules/

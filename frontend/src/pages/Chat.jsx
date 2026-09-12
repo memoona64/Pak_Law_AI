@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Icon, Chip, Btn, Eyebrow, Disclaimer } from '../components/primitives';
 import { PLSeal } from '../components/seal';
 import AppSidebar from '../components/AppSidebar';
@@ -8,72 +9,88 @@ import AppSidebar from '../components/AppSidebar';
 // .env file (VITE_API_URL) if it runs somewhere other than localhost.
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-// Chat.jsx's own language codes ('en' | 'ur' | 'ru') vs. what the backend expects.
-const BACKEND_LANG = { en: 'en', ur: 'ur', ru: 'roman_ur' };
+// Arabic-script Unicode block (covers Urdu). Used only to decide RTL/Nastaliq
+// rendering for what someone actually typed — the backend already detects
+// language itself for normalization, so there's no manual language picker
+// here; this is purely typography, not a language selection.
+const URDU_SCRIPT_RE = /[؀-ۿ]/;
+const isUrduScript = (text) => URDU_SCRIPT_RE.test(text);
+
+const formatTime = (iso) => {
+  try {
+    return new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  } catch {
+    return '';
+  }
+};
+
+// A stored conversation has one entry per question/answer pair; the UI
+// wants each side as its own bubble.
+const expandStoredMessages = (storedMessages) => {
+  const expanded = [];
+  for (const msg of storedMessages) {
+    expanded.push({ id: `${msg.id}-q`, role: 'user', time: formatTime(msg.timestamp), text: msg.question });
+    expanded.push({
+      id: msg.id,
+      role: 'assistant',
+      time: formatTime(msg.timestamp),
+      body: <p className="whitespace-pre-wrap">{msg.answer}</p>,
+      citations: msg.citations || [],
+    });
+  }
+  return expanded;
+};
 
 // Chat interface — the hero. Sidebar + central messages with expandable citation pills.
 export default function ChatScreen() {
-  const [lang, setLang] = React.useState('en'); // 'en' | 'ur' | 'ru'
-  const [expanded, setExpanded] = React.useState({ 'c1': true });
+  const { id: routeConversationId } = useParams();
+  const navigate = useNavigate();
+  const [expanded, setExpanded] = React.useState({});
   const [input, setInput] = React.useState('');
   const [sending, setSending] = React.useState(false);
+  const [loadingConversation, setLoadingConversation] = React.useState(!!routeConversationId);
+  const [messages, setMessages] = React.useState([]);
+  const [conversationId, setConversationId] = React.useState(routeConversationId || null);
   const messagesEndRef = React.useRef(null);
 
-  // Sample messages — a mix of English, Urdu, Roman Urdu
-  const [messages, setMessages] = React.useState([
-    {
-      id: 'm1', role: 'user',
-      lang: 'ur', time: '11:04',
-      text: 'اگر کوئی شخص کسی جائیداد پر ناجائز قبضہ کر لے تو مالک کے پاس PPC کی کون سی دفعات کے تحت کارروائی کے اختیارات ہیں؟',
-    },
-    {
-      id: 'a1', role: 'assistant',
-      plain: 'Yes — you can take action. If someone occupies your property without permission, you can file a police report for criminal trespass, and separately ask a court to make them pay for any damage.',
-      body: (
-        <>
-          <p>
-            Under the <em>Pakistan Penal Code, 1860</em>, the aggrieved owner may proceed on <strong>two parallel tracks</strong>. The primary criminal remedy sits under Chapter XVII — Offences Against Property.
-          </p>
-          <ol className="mt-3 space-y-1.5 list-decimal pl-5 marker:text-[#6B7F5E] marker:font-serif">
-            <li><strong>Criminal trespass</strong> — <em>PPC §441</em> and its aggravated form <em>§447</em> (punishable with imprisonment up to three months or fine to five thousand rupees, or both).</li>
-            <li><strong>Mischief / dishonest misappropriation</strong> — <em>PPC §425</em> read with <em>§403</em> where the property has been diminished in value.</li>
-          </ol>
-        </>
-      ),
-      citations: [
-        { id: 'c1', act: 'Pakistan Penal Code, 1860', section: '§441', title: 'Criminal trespass', verbatim: '"Whoever enters into or upon property in the possession of another with intent to commit an offence or to intimidate, insult or annoy any person in possession of such property … is said to commit criminal trespass."', year: '1860', jurisdiction: 'Federal', amendedUpTo: '2016', corpusVersion: 'v3.2' },
-          { id: 'c2', act: 'Pakistan Penal Code, 1860', section: '§447', title: 'Punishment for criminal trespass', verbatim: '"Whoever commits criminal trespass shall be punished with imprisonment of either description for a term which may extend to three months, or with fine which may extend to five thousand rupees, or with both."', amendedUpTo: '2016', corpusVersion: 'v3.2' },
-      ],
-    },
-    {
-      id: 'm2', role: 'user',
-      lang: 'ru', time: '11:06',
-      text: 'Achha, aur agar qabza karnay wala mukamil ghar par forcefully qabza kar chuka ho — us case mein police FIR register karnay se inkar kar sakti hai?',
-    },
-    {
-      id: 'a2', role: 'assistant',
-      plain: 'No, the police cannot legally refuse. They must register your FIR the same day. If they still refuse, you can complain to their senior officer, or go straight to a Justice of Peace, who can order the police to register it.',
-      body: (
-        <>
-          <p>
-            No — under <em>§154 CrPC</em> the officer in charge is <strong>bound to register</strong> any information disclosing a cognisable offence. Refusal is itself actionable.
-          </p>
-          <p className="mt-2">
-            The complainant's remedies escalate in this order:
-          </p>
-          <ul className="mt-2 space-y-1 pl-5 list-['—__'] marker:text-[#6B7F5E]">
-            <li>Written complaint to the SP under <em>§154(3) CrPC</em>.</li>
-            <li>Application to the Justice of Peace under <em>§22-A(6) CrPC</em>, Lahore / Karachi jurisdiction.</li>
-            <li>Constitutional petition under <em>Art. 199</em> for a writ of mandamus.</li>
-          </ul>
-        </>
-      ),
-      citations: [
-        { id: 'c5', act: 'Code of Criminal Procedure, 1898', section: '§154', title: 'Information in cognisable cases', verbatim: '"Every information relating to the commission of a cognisable offence, if given orally to an officer in charge of a police-station, shall be reduced to writing …"', amendedUpTo: '2016', corpusVersion: 'v3.2' },
-        { id: 'c6', act: 'Code of Criminal Procedure, 1898', section: '§22-A(6)', title: 'Powers of Justice of Peace', verbatim: '"The Justice of Peace shall, on a complaint … issue appropriate directions to the police authorities …"', amendedUpTo: '2016', corpusVersion: 'v3.2' },
-      ],
-    },
-  ]);
+  // Loads a past conversation's real messages when arriving via /chat/:id
+  // (e.g. clicking a row in History). A bare /chat starts empty.
+  React.useEffect(() => {
+    if (!routeConversationId) {
+      setMessages([]);
+      setConversationId(null);
+      setLoadingConversation(false);
+      return;
+    }
+
+    setLoadingConversation(true);
+    setConversationId(routeConversationId);
+    const token = localStorage.getItem('paklaw_token');
+    if (!token) {
+      setMessages([{ id: 'note-auth', role: 'note', text: 'Please sign in to view this conversation.' }]);
+      setLoadingConversation(false);
+      return;
+    }
+
+    fetch(`${API_URL}/api/chat/history/${encodeURIComponent(routeConversationId)}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(async (res) => {
+        if (res.status === 404) throw new Error("This conversation wasn't found.");
+        if (res.status === 401) {
+          localStorage.removeItem('paklaw_token');
+          localStorage.removeItem('paklaw_user');
+          throw new Error('Your session expired — please sign in again.');
+        }
+        if (!res.ok) throw new Error(`Chat service returned ${res.status}`);
+        const data = await res.json();
+        setMessages(expandStoredMessages(data.messages || []));
+      })
+      .catch((err) => {
+        setMessages([{ id: 'note-load-error', role: 'note', text: err.message || "Couldn't load this conversation." }]);
+      })
+      .finally(() => setLoadingConversation(false));
+  }, [routeConversationId]);
 
   // Keeps the newest message in view instead of leaving it below the fold.
   React.useEffect(() => {
@@ -85,9 +102,8 @@ export default function ChatScreen() {
   const handleSend = async () => {
     const text = input.trim();
     if (!text || sending) return;
-    const askedLang = lang;
     const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    setMessages(prev => [...prev, { id: `u-${Date.now()}`, role: 'user', lang: askedLang, time, text }]);
+    setMessages(prev => [...prev, { id: `u-${Date.now()}`, role: 'user', time, text }]);
     setInput('');
     setSending(true);
 
@@ -109,7 +125,11 @@ export default function ChatScreen() {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ question: text, language: BACKEND_LANG[askedLang] }),
+        // No language field — the backend detects and normalizes the
+        // query's language itself (Roman Urdu / Urdu script / English).
+        // conversationId appends to the open conversation once one exists,
+        // instead of starting a new one on every message.
+        body: JSON.stringify({ question: text, conversationId: conversationId || undefined }),
       });
 
       if (res.status === 401) {
@@ -134,6 +154,14 @@ export default function ChatScreen() {
         body: <p className="whitespace-pre-wrap">{data.answer}</p>,
         citations: data.citations || [],
       }]);
+
+      // First message of a new conversation: remember its id so follow-up
+      // questions append to it, and reflect it in the URL so History links
+      // straight back here.
+      if (data.conversationId && data.conversationId !== conversationId) {
+        setConversationId(data.conversationId);
+        navigate(`/chat/${data.conversationId}`, { replace: true });
+      }
     } catch {
       setMessages(prev => [...prev, {
         id: `note-${Date.now()}`,
@@ -154,8 +182,7 @@ export default function ChatScreen() {
       <div className="flex-1 flex flex-col min-w-0">
         {/* Top bar */}
         <div className="h-14 border-b rule-hair flex items-center gap-2 px-4 sm:px-6 bg-[#F7F6F0]/95 backdrop-blur">
-          <div className="font-serif text-[17px] leading-none truncate">FIR — Section 302 PPC · Karachi</div>
-          <Chip tone="flag" icon="alert-triangle" className="shrink-0">Example</Chip>
+          <div className="font-serif text-[17px] leading-none truncate">Ask a legal question</div>
         </div>
 
         {/* Conversation */}
@@ -163,8 +190,22 @@ export default function ChatScreen() {
           <div className="max-w-[840px] mx-auto px-8 py-8 space-y-8">
             <Disclaimer />
 
+            {loadingConversation ? (
+              <div className="text-center py-16 text-[16px] text-[#7A7D68]">Loading conversation…</div>
+            ) : messages.length === 0 && !sending && (
+              <div className="flex flex-col items-center justify-center text-center py-16">
+                <div className="w-14 h-14 rounded-full bg-[#2A2F22] flex items-center justify-center">
+                  <PLSeal size={26} ring={false} />
+                </div>
+                <div className="mt-5 font-serif text-[22px] leading-tight">Ask your first question.</div>
+                <p className="mt-2 text-[16px] text-[#4A5540] max-w-[420px]">
+                  In English, Urdu, or Roman Urdu — answers cite the actual law, not a guess.
+                </p>
+              </div>
+            )}
+
             {messages.map(m => (
-              m.role === 'user' ? <UserMessage key={m.id} m={m} lang={m.lang} />
+              m.role === 'user' ? <UserMessage key={m.id} m={m} />
                 : m.role === 'note' ? <SystemNote key={m.id} text={m.text} />
                 : <AssistantMessage key={m.id} m={m} expanded={expanded} setExpanded={setExpanded} />
             ))}
@@ -173,7 +214,7 @@ export default function ChatScreen() {
             {sending && (
               <div className="flex items-center gap-3 text-[14px] text-[#7A7D68]">
                 <div className="w-8 h-8 rounded-full bg-[#2A2F22] flex items-center justify-center">
-                  <div className="w-3.5 h-3.5"><PLSeal size={22} tone="espresso" ring={false}/></div>
+                  <div className="w-3.5 h-3.5"><PLSeal size={22} ring={false}/></div>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#6B7F5E] animate-pulse" />
@@ -190,11 +231,6 @@ export default function ChatScreen() {
         {/* Composer */}
         <div className="border-t rule-hair bg-[#F7F6F0]">
           <div className="max-w-[840px] mx-auto px-8 py-5">
-            {/* Language toggle */}
-            <div className="mb-3">
-              <LangToggle lang={lang} setLang={setLang} />
-            </div>
-
             <div className="rounded-xl border border-[#D8D9C8] bg-white/70 focus-within:border-[#6B7F5E] transition-colors">
               <textarea
                 value={input}
@@ -206,13 +242,9 @@ export default function ChatScreen() {
                   }
                 }}
                 rows={2}
-                placeholder={{
-                  en: 'Ask about a statute, judgment, or draft… e.g. "Compare §302 vs §316 PPC for qatl-i-amd."',
-                  ur: '…کوئی سوال پوچھیں، مثلاً "302 اور 316 دفعات میں فرق کیا ہے؟"',
-                  ru: 'Sawal poochein… e.g. "Section 302 aur 316 PPC mein farq kya hai?"'
-                }[lang]}
-                className={`w-full resize-none bg-transparent p-4 text-[16px] text-[#2A2F22] placeholder-[#7A7D68] focus:outline-none ${lang === 'ur' ? 'text-right font-nastaliq text-[17px]' : ''}`}
-                dir={lang === 'ur' ? 'rtl' : 'ltr'}
+                placeholder='Ask about a statute, judgment, or draft — in English, Urdu, or Roman Urdu.'
+                className={`w-full resize-none bg-transparent p-4 text-[16px] text-[#2A2F22] placeholder-[#7A7D68] focus:outline-none ${isUrduScript(input) ? 'text-right font-nastaliq text-[17px]' : ''}`}
+                dir={isUrduScript(input) ? 'rtl' : 'ltr'}
               />
               <div className="flex items-center justify-between px-3 pb-3">
                 <div className="flex items-center gap-1">
@@ -255,18 +287,16 @@ function SystemNote({ text }) {
   );
 }
 
-function UserMessage({ m, lang }) {
+function UserMessage({ m }) {
+  const urdu = isUrduScript(m.text);
   return (
     <div className="flex justify-end">
       <div className="max-w-[80%]">
         <div className="flex items-center justify-end gap-2 mb-1.5">
-          <Chip tone="outline" className="!text-[14px] !py-0.5">
-            {lang === 'ur' ? 'اردو' : lang === 'ru' ? 'Roman Urdu' : 'English'}
-          </Chip>
           <span className="text-[14px] text-[#7A7D68]">You · {m.time}</span>
         </div>
-        <div className={`bg-[#2A2F22] text-[#F7F6F0] px-5 py-3.5 rounded-2xl rounded-tr-md text-[16px] leading-[1.6] ${lang === 'ur' ? 'font-nastaliq text-[18px] text-right' : ''}`}
-             dir={lang === 'ur' ? 'rtl' : 'ltr'}>
+        <div className={`bg-[#2A2F22] text-[#F7F6F0] px-5 py-3.5 rounded-2xl rounded-tr-md text-[16px] leading-[1.6] ${urdu ? 'font-nastaliq text-[18px] text-right' : ''}`}
+             dir={urdu ? 'rtl' : 'ltr'}>
           {m.text}
         </div>
       </div>
@@ -278,24 +308,17 @@ function AssistantMessage({ m, expanded, setExpanded }) {
   return (
     <div className="flex gap-3">
       <div className="w-9 h-9 shrink-0 rounded-full bg-[#2A2F22] flex items-center justify-center">
-        <PLSeal size={30} tone="espresso" ring={false} />
+        <PLSeal size={30} ring={false} />
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-1.5 flex-wrap">
           <div className="font-serif text-[14px]">PakLaw AI</div>
           <Chip tone="ok" icon="shield-check" title="This answer is backed by real, quoted sources, not made up.">Backed by {m.citations.length} sources</Chip>
-          <span className="text-[14px] text-[#7A7D68]">{m.time || '11:04'} · {m.latencyLabel || '1.8s'}</span>
+          <span className="text-[14px] text-[#7A7D68]">{m.time}{m.latencyLabel ? ` · ${m.latencyLabel}` : ''}</span>
         </div>
 
         {/* Answer body — editorial serif quotes, editorial spacing */}
         <div className="bg-[#F7F6F0] border border-[#DFE0CE] rounded-2xl rounded-tl-md px-5 py-4 text-[16px] leading-[1.7] text-[#2A2F22]">
-          {m.plain && (
-            <div className="mb-4 pb-4 border-b rule-hair">
-              <Eyebrow>In simple words</Eyebrow>
-              <p className="mt-1.5 text-[17px] leading-[1.6]">{m.plain}</p>
-            </div>
-          )}
-          {m.plain && <Eyebrow className="mb-1.5">The legal detail</Eyebrow>}
           <div className="prose prose-sm max-w-none [&_em]:text-[#4A5540] [&_em]:not-italic [&_em]:font-serif [&_strong]:text-[#2A2F22]">
             {m.body}
           </div>
@@ -358,25 +381,6 @@ function CitationPill({ c, expanded, onToggle }) {
 }
 
 // ---- Bits ----
-function LangToggle({ lang, setLang }) {
-  const opts = [
-    { id: 'en', label: 'English', hint: 'EN' },
-    { id: 'ur', label: 'اردو', hint: 'UR' },
-    { id: 'ru', label: 'Roman Urdu', hint: 'RU' },
-  ];
-  return (
-    <div className="inline-flex items-center bg-white/70 border border-[#D8D9C8] rounded-full p-1 h-9">
-      <span className="pl-2 pr-1 text-[#7A7D68]"><Icon name="languages" size={13} /></span>
-      {opts.map(o => (
-        <button key={o.id} onClick={() => setLang(o.id)}
-                className={`h-7 px-3 rounded-full text-[14px] font-medium transition-colors ${lang === o.id ? 'bg-[#2A2F22] text-[#F7F6F0]' : 'text-[#3A3D2E] hover:text-[#2A2F22]'}`}>
-          {o.label}
-        </button>
-      ))}
-    </div>
-  );
-}
-
 
 function ComposerIcon({ name, tip, disabled }) {
   return (
