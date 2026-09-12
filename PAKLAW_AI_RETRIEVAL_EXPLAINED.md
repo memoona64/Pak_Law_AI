@@ -4,7 +4,7 @@
 
 Think of this as a **super-smart legal search engine** specifically for Pakistani laws. It helps lawyers, students, or anyone find the right legal sections quickly without reading hundreds of pages.
 
-**Simple analogy**: Imagine a massive law library with 1001 legal documents. This system is like a librarian who can find the right information in seconds using different search methods.
+**Simple analogy**: Imagine a massive law library with 1497 legal documents. This system is like a librarian who can find the right information in seconds using different search methods.
 
 ---
 
@@ -95,7 +95,7 @@ The system fully handles legal questions in Roman Urdu, Urdu script, and English
 ### **Step 1: Start the Server**
 
 ```bash
-cd paklaw-ai
+cd Pak_Law_AI
 uvicorn fastapi_app.main:app --host 127.0.0.1 --port 8000
 ```
 
@@ -134,7 +134,7 @@ curl -X POST http://127.0.0.1:8000/rag/query \
 ### **Step 3: Run the Tests**
 
 ```bash
-cd paklaw-ai
+cd Pak_Law_AI
 python test_fastapi.py
 ```
 

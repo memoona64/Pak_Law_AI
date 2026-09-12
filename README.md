@@ -1,101 +1,48 @@
-﻿# Our Project
-# Pak_Law_AI — Backend
+# Pak_Law_AI
 
-Express + MongoDB backend for the Pak_Law_AI legal chatbot.
+A bilingual (English / Urdu / Roman-Urdu) legal question-answering system for
+Pakistani citizens. Ask a question in plain language and get an answer backed
+by real citations from Pakistani law (Constitution, Pakistan Penal Code, Code
+of Criminal Procedure, Muslim Family Laws Ordinance, Sindh Rented Premises
+Ordinance).
 
-## Structure
-
-```
-backend/
-├── config/
-│   └── db.js              # MongoDB connection setup
-├── controllers/
-│   ├── authController.js
-│   ├── chatController.js
-│   ├── evalController.js
-│   ├── feedbackController.js
-│   └── flowsController.js
-├── middleware/
-│   ├── auth.js             # Auth/token verification
-│   └── errorHandler.js
-├── models/
-│   ├── User.js
-│   ├── Conversation.js
-│   ├── Feedback.js
-│   ├── EvaluationRun.js
-│   └── QueryLog.js
-├── routes/
-│   ├── auth.js
-│   ├── chat.js
-│   ├── documents.js
-│   ├── eval.js
-│   ├── feedback.js
-│   └── flows.js
-├── services/
-│   └── ragService.js       # Core RAG logic — retrieves and answers from chunks
-├── data/
-│   └── flows.json
-├── server.js                # Entry point
-├── package.json
-└── .env                      # Not committed — see Environment Variables below
-```
-
-## Setup
-
-```bash
-cd backend
-npm install
-```
-
-## Environment Variables
-
-Create a `.env` file in this folder with the following (values will depend
-on your local/dev setup — ask a teammate for actual values):
+## How the pieces fit together
 
 ```
-PORT=5000
-MONGO_URI=
-JWT_SECRET=
-PYTHON_SERVICE_URL=http://localhost:8000
-USE_MOCK=false
-CORS_ORIGIN=http://localhost:5173
+frontend/     React (Vite) chat UI — talks only to backend/
+backend/      Express + MongoDB — auth, chat history, document uploads;
+              forwards questions to fastapi_app/ and never does retrieval itself
+fastapi_app/  FastAPI service — hybrid BM25 + Chroma vector search, cross-
+              encoder reranking, exact-citation lookup, Gemini-based answer
+              generation and citation verification
+scripts/      One-off pipeline that builds the legal corpus: extracts text
+              from PDFs in data/raw/, cleans it, chunks it, and records
+              source/freshness metadata in data/corpus_meta.json
+data/         raw/ (original PDFs, never modified by any script), clean/
+              (extracted text), chunks/ (the chunked corpus fastapi_app loads)
 ```
 
-`.env` is git-ignored — never commit it, it contains secrets.
+A request flows: **frontend → backend (auth + storage) → fastapi_app
+(retrieval + generation) → back through backend → frontend**.
 
-- `MONGO_URI` — if it's a `mongodb+srv://` Atlas URI and the server fails to
-  start with `querySrv ECONNREFUSED`, your network's DNS is refusing the SRV
-  lookup Node needs (this happened during development). `config/db.js` already
-  works around it by pointing Node's resolver at public DNS.
-- `PYTHON_SERVICE_URL` — the FastAPI retrieval service must be running
-  separately (`uvicorn fastapi_app.main:app --port 8000` from the project
-  root) for `/api/chat/ask` to work. `USE_MOCK=true` bypasses it entirely.
-- The FastAPI service downloads its embedding/reranker models on first use —
-  make sure `HF_HOME` is pointed at a folder with a few GB free (see the
-  project root's `start.bat`), not the default C: user cache.
+## Getting started
 
-## Running the server
+Each part has its own setup:
 
-```bash
-npm start
-```
+- Backend: see [backend/README.md](backend/README.md)
+- FastAPI retrieval service: see
+  [PAKLAW_AI_QUICK_START.md](PAKLAW_AI_QUICK_START.md) and
+  [PAKLAW_AI_RETRIEVAL_EXPLAINED.md](PAKLAW_AI_RETRIEVAL_EXPLAINED.md) for how
+  the search pipeline itself works
+- Frontend: `cd frontend && npm install && npm run dev`
+- Corpus pipeline: scripts under `scripts/` (see comments in each script —
+  `data/raw/` is never modified, only read)
 
-## API Routes
+Evaluation results and methodology are in `evaluation_report.md`.
 
-| Route | Purpose |
-|---|---|
-| `/api/auth` | Signup / login / token handling |
-| `/api/chat` | Send a message, get a response from the RAG pipeline |
-| `/api/documents` | Access/query the legal document chunks |
-| `/api/feedback` | Submit feedback on a response |
-| `/api/eval` | Run/view evaluation results |
-| `/api/flows` | Manage predefined conversation flows |
+## Further docs
 
-## Notes
-
-- `services/ragService.js` doesn't do retrieval or generation itself — it
-  forwards each question to the Python FastAPI service (`/rag/query`) and
-  maps the response into the shape the frontend expects. The actual chunk
-  search and answer generation live in `fastapi_app/`.
-- Auth is handled via middleware in `middleware/auth.js`, applied to routes
-  that need a logged-in user.
+- [docs/express-fastapi-guide.md](docs/express-fastapi-guide.md) — how the
+  Express backend and FastAPI service talk to each other
+- [fastapi_app/docs/retrieval-design.md](fastapi_app/docs/retrieval-design.md)
+  — retrieval pipeline design decisions and trade-offs

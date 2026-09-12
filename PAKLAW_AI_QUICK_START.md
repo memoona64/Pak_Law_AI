@@ -8,7 +8,7 @@ Hybrid legal search backend for Pakistani laws (BM25 + Chroma vector + RRF fusio
 ## **Running the Server**
 
 ```bash
-cd paklaw-ai
+cd Pak_Law_AI
 uvicorn fastapi_app.main:app --host 127.0.0.1 --port 8000
 ```
 
@@ -30,7 +30,7 @@ uvicorn fastapi_app.main:app --host 127.0.0.1 --port 8000
 ### **GET `/health`**
 ```bash
 curl http://127.0.0.1:8000/health
-# → {"status":"ok","chunks_loaded":1001}
+# → {"status":"ok","chunks_loaded":1497}
 ```
 
 ### **GET `/`**
@@ -54,7 +54,7 @@ python test_fastapi.py
 - Exact-citation shortcut (`Section 302`, `Article 25`)
 - Province filtering (`None` / `Sindh`)
 - HTTP 503 if models unavailable
-- 1001 section-aware legal chunks
+- 1497 section-aware legal chunks
 
 ---
 
