@@ -10,9 +10,13 @@ const NAV_ITEMS = [
   { icon: 'messages-square', label: 'Chats', to: '/chat' },
   { icon: 'workflow', label: 'Guided Flows', to: '/flows' },
   { icon: 'file-search', label: 'Documents', to: '/documents' },
-  { icon: 'gauge', label: 'Evaluation', to: '/dashboard' },
   { icon: 'clock', label: 'History', to: '/history' },
 ];
+
+// Evaluation/benchmark data is not part of the regular user side of the app
+// (per the backend's requireAdmin gate on /api/eval/*) - shown only when the
+// signed-in user is an admin, appended after the items every user sees.
+const ADMIN_NAV_ITEM = { icon: 'gauge', label: 'Evaluation', to: '/dashboard' };
 
 // Shared app sidebar — extracted from Chat.jsx. Brand and primary nav (active
 // route highlighted; "History" is where past questions live, so they aren't
@@ -46,6 +50,7 @@ export default function AppSidebar({ dark = true }) {
   const [open, setOpen] = React.useState(false);
   const location = useLocation();
   const user = useCurrentUser(location.pathname);
+  const navItems = user?.role === 'admin' ? [...NAV_ITEMS, ADMIN_NAV_ITEM] : NAV_ITEMS;
 
   const bg = dark ? 'bg-[#2A2F22] text-[#F7F6F0]' : 'bg-[#F0EFE3] text-[#2A2F22]';
   const rowActive = dark ? 'bg-[#363B2C] border-[#6B7F5E]' : 'bg-white border-[#6B7F5E]';
@@ -104,7 +109,7 @@ export default function AppSidebar({ dark = true }) {
 
         {/* Primary nav */}
         <nav className="flex-1 px-2 pb-2 space-y-0.5">
-          {NAV_ITEMS.map((it) => {
+          {navItems.map((it) => {
             const active = location.pathname === it.to || location.pathname.startsWith(it.to + '/');
             return (
               <Link

@@ -17,7 +17,8 @@ backend/
 │   └── flowsController.js
 ├── middleware/
 │   ├── auth.js             # Auth/token verification
-│   └── errorHandler.js
+│   ├── errorHandler.js
+│   └── requireAdmin.js     # Gates /api/eval/* to role: 'admin' accounts
 ├── models/
 │   ├── User.js
 │   ├── Conversation.js
@@ -39,6 +40,7 @@ backend/
 ├── data/
 │   └── flows.json
 ├── server.js                # Entry point
+├── promoteToAdmin.js        # One-off CLI script: node promoteToAdmin.js someone@example.com
 ├── package.json
 └── .env                      # Not committed — see Environment Variables below
 ```
@@ -91,8 +93,25 @@ npm start
 | `/api/chat` | Send a message, get a response from the RAG pipeline |
 | `/api/documents` | Access/query the legal document chunks |
 | `/api/feedback` | Submit feedback on a response |
-| `/api/eval` | Run/view evaluation results |
+| `/api/eval` | Benchmark + live-usage evaluation data — **admin accounts only** |
 | `/api/flows` | Manage predefined conversation flows |
+
+## Admin access
+
+`/api/eval/*` (the benchmark and live-usage dashboard) is deliberately not
+part of the regular user side of the app — every route there requires an
+authenticated request from a `role: 'admin'` user (see
+`middleware/requireAdmin.js`). Every new account registers as `role: 'user'`
+by default; there is no in-app way to become an admin. To promote an
+existing account:
+
+```bash
+node promoteToAdmin.js someone@example.com
+```
+
+The frontend hides the "Evaluation" nav link from non-admins, but the real
+boundary is the API check above — the link being hidden is just a UI nicety
+on top of it.
 
 ## Notes
 

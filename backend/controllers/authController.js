@@ -16,7 +16,7 @@ const User = require('../models/User');
  */
 const generateToken = (user) => {
   return jwt.sign(
-    { id: user.id, name: user.name, email: user.email },
+    { id: user.id, name: user.name, email: user.email, role: user.role },
     process.env.JWT_SECRET,
     { expiresIn: '7d' }
   );
@@ -71,7 +71,8 @@ exports.register = async (req, res, next) => {
     const userPayload = {
       id: user._id.toString(),
       name: user.name,
-      email: user.email
+      email: user.email,
+      role: user.role
     };
 
     const token = generateToken(userPayload);
@@ -114,7 +115,8 @@ exports.login = async (req, res, next) => {
     const userPayload = {
       id: user._id.toString(),
       name: user.name,
-      email: user.email
+      email: user.email,
+      role: user.role
     };
 
     const token = generateToken(userPayload);
@@ -143,7 +145,8 @@ exports.getMe = async (req, res, next) => {
       user: {
         id: user._id.toString(),
         name: user.name,
-        email: user.email
+        email: user.email,
+        role: user.role
       }
     });
   } catch (error) {

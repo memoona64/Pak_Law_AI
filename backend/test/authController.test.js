@@ -85,6 +85,22 @@ test('register() returns 409 (not a raw 500) when User.create hits the unique-in
   );
 });
 
+test('register() includes the new user\'s role in the response payload', async () => {
+  await withMockedUser(
+    {
+      findOne: () => Promise.resolve(null),
+      // Simulates the schema default: role isn't in the submitted body, but
+      // User.create() would fill it in as 'user'.
+      create: async (doc) => ({ _id: { toString: () => 'user1' }, role: 'user', ...doc }),
+    },
+    async () => {
+      const { req, res } = fakeReqRes({ name: 'Ali', email: 'ali@example.com', password: 'hunter2' });
+      await authController.register(req, res, () => {});
+      assert.equal(res.body.user.role, 'user');
+    }
+  );
+});
+
 test('login() looks up the user by lowercased email regardless of submitted casing', async () => {
   const original = User.findOne;
   let capturedEmail = null;

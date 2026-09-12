@@ -24,6 +24,16 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Password is required'],
     select: false // Excluded from default queries
   },
+  // Everyone registers as 'user'. There's no self-service way to become
+  // 'admin' — see backend/promoteToAdmin.js, a one-off CLI script — by
+  // design, since this gates access to /api/eval/* (see middleware/
+  // requireAdmin.js), which must not be something a user can grant
+  // themselves.
+  role: {
+    type: String,
+    enum: ['user', 'admin'],
+    default: 'user'
+  },
   createdAt: {
     type: Date,
     default: Date.now

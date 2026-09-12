@@ -27,6 +27,15 @@ const MODE_SHORT_LABELS = {
   hybrid_reranker: 'Hybrid + Reranker',
 };
 
+// /api/eval/* is admin-only (see backend/middleware/requireAdmin.js) — give
+// a plain-language reason instead of a bare status code for the two ways
+// that shows up here.
+function describeEvalFetchError(status) {
+  if (status === 401) return 'Please sign in to view this page.';
+  if (status === 403) return "This page is for admin accounts only — it isn't part of the regular app.";
+  return `Evaluation API returned ${status}`;
+}
+
 export default function Dashboard() {
   const [evaluation, setEvaluation] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -53,7 +62,7 @@ export default function Dashboard() {
         });
 
         if (!response.ok) {
-          throw new Error(`Evaluation API returned ${response.status}`);
+          throw new Error(describeEvalFetchError(response.status));
         }
 
         const data = await response.json();
@@ -93,7 +102,7 @@ export default function Dashboard() {
         });
 
         if (!response.ok) {
-          throw new Error(`Live evaluation API returned ${response.status}`);
+          throw new Error(describeEvalFetchError(response.status));
         }
 
         const data = await response.json();
