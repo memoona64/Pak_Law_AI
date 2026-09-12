@@ -61,6 +61,22 @@ LEADING_NUMBER_TOKEN_PATTERN = re.compile(r'^\d+\s+')
 # in "CONSTITUTION OF PAKISTAN 11" (used for Step 1 normalisation only).
 TRAILING_NUMBER_TOKEN_PATTERN = re.compile(r'\s+\d+$')
 
+# Characters pdfplumber sometimes extracts instead of the punctuation mark
+# a PDF's font actually shows on screen - they look identical to the reader
+# but are a different Unicode codepoint. Map each one back to the real ASCII
+# character it stands in for.
+CONFUSABLE_CHARACTERS = {
+    ";": ";",  # GREEK QUESTION MARK - looks exactly like a semicolon
+}
+
+
+# Swaps every confusable character in the text for the real character it's
+# standing in for. Safe to run on the whole page before any other cleaning.
+def normalize_confusable_characters(text):
+    for confusable, real in CONFUSABLE_CHARACTERS.items():
+        text = text.replace(confusable, real)
+    return text
+
 
 # Reads the raw file and splits it into a list of page strings. Each page
 # also has the stray "\n" left over from how extract.py joined pages
@@ -231,7 +247,7 @@ def clean_page(page):
         category = classify_line(stripped, is_edge_line)
         stats[category] += 1
         if category == "keep":
-            kept_lines.append(line)
+            kept_lines.append(normalize_confusable_characters(line))
         elif category == "approved_junk":
             junk_removals.append((stripped, normalize_line(stripped)))
 

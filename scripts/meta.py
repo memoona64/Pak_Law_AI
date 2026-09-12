@@ -18,8 +18,12 @@ from pathlib import Path
 
 import pdfplumber
 
-RAW_DIR = Path("data/raw")
-META_PATH = Path("data/corpus_meta.json")
+# Anchored to the project root (one level up from scripts/) so this script
+# works no matter which folder it's run from, not just when the current
+# directory happens to be the project root.
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+RAW_DIR = PROJECT_ROOT / "data" / "raw"
+META_PATH = PROJECT_ROOT / "data" / "corpus_meta.json"
 
 FILL_ME = "FILL_ME"
 CORPUS_VERSION = "v1"
@@ -87,14 +91,22 @@ def build_or_update_entries(pdf_paths, existing_entries):
     for pdf_path in pdf_paths:
         short_code = derive_short_code(pdf_path)
         covered_codes.add(short_code)
-        if short_code in existing_by_code:
-            entry = existing_by_code[short_code]
-            entry["pages"] = count_pages(pdf_path)
-            entry["source_sha256"] = compute_sha256(pdf_path)
-            print(f"Updated pages/hash for existing entry: {short_code}")
-        else:
-            entry = build_new_entry(pdf_path)
-            print(f"Added new entry: {short_code}")
+        try:
+            if short_code in existing_by_code:
+                entry = existing_by_code[short_code]
+                entry["pages"] = count_pages(pdf_path)
+                entry["source_sha256"] = compute_sha256(pdf_path)
+                print(f"Updated pages/hash for existing entry: {short_code}")
+            else:
+                entry = build_new_entry(pdf_path)
+                print(f"Added new entry: {short_code}")
+        except Exception as error:
+            # One unreadable/corrupted PDF shouldn't stop the whole batch -
+            # report it and move on to the next file.
+            print(f"SKIPPED {short_code}: could not read PDF ({error})")
+            if short_code in existing_by_code:
+                updated_entries.append(existing_by_code[short_code])
+            continue
         updated_entries.append(entry)
 
     for short_code, entry in existing_by_code.items():

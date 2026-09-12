@@ -24,6 +24,10 @@ export default function App() {
         <Route path="/history" element={<History />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/safety" element={<Safety />} />
+        {/* Unmatched URL (typo, stale bookmark, dead deep link) - land
+            somewhere useful instead of a blank white page. Chat.jsx itself
+            redirects to /login when there's no valid session. */}
+        <Route path="*" element={<Navigate to="/chat" replace />} />
       </Routes>
     </BrowserRouter>
   )

@@ -2,6 +2,7 @@ import json
 import logging
 import os
 import re
+import threading
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
@@ -28,6 +29,9 @@ _JSON_FENCE = re.compile(r"^```(?:json)?\s*|\s*```$", re.IGNORECASE | re.MULTILI
 # google.generativeai (the old SDK) is fully deprecated — Google has stopped
 # shipping updates or bug fixes for it. This uses its replacement, google-genai.
 _client = None
+# Guards first-load so two concurrent first requests can't both start
+# creating the client at once (mirrors search_service.py's _index_lock).
+_client_lock = threading.Lock()
 _generation_config = types.GenerateContentConfig(system_instruction=SYSTEM_PROMPT)
 _clause_config = types.GenerateContentConfig(system_instruction=CLAUSE_ANALYSIS_PROMPT)
 _summary_config = types.GenerateContentConfig(system_instruction=DOCUMENT_SUMMARY_PROMPT)
@@ -39,10 +43,12 @@ def _get_client():
     yet — only an actual generation attempt notices."""
     global _client
     if _client is None:
-        api_key = os.getenv("GEMINI_API_KEY")
-        if not api_key:
-            raise RuntimeError("GEMINI_API_KEY is not set")
-        _client = genai.Client(api_key=api_key)
+        with _client_lock:
+            if _client is None:
+                api_key = os.getenv("GEMINI_API_KEY")
+                if not api_key:
+                    raise RuntimeError("GEMINI_API_KEY is not set")
+                _client = genai.Client(api_key=api_key)
     return _client
 
 
@@ -137,16 +143,23 @@ def analyze_clauses(items: list[dict]) -> list[dict]:
     allows only 20 requests per day, so one call per clause cannot analyze a
     realistic contract at all.
     """
+    # Label each clause by its position in THIS batch (1-based), not by the
+    # document's own clause_number: real documents can restart numbering
+    # (e.g. a Schedule or Annexure re-using "1.", "2." ...), and matching on
+    # that label would let a same-batch collision silently attach one
+    # clause's risk verdict to a different clause with the same number.
+    # Position within a batch of at most CLAUSE_BATCH_SIZE items is always
+    # unique, so this can't happen.
     blocks = []
-    for item in items:
+    for position, item in enumerate(items, start=1):
         context = (
             format_context(item["chunks"])
             if item["chunks"]
             else "(no matching legal context found)"
         )
         blocks.append(
-            f"CLAUSE {item['clause_number']}:\n{item['text']}\n\n"
-            f"RETRIEVED LEGAL CONTEXT FOR CLAUSE {item['clause_number']}:\n{context}"
+            f"CLAUSE {position}:\n{item['text']}\n\n"
+            f"RETRIEVED LEGAL CONTEXT FOR CLAUSE {position}:\n{context}"
         )
 
     raw = _JSON_FENCE.sub("", _generate("\n\n---\n\n".join(blocks), _clause_config).strip())
@@ -161,13 +174,17 @@ def analyze_clauses(items: list[dict]) -> list[dict]:
             for _ in items
         ]
 
-    # Match on clause number rather than position: the model can drop or
-    # reorder entries, and a silently shifted result would attach one clause's
-    # risk to another clause's text.
-    by_number = {
+    # The model echoes back "clause_number" holding the CLAUSE {position}
+    # label from the prompt above (not the document's own numbering) - the
+    # model can still drop or reorder entries, so match on that label rather
+    # than assuming positional order in the response.
+    by_position = {
         str(entry.get("clause_number")): entry for entry in parsed if isinstance(entry, dict)
     }
-    return [_clause_result(by_number.get(str(item["clause_number"]))) for item in items]
+    return [
+        _clause_result(by_position.get(str(position)))
+        for position in range(1, len(items) + 1)
+    ]
 
 
 def summarize_document(document_text: str, flagged_notes: list[str]) -> str:

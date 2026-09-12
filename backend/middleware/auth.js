@@ -22,7 +22,10 @@ const protect = (req, res, next) => {
   const token = authHeader.split(' ')[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    // Pin the algorithm explicitly (tokens are always signed HS256 in
+    // authController.js) rather than letting the token itself dictate which
+    // algorithm to verify with.
+    const decoded = jwt.verify(token, process.env.JWT_SECRET, { algorithms: ['HS256'] });
     req.user = decoded; // Attach payload { id, name, email }
     next();
   } catch (error) {

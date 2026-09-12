@@ -11,15 +11,20 @@ const protect = require('../middleware/auth');
 
 /**
  * Rate Limiter for AI Chat Endpoint
- * Restricts single-IP calls to protect downstream Python/LLM inference costs.
+ * Restricts calls per authenticated user to protect downstream Python/LLM
+ * inference costs. Keyed by user id, not IP — every route below already runs
+ * after `protect` (see router.use(protect) below), so req.user is always
+ * available here. Keying by IP would let everyone behind one NAT/campus
+ * network (or one shared office IP) share a single 30-request budget.
  */
 const chatRateLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minute window
-  max: 30, // Limit each IP to 30 requests per window
+  max: 30, // Limit each authenticated user to 30 requests per window
   standardHeaders: true,
   legacyHeaders: false,
+  keyGenerator: (req) => req.user?.id || req.ip,
   message: {
-    error: 'Too many queries submitted from this IP. Please wait 15 minutes before asking more questions.'
+    error: 'Too many queries submitted from this account. Please wait 15 minutes before asking more questions.'
   }
 });
 

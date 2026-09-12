@@ -16,11 +16,15 @@ import urllib.request
 from datetime import date
 from pathlib import Path
 
-META_PATH = Path("data/corpus_meta.json")
+# Anchored to the project root (one level up from scripts/) so this script
+# works no matter which folder it's run from, not just when the current
+# directory happens to be the project root.
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+META_PATH = PROJECT_ROOT / "data" / "corpus_meta.json"
 
 # Downloaded copies go here for hashing, never to the system temp folder
 # (which on this machine can default to the nearly-full C: drive).
-TMP_DIR = Path("data/tmp_recheck")
+TMP_DIR = PROJECT_ROOT / "data" / "tmp_recheck"
 
 FILL_ME = "FILL_ME"
 STALE_AFTER_DAYS = 90

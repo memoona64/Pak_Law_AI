@@ -22,6 +22,14 @@ def _split_by_clause(text: str) -> list[dict] | None:
         return None
 
     chunks = []
+    # Text before the first numbered clause (recitals, party names, "WHEREAS"
+    # preamble) has no clause number of its own, but it's still content a
+    # user uploaded — keep it as its own chunk instead of silently dropping
+    # it, the same way a document with no clause numbers at all is handled.
+    preamble = text[: matches[0].start()].strip()
+    if preamble:
+        chunks.append({"clause_number": None, "text": preamble})
+
     for index, match in enumerate(matches):
         start = match.start()
         end = matches[index + 1].start() if index + 1 < len(matches) else len(text)

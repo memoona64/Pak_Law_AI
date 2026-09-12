@@ -1,9 +1,30 @@
 const express = require('express');
 const multer = require('multer');
 const rateLimit = require('express-rate-limit');
+const { body, validationResult } = require('express-validator');
 const router = express.Router();
 const auth = require('../middleware/auth');
 const { uploadDocument, getDocument } = require('../controllers/documentsController');
+
+// Same allowed provinces as chat/ask (routes/chat.js) — keep the two lists in sync.
+const uploadValidation = [
+  body('province')
+    .optional({ nullable: true })
+    .trim()
+    .toLowerCase()
+    .isIn(['punjab', 'sindh', 'kpk', 'balochistan', 'islamabad', 'gb', 'ajk'])
+    .withMessage('Invalid province specified')
+];
+
+// multer must run first so it parses the multipart body into req.body,
+// which is what express-validator's body() checks below read from.
+function checkValidation(req, res, next) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  next();
+}
 
 // Memory storage: the file is forwarded straight to Python, never written to disk.
 const upload = multer({
@@ -43,7 +64,7 @@ function handleUpload(req, res, next) {
   });
 }
 
-router.post('/upload', auth, documentRateLimiter, handleUpload, uploadDocument);
+router.post('/upload', auth, documentRateLimiter, handleUpload, uploadValidation, checkValidation, uploadDocument);
 router.get('/:id', auth, getDocument);
 
 module.exports = router;

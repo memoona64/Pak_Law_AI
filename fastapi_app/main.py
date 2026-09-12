@@ -24,11 +24,14 @@ from . import citation_verifier, doc_chunker, document_extraction, masking, sear
 from .errors import DocumentExtractionError, ModelUnavailableError
 from .generation import analyze_clauses, generate_answer, summarize_document
 
-MAX_CLAUSES = 200
+MAX_CLAUSES = 100
 MAX_UPLOAD_BYTES = 10 * 1024 * 1024
 # Clauses per Gemini call. The free tier allows only 20 requests per day, so
-# one call per clause cannot analyze a realistic contract at all.
-CLAUSE_BATCH_SIZE = 8
+# one call per clause cannot analyze a realistic contract at all. Worst case
+# for one document analysis: ceil(MAX_CLAUSES / CLAUSE_BATCH_SIZE) clause-batch
+# calls + 1 summary call = ceil(100 / 15) + 1 = 8 Gemini calls, comfortably
+# under the daily cap.
+CLAUSE_BATCH_SIZE = 15
 
 
 logger = logging.getLogger("uvicorn.error")
@@ -82,7 +85,40 @@ app.add_middleware(
 )
 
 
-def _build_validation_help(errors: list[dict]) -> list[str]:
+# Each validation-handled endpoint's own expected request shape and field
+# hints, so a validation error on one endpoint doesn't show another
+# endpoint's JSON body as the "expected" fix.
+_ENDPOINT_VALIDATION_INFO = {
+    "/rag/query": {
+        "expected_body": {
+            "query": "Section 302 PPC",
+            "province": "Sindh",
+            "use_reranker": True,
+            "normalize": True,
+        },
+        "field_hints": {
+            "query": "'query' is required and must be a non-empty string.",
+            "province": "'province' must be a string when provided (e.g. 'Sindh').",
+            "use_reranker": "'use_reranker' must be true or false.",
+            "body": "Request body must be valid JSON.",
+        },
+    },
+    "/rag/analyze-document": {
+        "expected_body": {
+            "file": "(multipart/form-data file upload, required)",
+            "province": "Sindh",
+            "use_reranker": False,
+        },
+        "field_hints": {
+            "file": "'file' is required and must be an uploaded document.",
+            "province": "'province' must be a string when provided (e.g. 'Sindh').",
+            "use_reranker": "'use_reranker' must be true or false.",
+        },
+    },
+}
+
+
+def _build_validation_help(errors: list[dict], field_hints: dict[str, str]) -> list[str]:
     """Convert raw validation errors into short, actionable hints."""
     hints = []
     for err in errors:
@@ -91,17 +127,12 @@ def _build_validation_help(errors: list[dict]) -> list[str]:
             continue
 
         field = loc[-1]
-        if field == "query":
-            hints.append("'query' is required and must be a non-empty string.")
-        elif field == "province":
-            hints.append("'province' must be a string when provided (e.g. 'Sindh').")
-        elif field == "use_reranker":
-            hints.append("'use_reranker' must be true or false.")
-        elif field == "body":
-            hints.append("Request body must be valid JSON.")
+        hint = field_hints.get(field)
+        if hint:
+            hints.append(hint)
 
     if not hints:
-        hints.append("Check JSON types and required fields.")
+        hints.append("Check the request fields and their types.")
 
     # Preserve order while removing duplicates.
     return list(dict.fromkeys(hints))
@@ -187,19 +218,19 @@ def startup():
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
     raw_errors = exc.errors()
+    path = request.url.path
+    # Fall back to /rag/query's shape for any endpoint not in the table above,
+    # so a new endpoint without guidance still gets something rather than
+    # nothing.
+    info = _ENDPOINT_VALIDATION_INFO.get(path, _ENDPOINT_VALIDATION_INFO["/rag/query"])
 
     return JSONResponse(
         status_code=422,
         content={
             "error": "Validation failed for request body.",
-            "endpoint": str(request.url.path),
-            "expected_body": {
-                "query": "Section 302 PPC",
-                "province": "Sindh",
-                "use_reranker": True,
-                "normalize": True,
-            },
-            "help": _build_validation_help(raw_errors),
+            "endpoint": path,
+            "expected_body": info["expected_body"],
+            "help": _build_validation_help(raw_errors, info["field_hints"]),
             "errors": raw_errors,
         },
     )
@@ -278,21 +309,47 @@ def _retrieve_for_clause(clause_text: str, province: Optional[str], use_reranker
 
 @app.post("/rag/analyze-document", response_model=AnalyzeDocumentResponse)
 async def analyze_document(
+    request: Request,
     file: UploadFile = File(...),
     province: Optional[str] = Form(None),
     # Off by default: reranking runs per clause and costs ~15s each, so a long
     # document would take minutes. Turn it on for higher retrieval quality.
     use_reranker: bool = Form(False),
 ):
-    data = await file.read()
+    too_large_detail = (
+        f"File is too large. Maximum size is {MAX_UPLOAD_BYTES // (1024 * 1024)} MB."
+    )
+
+    # Cheap, early check: if the whole request body is already bigger than
+    # the limit, reject now instead of even starting to read the file.
+    # Content-Length covers the whole multipart body (a little more than the
+    # file itself), so this only ever rejects early — it never lets an
+    # oversized file through — and the chunked read below is still the
+    # authoritative check.
+    content_length = request.headers.get("content-length")
+    if content_length is not None and content_length.isdigit():
+        if int(content_length) > MAX_UPLOAD_BYTES:
+            raise HTTPException(status_code=413, detail=too_large_detail)
+
+    # Read in bounded chunks instead of one `await file.read()`, so a file
+    # that lies about (or omits) Content-Length still gets rejected as soon
+    # as it crosses the limit, rather than being fully buffered into memory
+    # first and only checked afterwards.
+    chunks_read = []
+    total_bytes = 0
+    chunk_size = 1024 * 1024
+    while True:
+        chunk = await file.read(chunk_size)
+        if not chunk:
+            break
+        total_bytes += len(chunk)
+        if total_bytes > MAX_UPLOAD_BYTES:
+            raise HTTPException(status_code=413, detail=too_large_detail)
+        chunks_read.append(chunk)
+    data = b"".join(chunks_read)
+
     if not data:
         raise HTTPException(status_code=400, detail="Uploaded file is empty")
-
-    if len(data) > MAX_UPLOAD_BYTES:
-        raise HTTPException(
-            status_code=413,
-            detail=f"File is too large. Maximum size is {MAX_UPLOAD_BYTES // (1024 * 1024)} MB.",
-        )
 
     try:
         raw_text = document_extraction.extract_text(file.filename or "", data)

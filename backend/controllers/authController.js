@@ -16,7 +16,7 @@ const User = require('../models/User');
  */
 const generateToken = (user) => {
   return jwt.sign(
-    { id: user.id, name: user.name, email: user.email },
+    { id: user.id, name: user.name, email: user.email, role: user.role },
     process.env.JWT_SECRET,
     { expiresIn: '7d' }
   );
@@ -33,9 +33,13 @@ exports.register = async (req, res, next) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, email, password } = req.body;
+    const { name, password } = req.body;
+    // The schema's lowercase:true only normalizes on save, not on query
+    // filters, so a case-different email (e.g. "Test@x.com" vs the stored
+    // "test@x.com") would otherwise pass this existence check and hit the
+    // unique index instead. Normalize here so both checks agree.
+    const email = String(req.body.email).toLowerCase().trim();
 
-    // Check for existing user
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(409).json({ error: 'An account with this email already exists.' });
@@ -45,16 +49,30 @@ exports.register = async (req, res, next) => {
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
 
-    const user = await User.create({
-      name,
-      email,
-      passwordHash
-    });
+    let user;
+    try {
+      user = await User.create({
+        name,
+        email,
+        passwordHash
+      });
+    } catch (error) {
+      // Two near-simultaneous registrations for the same email can both
+      // pass the findOne check above before either write lands - the
+      // unique index is the real guard, so translate its duplicate-key
+      // error into the same 409 rather than letting a raw Mongo error
+      // reach the client via errorHandler.
+      if (error.code === 11000) {
+        return res.status(409).json({ error: 'An account with this email already exists.' });
+      }
+      throw error;
+    }
 
     const userPayload = {
       id: user._id.toString(),
       name: user.name,
-      email: user.email
+      email: user.email,
+      role: user.role
     };
 
     const token = generateToken(userPayload);
@@ -79,7 +97,9 @@ exports.login = async (req, res, next) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { email, password } = req.body;
+    const { password } = req.body;
+    // Same case-normalization reason as register() above.
+    const email = String(req.body.email).toLowerCase().trim();
 
     // Explicitly re-include passwordHash due to select: false on model
     const user = await User.findOne({ email }).select('+passwordHash');
@@ -95,7 +115,8 @@ exports.login = async (req, res, next) => {
     const userPayload = {
       id: user._id.toString(),
       name: user.name,
-      email: user.email
+      email: user.email,
+      role: user.role
     };
 
     const token = generateToken(userPayload);
@@ -124,7 +145,8 @@ exports.getMe = async (req, res, next) => {
       user: {
         id: user._id.toString(),
         name: user.name,
-        email: user.email
+        email: user.email,
+        role: user.role
       }
     });
   } catch (error) {

@@ -9,6 +9,11 @@ import {
   Gauge,
 } from '../components/primitives';
 import AppSidebar from '../components/AppSidebar';
+import { getToken } from '../lib/auth';
+
+// The Express backend. Override via a .env file (VITE_API_URL) if it runs
+// somewhere other than localhost — same convention every other page uses.
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const MODE_LABELS = {
   vector_only: 'Vector-only',
@@ -22,10 +27,26 @@ const MODE_SHORT_LABELS = {
   hybrid_reranker: 'Hybrid + Reranker',
 };
 
+// /api/eval/* is admin-only (see backend/middleware/requireAdmin.js) — give
+// a plain-language reason instead of a bare status code for the two ways
+// that shows up here.
+function describeEvalFetchError(status) {
+  if (status === 401) return 'Please sign in to view this page.';
+  if (status === 403) return "This page is for admin accounts only — it isn't part of the regular app.";
+  return `Evaluation API returned ${status}`;
+}
+
 export default function Dashboard() {
   const [evaluation, setEvaluation] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
+  // Live usage has its own loading/error state, kept independent of the
+  // benchmark above — a live-usage fetch failing shouldn't take down the
+  // benchmark view, and vice versa.
+  const [liveEval, setLiveEval] = useState(null);
+  const [liveLoading, setLiveLoading] = useState(true);
+  const [liveError, setLiveError] = useState('');
 
   useEffect(() => {
     let cancelled = false;
@@ -35,10 +56,13 @@ export default function Dashboard() {
         setLoading(true);
         setError('');
 
-        const response = await fetch('/api/eval/latest');
+        const token = getToken();
+        const response = await fetch(`${API_URL}/api/eval/latest`, {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        });
 
         if (!response.ok) {
-          throw new Error(`Evaluation API returned ${response.status}`);
+          throw new Error(describeEvalFetchError(response.status));
         }
 
         const data = await response.json();
@@ -58,6 +82,46 @@ export default function Dashboard() {
     }
 
     loadEvaluation();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadLiveEvaluation() {
+      try {
+        setLiveLoading(true);
+        setLiveError('');
+
+        const token = getToken();
+        const response = await fetch(`${API_URL}/api/eval/live?days=30`, {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        });
+
+        if (!response.ok) {
+          throw new Error(describeEvalFetchError(response.status));
+        }
+
+        const data = await response.json();
+
+        if (!cancelled) {
+          setLiveEval(data);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setLiveError(err.message || 'Unable to load live usage data.');
+        }
+      } finally {
+        if (!cancelled) {
+          setLiveLoading(false);
+        }
+      }
+    }
+
+    loadLiveEvaluation();
 
     return () => {
       cancelled = true;
@@ -90,7 +154,7 @@ export default function Dashboard() {
     );
   }
 
-  if (error || !evaluation) {
+  if (error || !evaluation || !bestMode) {
     return (
       <DashboardShell>
         <div className="max-w-[760px]">
@@ -347,8 +411,106 @@ export default function Dashboard() {
             </p>
           </div>
         </Card>
+
+        {/* Live usage — real traffic, separate from the fixed benchmark above */}
+        <LiveUsagePanel
+          liveEval={liveEval}
+          loading={liveLoading}
+          error={liveError}
+        />
       </div>
     </DashboardShell>
+  );
+}
+
+function LiveUsagePanel({ liveEval, loading, error }) {
+  return (
+    <Card>
+      <Eyebrow>Live usage</Eyebrow>
+
+      <div className="font-serif text-[22px] leading-tight mt-1">
+        How real questions are actually performing
+      </div>
+
+      <p className="mt-2 text-[15px] text-[#4A5540] max-w-[820px] leading-relaxed">
+        This section reflects real questions asked through Chat over the last{' '}
+        {liveEval?.windowDays ?? 30} days — it is not the benchmark above. Real
+        questions have no known-correct answer to check retrieval against, so
+        there is no Recall number here; instead this tracks volume, latency,
+        how often the citation verifier withheld an answer, and what users
+        themselves said via the Helpful / Not helpful buttons in Chat.
+      </p>
+
+      {loading && (
+        <p className="mt-4 text-[14px] text-[#7A7D68]">Loading live usage…</p>
+      )}
+
+      {!loading && error && (
+        <p className="mt-4 text-[14px] text-[#B8543A]">{error}</p>
+      )}
+
+      {!loading && !error && liveEval && liveEval.totalQueries === 0 && (
+        <p className="mt-4 text-[14px] text-[#7A7D68]">
+          No live queries logged yet in this window. Once people start asking
+          questions through Chat, real usage will show up here.
+        </p>
+      )}
+
+      {!loading && !error && liveEval && liveEval.totalQueries > 0 && (
+        <>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
+            <MetricMini label="Queries" value={liveEval.totalQueries} />
+            <MetricMini label="Latency P50" value={formatLatency(liveEval.latencyMs.p50)} />
+            <MetricMini label="Latency P95" value={formatLatency(liveEval.latencyMs.p95)} />
+            <MetricMini
+              label="Verifier-blocked"
+              value={liveEval.verifierBlocked.rate === null ? '—' : `${liveEval.verifierBlocked.rate}%`}
+            />
+            <MetricMini
+              label="Errors"
+              value={liveEval.errors.rate === null ? '—' : `${liveEval.errors.rate}%`}
+            />
+            <MetricMini
+              label="Feedback: helpful"
+              value={
+                liveEval.feedback.helpfulRate === null
+                  ? 'No votes yet'
+                  : `${liveEval.feedback.helpfulRate}% (${liveEval.feedback.total} votes)`
+              }
+            />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5">
+            <BreakdownCounts title="By language" counts={liveEval.byLanguage} />
+            <BreakdownCounts title="By province" counts={liveEval.byProvince} />
+          </div>
+        </>
+      )}
+    </Card>
+  );
+}
+
+function BreakdownCounts({ title, counts }) {
+  const entries = Object.entries(counts || {}).sort((a, b) => b[1] - a[1]);
+  if (!entries.length) return null;
+  const total = entries.reduce((sum, [, count]) => sum + count, 0);
+
+  return (
+    <div className="rounded-lg border border-[#D7D7C8] bg-[#FAF9F3] p-4">
+      <div className="text-[12px] uppercase tracking-[0.08em] text-[#7A7D68]">
+        {title}
+      </div>
+      <div className="mt-3 space-y-2">
+        {entries.map(([key, count]) => (
+          <div key={key} className="flex items-center justify-between text-[14px]">
+            <span className="capitalize">{key}</span>
+            <span className="text-[#4A5540]">
+              {count} ({Math.round((count / total) * 100)}%)
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 

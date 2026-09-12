@@ -136,6 +136,7 @@ function Chip({ children, tone = 'taupe', icon, className = '', title }) {
     espresso: 'bg-[#2A2F22] text-[#F7F6F0] border-[#2A2F22]',
     flag: 'bg-[#F3DDD5] text-[#8A3B24] border-[#D9A797]',
     ok: 'bg-[#E7ECDC] text-[#3E5236] border-[#B7C2A0]',
+    good: 'bg-[#DEEBD4] text-[#2F5233] border-[#9FBF8C]',
     outline: 'bg-transparent text-[#3A3D2E] border-[#D8D9C8]',
   };
   return (
@@ -153,13 +154,16 @@ function Btn({ children, variant = 'primary', icon, iconRight, size = 'md', clas
     : size === 'lg'
       ? 'h-11 px-5 text-[14px]'
       : 'h-9 px-4 text-[13px]';
-  const v = {
+  const variants = {
     primary: 'bg-[#2A2F22] text-[#F7F6F0] hover:bg-[#363B2C] border border-[#2A2F22]',
     bronze:  'bg-[#6B7F5E] text-[#F7F6F0] hover:bg-[#4A5540] border border-[#6B7F5E]',
     ghost:   'bg-transparent text-[#2A2F22] hover:bg-[#F0EFE3] border border-transparent',
     outline: 'bg-transparent text-[#2A2F22] hover:bg-[#F0EFE3] border border-[#2A2F22]/25',
     cream:   'bg-[#F7F6F0] text-[#2A2F22] hover:bg-white border border-[#D8D9C8]',
-  }[variant];
+  };
+  // An unrecognized variant should still render a usable button, not one
+  // with the literal word "undefined" silently dropped into its className.
+  const v = variants[variant] || variants.primary;
   return (
     <button
       className={`inline-flex items-center justify-center gap-2 rounded-md font-medium tracking-[0.01em] transition-colors focus-bronze disabled:opacity-40 disabled:pointer-events-none ${sz} ${v} ${className}`}
@@ -250,7 +254,11 @@ function Sparkline({ data = [], width = 140, height = 36, color = '#6B7F5E', fil
 
 // --- Bar chart (simple)
 function BarChart({ data, labels, width = 480, height = 180, color = '#6B7F5E' }) {
-  const max = Math.max(...data);
+  if (!data || data.length === 0) return null;
+  // Math.max(...data) is 0 for an all-zero dataset, which would divide every
+  // bar height by zero (NaN, so nothing renders) below — fall back to 1 so
+  // bars just draw at zero height instead of silently vanishing.
+  const max = Math.max(...data) || 1;
   const bw = width / data.length;
   return (
     <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} className="overflow-visible">
@@ -274,6 +282,7 @@ function BarChart({ data, labels, width = 480, height = 180, color = '#6B7F5E' }
 
 // --- Line chart with two series
 function LineChart({ series, width = 520, height = 200, xLabels = [] }) {
+  if (!series || series.length === 0 || !series[0]?.data?.length) return null;
   const all = series.flatMap(s => s.data);
   const max = Math.max(...all) * 1.1;
   const min = Math.min(...all) * 0.85;

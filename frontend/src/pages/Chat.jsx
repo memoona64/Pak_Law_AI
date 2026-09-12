@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Icon, Chip, Btn, Eyebrow, Disclaimer } from '../components/primitives';
 import { PLSeal } from '../components/seal';
 import AppSidebar from '../components/AppSidebar';
+import { getToken, clearToken } from '../lib/auth';
 
 // The Express backend — it calls FastAPI's retrieval + generation pipeline
 // internally and returns a finished answer with citations. Override via a
@@ -15,6 +16,41 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 // here; this is purely typography, not a language selection.
 const URDU_SCRIPT_RE = /[؀-ۿ]/;
 const isUrduScript = (text) => URDU_SCRIPT_RE.test(text);
+
+// --- Safety keyword trigger (basic, Phase 1) --------------------------------
+// CONSERVATIVE AND NOT EXHAUSTIVE ON PURPOSE. This only catches obvious,
+// explicit phrasings of acute danger — suicide/self-harm intent, an assault
+// happening right now, an arrest in progress — in English, Urdu script, and
+// Roman Urdu. It is a safety net, not a clinical or legal detector; most real
+// crisis messages will not match. That's why Safety.jsx is also always
+// reachable from the sidebar ("In danger? Get help" in AppSidebar.jsx)
+// regardless of whether any of these match.
+const SAFETY_KEYWORDS = [
+  // English — suicide / self-harm intent
+  /\bkill myself\b/i,
+  /\bwant to die\b/i,
+  /\bend my life\b/i,
+  /\bsuicid(e|al)\b/i,
+  /\b(hurt|harm) myself\b/i,
+  // English — physical violence happening right now
+  /\b(he|she|they)('s| is| are)? (beating|hitting) me\b/i,
+  /\bbeing beaten\b/i,
+  // English — arrest in progress
+  /\bpolice (are|is) arresting me\b/i,
+  /\bbeing arrested right now\b/i,
+  // Roman Urdu
+  /\bkhud\s*kushi\b/i,
+  /\bmarna chahta\b/i,
+  /\bmujhe marna hai\b/i,
+  /\bmujhe maar raha hai\b/i,
+  /\bgiraftari ho rahi hai\b/i,
+  // Urdu script
+  /خودکشی/,
+  /میں مرنا چاہتا ہوں/,
+  /مجھے مار رہا ہے/,
+  /گرفتاری ہو رہی ہے/,
+];
+const matchesSafetyKeyword = (text) => SAFETY_KEYWORDS.some((re) => re.test(text));
 
 const formatTime = (iso) => {
   try {
@@ -34,6 +70,7 @@ const expandStoredMessages = (storedMessages) => {
       id: msg.id,
       role: 'assistant',
       time: formatTime(msg.timestamp),
+      text: msg.answer,
       body: <p className="whitespace-pre-wrap">{msg.answer}</p>,
       citations: msg.citations || [],
     });
@@ -54,8 +91,12 @@ export default function ChatScreen() {
   const messagesEndRef = React.useRef(null);
 
   // Loads a past conversation's real messages when arriving via /chat/:id
-  // (e.g. clicking a row in History). A bare /chat starts empty.
+  // (e.g. clicking a row in History). A bare /chat starts empty. `cancelled`
+  // stops a late response from setting state after the user has navigated
+  // away (e.g. clicked another history row before this one finished loading).
   React.useEffect(() => {
+    let cancelled = false;
+
     if (!routeConversationId) {
       setMessages([]);
       setConversationId(null);
@@ -65,7 +106,7 @@ export default function ChatScreen() {
 
     setLoadingConversation(true);
     setConversationId(routeConversationId);
-    const token = localStorage.getItem('paklaw_token');
+    const token = getToken();
     if (!token) {
       setMessages([{ id: 'note-auth', role: 'note', text: 'Please sign in to view this conversation.' }]);
       setLoadingConversation(false);
@@ -78,19 +119,27 @@ export default function ChatScreen() {
       .then(async (res) => {
         if (res.status === 404) throw new Error("This conversation wasn't found.");
         if (res.status === 401) {
-          localStorage.removeItem('paklaw_token');
-          localStorage.removeItem('paklaw_user');
+          clearToken();
+          if (!cancelled) navigate('/login');
           throw new Error('Your session expired — please sign in again.');
         }
         if (!res.ok) throw new Error(`Chat service returned ${res.status}`);
         const data = await res.json();
-        setMessages(expandStoredMessages(data.messages || []));
+        if (!cancelled) setMessages(expandStoredMessages(data.messages || []));
       })
       .catch((err) => {
-        setMessages([{ id: 'note-load-error', role: 'note', text: err.message || "Couldn't load this conversation." }]);
+        if (!cancelled) {
+          setMessages([{ id: 'note-load-error', role: 'note', text: err.message || "Couldn't load this conversation." }]);
+        }
       })
-      .finally(() => setLoadingConversation(false));
-  }, [routeConversationId]);
+      .finally(() => {
+        if (!cancelled) setLoadingConversation(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [routeConversationId, navigate]);
 
   // Keeps the newest message in view instead of leaving it below the fold.
   React.useEffect(() => {
@@ -102,12 +151,21 @@ export default function ChatScreen() {
   const handleSend = async () => {
     const text = input.trim();
     if (!text || sending) return;
+
+    // Safety check runs before anything is sent to the backend. See
+    // SAFETY_KEYWORDS above — this is deliberately conservative.
+    if (matchesSafetyKeyword(text)) {
+      setInput('');
+      navigate('/safety');
+      return;
+    }
+
     const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     setMessages(prev => [...prev, { id: `u-${Date.now()}`, role: 'user', time, text }]);
     setInput('');
     setSending(true);
 
-    const token = localStorage.getItem('paklaw_token');
+    const token = getToken();
     if (!token) {
       setMessages(prev => [...prev, {
         id: `note-${Date.now()}`,
@@ -133,13 +191,13 @@ export default function ChatScreen() {
       });
 
       if (res.status === 401) {
-        localStorage.removeItem('paklaw_token');
-        localStorage.removeItem('paklaw_user');
+        clearToken();
         setMessages(prev => [...prev, {
           id: `note-${Date.now()}`,
           role: 'note',
           text: 'Your session expired — please sign in again.',
         }]);
+        navigate('/login');
         return;
       }
       if (!res.ok) throw new Error(`Chat service returned ${res.status}`);
@@ -151,6 +209,7 @@ export default function ChatScreen() {
         role: 'assistant',
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         latencyLabel,
+        text: data.answer,
         body: <p className="whitespace-pre-wrap">{data.answer}</p>,
         citations: data.citations || [],
       }]);
@@ -305,6 +364,55 @@ function UserMessage({ m }) {
 }
 
 function AssistantMessage({ m, expanded, setExpanded }) {
+  const navigate = useNavigate();
+  const [copied, setCopied] = React.useState(false);
+  const [voted, setVoted] = React.useState(null); // null | 'up' | 'down'
+  const [voting, setVoting] = React.useState(false);
+
+  // Copies the plain answer text (not the JSX) to the clipboard, and swaps
+  // the icon to a checkmark briefly as confirmation — same "icon swap"
+  // pattern used elsewhere in this file (e.g. eye / eye-off on Login.jsx).
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(m.text || '');
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      /* clipboard permission denied or unavailable — no-op */
+    }
+  };
+
+  // Records a helpful/not-helpful vote against this message via the backend's
+  // feedback endpoint (POST /api/feedback, { messageId, vote }). Once a vote
+  // is recorded we lock it in rather than letting someone re-vote back and
+  // forth, since the store is append-only.
+  const handleVote = async (vote) => {
+    if (voting || voted) return;
+    const token = getToken();
+    if (!token) return;
+    setVoting(true);
+    try {
+      const res = await fetch(`${API_URL}/api/feedback`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ messageId: m.id, vote }),
+      });
+      if (res.status === 401) {
+        clearToken();
+        navigate('/login');
+        return;
+      }
+      if (res.ok || res.status === 204) setVoted(vote);
+    } catch {
+      /* best-effort — feedback isn't critical to the chat working */
+    } finally {
+      setVoting(false);
+    }
+  };
+
   return (
     <div className="flex gap-3">
       <div className="w-9 h-9 shrink-0 rounded-full bg-[#2A2F22] flex items-center justify-center">
@@ -337,9 +445,10 @@ function AssistantMessage({ m, expanded, setExpanded }) {
 
           {/* Answer footer actions */}
           <div className="mt-4 flex items-center gap-1">
-            <IconBtn name="copy" tip="Copy" />
-            <IconBtn name="thumbs-up" tip="Helpful" />
-            <IconBtn name="thumbs-down" tip="Not helpful" />
+            <IconBtn name={copied ? 'check' : 'copy'} tip={copied ? 'Copied!' : 'Copy'} onClick={handleCopy} />
+            <IconBtn name="thumbs-up" tip="Helpful" onClick={() => handleVote('up')} active={voted === 'up'} disabled={voting || voted === 'down'} />
+            <IconBtn name="thumbs-down" tip="Not helpful" onClick={() => handleVote('down')} active={voted === 'down'} disabled={voting || voted === 'up'} />
+            {voted && <span className="text-[13px] text-[#6B7F5E] ml-1">Thanks for the feedback.</span>}
           </div>
         </div>
       </div>
@@ -382,11 +491,14 @@ function CitationPill({ c, expanded, onToggle }) {
 
 // ---- Bits ----
 
-function ComposerIcon({ name, tip, disabled }) {
+function ComposerIcon({ name, tip, disabled, onClick }) {
   return (
     <button
+      type="button"
       title={tip}
+      aria-label={tip}
       disabled={disabled}
+      onClick={onClick}
       className={`w-8 h-8 rounded-md flex items-center justify-center ${disabled ? 'text-[#A6A896] cursor-not-allowed' : 'text-[#4A5540] hover:bg-[#F0EFE3] hover:text-[#2A2F22]'}`}
     >
       <Icon name={name} size={14} />
@@ -394,9 +506,16 @@ function ComposerIcon({ name, tip, disabled }) {
   );
 }
 
-function IconBtn({ name, tip }) {
+function IconBtn({ name, tip, onClick, active, disabled }) {
   return (
-    <button title={tip} className="w-7 h-7 rounded-md flex items-center justify-center text-[#83866F] hover:bg-[#F0EFE3] hover:text-[#2A2F22]">
+    <button
+      type="button"
+      title={tip}
+      aria-label={tip}
+      onClick={onClick}
+      disabled={disabled}
+      className={`w-7 h-7 rounded-md flex items-center justify-center ${active ? 'text-[#6B7F5E] bg-[#ECEBD9]' : 'text-[#83866F]'} ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#F0EFE3] hover:text-[#2A2F22]'}`}
+    >
       <Icon name={name} size={13} />
     </button>
   );

@@ -28,4 +28,9 @@ const feedbackSchema = new mongoose.Schema({
   }
 });
 
+// One vote per user per message — createFeedback uses this as an upsert key
+// so a user can change their mind, but can't stack unlimited votes on the
+// same message (which would silently skew the live "helpful rate").
+feedbackSchema.index({ userId: 1, messageId: 1 }, { unique: true });
+
 module.exports = mongoose.model('Feedback', feedbackSchema);

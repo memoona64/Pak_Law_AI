@@ -12,7 +12,10 @@
       "title": "Short title, extent, application and commencement",
       "jurisdiction": "federal",
       "province": null,
-      "source_status": "Active"
+      "source_status": "Active",
+      "section_title": "Short title, extent, application and commencement",
+      "chapter": null,
+      "amendment_note": null
     }
   },
   {
@@ -28,7 +31,10 @@
       "title": "Definitions",
       "jurisdiction": "federal",
       "province": null,
-      "source_status": "Active"
+      "source_status": "Active",
+      "section_title": "Definitions",
+      "chapter": null,
+      "amendment_note": null
     }
   },
   {
@@ -44,7 +50,10 @@
       "title": "Ordinance to override other laws, etc.",
       "jurisdiction": "federal",
       "province": null,
-      "source_status": "Active"
+      "source_status": "Active",
+      "section_title": "Ordinance to override other laws, etc.",
+      "chapter": null,
+      "amendment_note": null
     }
   },
   {
@@ -60,7 +69,10 @@
       "title": "Succession",
       "jurisdiction": "federal",
       "province": null,
-      "source_status": "Active"
+      "source_status": "Active",
+      "section_title": "Succession",
+      "chapter": null,
+      "amendment_note": null
     }
   },
   {
@@ -76,7 +88,10 @@
       "title": "Registration of marriages",
       "jurisdiction": "federal",
       "province": null,
-      "source_status": "Active"
+      "source_status": "Active",
+      "section_title": "Registration of marriages",
+      "chapter": null,
+      "amendment_note": null
     }
   },
   {
@@ -92,7 +107,10 @@
       "title": "Polygamy",
       "jurisdiction": "federal",
       "province": null,
-      "source_status": "Active"
+      "source_status": "Active",
+      "section_title": "Polygamy",
+      "chapter": null,
+      "amendment_note": null
     }
   },
   {
@@ -108,7 +126,10 @@
       "title": "Talaq",
       "jurisdiction": "federal",
       "province": null,
-      "source_status": "Active"
+      "source_status": "Active",
+      "section_title": "Talaq",
+      "chapter": null,
+      "amendment_note": null
     }
   },
   {
@@ -124,7 +145,10 @@
       "title": "Dissolution of marriage otherwise than by talaq",
       "jurisdiction": "federal",
       "province": null,
-      "source_status": "Active"
+      "source_status": "Active",
+      "section_title": "Dissolution of marriage otherwise than by talaq",
+      "chapter": null,
+      "amendment_note": null
     }
   },
   {
@@ -140,7 +164,10 @@
       "title": "Maintenance",
       "jurisdiction": "federal",
       "province": null,
-      "source_status": "Active"
+      "source_status": "Active",
+      "section_title": "Maintenance",
+      "chapter": null,
+      "amendment_note": null
     }
   },
   {
@@ -156,7 +183,10 @@
       "title": "Dower",
       "jurisdiction": "federal",
       "province": null,
-      "source_status": "Active"
+      "source_status": "Active",
+      "section_title": "Dower",
+      "chapter": null,
+      "amendment_note": null
     }
   },
   {
@@ -172,7 +202,10 @@
       "title": "Power to make rules",
       "jurisdiction": "federal",
       "province": null,
-      "source_status": "Active"
+      "source_status": "Active",
+      "section_title": "Power to make rules",
+      "chapter": null,
+      "amendment_note": null
     }
   },
   {
@@ -188,7 +221,10 @@
       "title": "Amendment of Child Marriage Restraint Act, 1929",
       "jurisdiction": "federal",
       "province": null,
-      "source_status": "Omitted"
+      "source_status": "Omitted",
+      "section_title": "Amendment of Child Marriage Restraint Act, 1929",
+      "chapter": null,
+      "amendment_note": null
     }
   },
   {
@@ -204,7 +240,10 @@
       "title": "Amendment of the Dissolution of Muslim Marriages Act, 1939",
       "jurisdiction": "federal",
       "province": null,
-      "source_status": "Omitted"
+      "source_status": "Omitted",
+      "section_title": "Amendment of the Dissolution of Muslim Marriages Act, 1939",
+      "chapter": null,
+      "amendment_note": null
     }
   }
 ]

@@ -1,6 +1,8 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Icon, Chip, Btn, Eyebrow, Card, Disclaimer } from '../components/primitives';
 import AppSidebar from '../components/AppSidebar';
+import { getToken, clearToken } from '../lib/auth';
 
 // The Express backend. Override via a .env file (VITE_API_URL) if it runs
 // somewhere other than localhost.
@@ -47,6 +49,7 @@ export default function Documents() {
 
 // ---- UPLOAD ZONE ----
 function UploadView({ onUploaded }) {
+  const navigate = useNavigate();
   const [drag, setDrag] = React.useState(false);
   const [analyzing, setAnalyzing] = React.useState(false);
   const [error, setError] = React.useState('');
@@ -58,7 +61,7 @@ function UploadView({ onUploaded }) {
       setError('Only PDF files are accepted right now.');
       return;
     }
-    const token = localStorage.getItem('paklaw_token');
+    const token = getToken();
     if (!token) {
       setError('Please sign in to upload a document.');
       return;
@@ -74,9 +77,9 @@ function UploadView({ onUploaded }) {
         body: form,
       });
       if (res.status === 401) {
-        localStorage.removeItem('paklaw_token');
-        localStorage.removeItem('paklaw_user');
-        throw new Error('Your session expired — please sign in again.');
+        clearToken();
+        navigate('/login');
+        return;
       }
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || `Upload failed (${res.status}).`);
@@ -109,6 +112,7 @@ function UploadView({ onUploaded }) {
             ref={fileInputRef}
             type="file"
             accept="application/pdf"
+            aria-label="Upload a PDF document for analysis"
             className="hidden"
             onChange={e => { if (e.target.files.length) upload(e.target.files[0]); }}
           />

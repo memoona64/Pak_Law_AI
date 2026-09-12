@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Icon, Eyebrow } from '../components/primitives';
 import AppSidebar from '../components/AppSidebar';
+import StatusState from '../components/StatusState';
 import { FLOW_LANG_KEY, FLOW_LANGS, getSavedFlowLang } from '../lib/flowLang';
 
 // The Express backend. Override via a .env file (VITE_API_URL) if it runs
@@ -22,15 +23,25 @@ export default function FlowsScreen() {
   };
 
   React.useEffect(() => {
+    let cancelled = false;
     setLoading(true);
     setError('');
     fetch(`${API_URL}/api/flows?lang=${lang}`)
       .then(async (res) => {
         if (!res.ok) throw new Error(`Flows service returned ${res.status}`);
-        setFlows(await res.json());
+        const data = await res.json();
+        if (!cancelled) setFlows(data);
       })
-      .catch((err) => setError(err.message || "Couldn't reach the backend — make sure it's running."))
-      .finally(() => setLoading(false));
+      .catch((err) => {
+        if (!cancelled) setError(err.message || "Couldn't reach the backend — make sure it's running.");
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [lang]);
 
   const query = search.trim().toLowerCase();
@@ -59,6 +70,7 @@ export default function FlowsScreen() {
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search flows, statutes…"
+              aria-label="Search flows and statutes"
               className="bg-transparent focus:outline-none w-40 sm:w-56 placeholder-[#7A7D68]"
             />
           </div>
@@ -73,7 +85,7 @@ export default function FlowsScreen() {
           {loading ? (
             <div className="text-center py-24 text-[16px] text-[#7A7D68]">Loading…</div>
           ) : error ? (
-            <ErrorState message={error} />
+            <StatusState tone="error" title="Couldn't load flows." message={error} />
           ) : visible.length === 0 ? (
             <div className="text-center py-24 text-[16px] text-[#7A7D68]">
               {query ? 'No flows match your search.' : 'No guided flows are available yet.'}
@@ -101,18 +113,6 @@ function FlowLangToggle({ lang, setLang }) {
           {o.label}
         </button>
       ))}
-    </div>
-  );
-}
-
-function ErrorState({ message }) {
-  return (
-    <div className="flex flex-col items-center justify-center text-center py-24 rounded-xl border border-dashed border-[#D8D9C8]">
-      <div className="w-16 h-16 rounded-full bg-[#F3DDD5] border border-[#D9A797] flex items-center justify-center">
-        <Icon name="alert-triangle" size={26} color="#8A3B24" />
-      </div>
-      <div className="mt-5 font-serif text-[22px] leading-tight">Couldn't load flows.</div>
-      <p className="mt-2 text-[16px] text-[#4A5540] max-w-[360px]">{message}</p>
     </div>
   );
 }

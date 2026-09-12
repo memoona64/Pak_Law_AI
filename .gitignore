@@ -244,3 +244,16 @@ docs/team-briefing-script.md
 backend/node_modules/
 
 frontend/node_modules/
+
+# Generated evaluation-run output (regenerate with evaluate_harness.py /
+# create_dashboard_summary.py) -- not source, shouldn't be committed.
+/evaluation_results*.csv
+/evaluation_results*.json
+/evaluation_master_150.json
+/final_evaluation_metrics_150.json
+/generated_answer_results.json
+/manual_answer_evaluation*.json
+
+# check_freshness.py --recheck downloads re-fetched PDFs here for comparison;
+# these must never end up staged in git.
+/data/tmp_recheck/

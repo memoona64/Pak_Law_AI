@@ -17,10 +17,30 @@ dns.setServers(['8.8.8.8', '1.1.1.1']);
 
 const Flow = require('./models/Flow');
 
+// Prints which database this script is about to wipe (host + db name only,
+// no credentials) so it's never ambiguous which MONGO_URI got picked up.
+function describeTarget(mongoUri) {
+  try {
+    const url = new URL(mongoUri);
+    return `${url.hostname}${url.pathname}`;
+  } catch {
+    return '(unparseable MONGO_URI)';
+  }
+}
+
 const seedFlows = async () => {
   try {
     if (!process.env.MONGO_URI) {
       throw new Error('MONGO_URI is missing in the environment variables.');
+    }
+
+    // This script deletes every existing Flow document before reseeding.
+    // Requiring an explicit --yes is cheap insurance against running it
+    // against a shared/production MONGO_URI by mistake.
+    if (!process.argv.includes('--yes')) {
+      console.log(`[Seed] This will DELETE all existing Flow documents in: ${describeTarget(process.env.MONGO_URI)}`);
+      console.log('[Seed] Re-run with --yes to actually do this: node seedFlows.js --yes');
+      process.exit(1);
     }
 
     await mongoose.connect(process.env.MONGO_URI);

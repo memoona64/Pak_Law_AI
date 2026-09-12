@@ -34,8 +34,12 @@ import json
 import re
 from pathlib import Path
 
-INPUT_PATH = Path("data/clean/crpc.txt")
-OUTPUT_PATH = Path("data/chunks/crpc.json")
+# Anchored to the project root (one level up from scripts/) so this script
+# works no matter which folder it's run from, not just when the current
+# directory happens to be the project root.
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+INPUT_PATH = PROJECT_ROOT / "data" / "clean" / "crpc.txt"
+OUTPUT_PATH = PROJECT_ROOT / "data" / "chunks" / "crpc.json"
 
 ACT_NAME = "Code of Criminal Procedure, 1898"
 ACT_NO = "V of 1898"
@@ -156,6 +160,8 @@ def chunk_crpc():
     section_lines = []
     skipping_footnote = False
 
+    # Turns whatever's been collected in section_lines into one finished
+    # chunk and appends it to chunks. Does nothing if no section is open.
     def flush_section():
         if section_number is None:
             return
