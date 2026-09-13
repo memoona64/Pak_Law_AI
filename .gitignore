@@ -1,7 +1,13 @@
-# Byte-compiled / optimized / DLL files
+.venv/
+.tmp/
+.pipcache/
+.hfcache/
+data/raw/*.pdf
 __pycache__/
 *.py[codz]
 *$py.class
+.omc/ 
+Claude outputs/
 
 # C extensions
 *.so
@@ -14,8 +20,10 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
-lib64/
+# Root-anchored: an unanchored "lib/" also matched frontend/src/lib/,
+# silently blocking any file placed there from ever being committed.
+/lib/
+/lib64/
 parts/
 sdist/
 var/
@@ -216,3 +224,36 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+node_modules/
+
+# pip install --target artifacts (venv-style wrappers, man pages, runtime DB)
+/Scripts/
+# Git on Windows/macOS matches the above case-insensitively, which would
+# otherwise also hide the real, tracked scripts/ directory used throughout
+# this project -- explicitly keep it.
+!/scripts/
+/share/
+chroma_db/
+docs/team-briefing-script.md
+
+# Windows treats Scripts/ and scripts/ as the same path, so the !/scripts/
+# rule above accidentally un-ignores the venv Scripts/ folder. Re-ignore the
+# venv executables specifically (this comes last, so it wins).
+/Scripts/*.exe
+
+backend/node_modules/
+
+frontend/node_modules/
+
+# Generated evaluation-run output (regenerate with evaluate_harness.py /
+# create_dashboard_summary.py) -- not source, shouldn't be committed.
+/evaluation_results*.csv
+/evaluation_results*.json
+/evaluation_master_150.json
+/final_evaluation_metrics_150.json
+/generated_answer_results.json
+/manual_answer_evaluation*.json
+
+# check_freshness.py --recheck downloads re-fetched PDFs here for comparison;
+# these must never end up staged in git.
+/data/tmp_recheck/

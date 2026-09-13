@@ -1,0 +1,283 @@
+{
+  "benchmark": {
+    "dataset": "evaluation_master_150.json",
+    "total_questions": 150,
+    "legal_questions": 133,
+    "oos_questions": 17,
+    "recall_evaluable": 86,
+    "corpus_gaps": 47,
+    "note": "Recall metrics use only legal questions whose expected Act/Section target exists in the retrieval corpus."
+  },
+  "modes": {
+    "vector_only": {
+      "recall_at_5": 45.348837209302324,
+      "recall_at_10": 52.32558139534884,
+      "latency_p50_ms": 51.86794999826816,
+      "latency_p95_ms": 135.93512500119687,
+      "latency_mean_ms": 62.31820232566205,
+      "recall_evaluable": 86,
+      "corpus_gaps": 47,
+      "errors": 0,
+      "breakdowns": {
+        "language": {
+          "English": {
+            "evaluated": 45,
+            "recall_at_5": 48.888888888888886,
+            "recall_at_10": 55.55555555555556
+          },
+          "Roman Urdu": {
+            "evaluated": 23,
+            "recall_at_5": 39.130434782608695,
+            "recall_at_10": 47.82608695652174
+          },
+          "Urdu": {
+            "evaluated": 18,
+            "recall_at_5": 44.44444444444444,
+            "recall_at_10": 50.0
+          }
+        },
+        "category": {
+          "exact_citation": {
+            "evaluated": 17,
+            "recall_at_5": 0.0,
+            "recall_at_10": 0.0
+          },
+          "family_law": {
+            "evaluated": 5,
+            "recall_at_5": 60.0,
+            "recall_at_10": 80.0
+          },
+          "natural_english": {
+            "evaluated": 12,
+            "recall_at_5": 83.33333333333334,
+            "recall_at_10": 83.33333333333334
+          },
+          "natural_language": {
+            "evaluated": 2,
+            "recall_at_5": 100.0,
+            "recall_at_10": 100.0
+          },
+          "province_sensitive": {
+            "evaluated": 22,
+            "recall_at_5": 77.27272727272727,
+            "recall_at_10": 86.36363636363636
+          },
+          "roman_urdu": {
+            "evaluated": 16,
+            "recall_at_5": 18.75,
+            "recall_at_10": 31.25
+          },
+          "urdu_script": {
+            "evaluated": 12,
+            "recall_at_5": 33.33333333333333,
+            "recall_at_10": 41.66666666666667
+          }
+        },
+        "province": {
+          "Sindh": {
+            "evaluated": 22,
+            "recall_at_5": 77.27272727272727,
+            "recall_at_10": 86.36363636363636
+          },
+          "Unknown": {
+            "evaluated": 64,
+            "recall_at_5": 34.375,
+            "recall_at_10": 40.625
+          }
+        },
+        "question_type": {
+          "act_retrieval": {
+            "evaluated": 7,
+            "recall_at_5": 85.71428571428571,
+            "recall_at_10": 85.71428571428571
+          },
+          "single_section": {
+            "evaluated": 79,
+            "recall_at_5": 41.77215189873418,
+            "recall_at_10": 49.36708860759494
+          }
+        }
+      }
+    },
+    "hybrid": {
+      "recall_at_5": 67.44186046511628,
+      "recall_at_10": 74.4186046511628,
+      "latency_p50_ms": 54.01305000123102,
+      "latency_p95_ms": 118.13432500093768,
+      "latency_mean_ms": 65.37956046532747,
+      "recall_evaluable": 86,
+      "corpus_gaps": 47,
+      "errors": 0,
+      "breakdowns": {
+        "language": {
+          "English": {
+            "evaluated": 45,
+            "recall_at_5": 88.88888888888889,
+            "recall_at_10": 95.55555555555556
+          },
+          "Roman Urdu": {
+            "evaluated": 23,
+            "recall_at_5": 52.17391304347826,
+            "recall_at_10": 56.52173913043478
+          },
+          "Urdu": {
+            "evaluated": 18,
+            "recall_at_5": 33.33333333333333,
+            "recall_at_10": 44.44444444444444
+          }
+        },
+        "category": {
+          "exact_citation": {
+            "evaluated": 17,
+            "recall_at_5": 82.35294117647058,
+            "recall_at_10": 94.11764705882352
+          },
+          "family_law": {
+            "evaluated": 5,
+            "recall_at_5": 80.0,
+            "recall_at_10": 80.0
+          },
+          "natural_english": {
+            "evaluated": 12,
+            "recall_at_5": 83.33333333333334,
+            "recall_at_10": 91.66666666666666
+          },
+          "natural_language": {
+            "evaluated": 2,
+            "recall_at_5": 100.0,
+            "recall_at_10": 100.0
+          },
+          "province_sensitive": {
+            "evaluated": 22,
+            "recall_at_5": 86.36363636363636,
+            "recall_at_10": 90.9090909090909
+          },
+          "roman_urdu": {
+            "evaluated": 16,
+            "recall_at_5": 37.5,
+            "recall_at_10": 43.75
+          },
+          "urdu_script": {
+            "evaluated": 12,
+            "recall_at_5": 25.0,
+            "recall_at_10": 33.33333333333333
+          }
+        },
+        "province": {
+          "Sindh": {
+            "evaluated": 22,
+            "recall_at_5": 86.36363636363636,
+            "recall_at_10": 90.9090909090909
+          },
+          "Unknown": {
+            "evaluated": 64,
+            "recall_at_5": 60.9375,
+            "recall_at_10": 68.75
+          }
+        },
+        "question_type": {
+          "act_retrieval": {
+            "evaluated": 7,
+            "recall_at_5": 85.71428571428571,
+            "recall_at_10": 85.71428571428571
+          },
+          "single_section": {
+            "evaluated": 79,
+            "recall_at_5": 65.82278481012658,
+            "recall_at_10": 73.41772151898735
+          }
+        }
+      }
+    },
+    "hybrid_reranker": {
+      "recall_at_5": 75.5813953488372,
+      "recall_at_10": 75.5813953488372,
+      "latency_p50_ms": 33944.18760000008,
+      "latency_p95_ms": 46353.31187499992,
+      "latency_mean_ms": 33809.88455232558,
+      "recall_evaluable": 86,
+      "corpus_gaps": 47,
+      "errors": 0,
+      "breakdowns": {
+        "language": {
+          "English": {
+            "evaluated": 45,
+            "recall_at_5": 95.55555555555556,
+            "recall_at_10": 95.55555555555556
+          },
+          "Roman Urdu": {
+            "evaluated": 23,
+            "recall_at_5": 56.52173913043478,
+            "recall_at_10": 56.52173913043478
+          },
+          "Urdu": {
+            "evaluated": 18,
+            "recall_at_5": 50.0,
+            "recall_at_10": 50.0
+          }
+        },
+        "category": {
+          "exact_citation": {
+            "evaluated": 17,
+            "recall_at_5": 94.11764705882352,
+            "recall_at_10": 94.11764705882352
+          },
+          "family_law": {
+            "evaluated": 5,
+            "recall_at_5": 80.0,
+            "recall_at_10": 80.0
+          },
+          "natural_english": {
+            "evaluated": 12,
+            "recall_at_5": 91.66666666666666,
+            "recall_at_10": 91.66666666666666
+          },
+          "natural_language": {
+            "evaluated": 2,
+            "recall_at_5": 100.0,
+            "recall_at_10": 100.0
+          },
+          "province_sensitive": {
+            "evaluated": 22,
+            "recall_at_5": 90.9090909090909,
+            "recall_at_10": 90.9090909090909
+          },
+          "roman_urdu": {
+            "evaluated": 16,
+            "recall_at_5": 43.75,
+            "recall_at_10": 43.75
+          },
+          "urdu_script": {
+            "evaluated": 12,
+            "recall_at_5": 41.66666666666667,
+            "recall_at_10": 41.66666666666667
+          }
+        },
+        "province": {
+          "Sindh": {
+            "evaluated": 22,
+            "recall_at_5": 90.9090909090909,
+            "recall_at_10": 90.9090909090909
+          },
+          "Unknown": {
+            "evaluated": 64,
+            "recall_at_5": 70.3125,
+            "recall_at_10": 70.3125
+          }
+        },
+        "question_type": {
+          "act_retrieval": {
+            "evaluated": 7,
+            "recall_at_5": 85.71428571428571,
+            "recall_at_10": 85.71428571428571
+          },
+          "single_section": {
+            "evaluated": 79,
+            "recall_at_5": 74.68354430379746,
+            "recall_at_10": 74.68354430379746
+          }
+        }
+      }
+    }
+  }
+}
