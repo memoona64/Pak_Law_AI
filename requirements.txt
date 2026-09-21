@@ -4,7 +4,12 @@ sentence-transformers>=2.2.0
 rank_bm25>=0.2.2
 numpy>=1.24.0
 pydantic>=2.0.0
-chromadb>=0.5.0
+# Pinned exact, not >=: chroma_db/ ships a pre-built index in git (see
+# search_service.py's corpus-fingerprint check) whose on-disk file format is
+# tied to the exact chromadb version that built it. A different version
+# installed at deploy time risks failing to load it, or silently
+# misreading it, even though the index content itself is correct.
+chromadb==1.5.9
 python-dotenv>=1.0.0
 google-genai>=1.0.0
 pdfplumber>=0.11.0
